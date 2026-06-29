@@ -1,0 +1,11 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SubjectCard from '../../components/SubjectCard.astro';
+const subjects = (await getCollection('subjects')).sort((a, b) => a.data.order - b.data.order);
+const lessons = await getCollection('lessons', ({ data }) => !data.draft);
+---
+<BaseLayout title="Subjects — Commonplace" description="Explore structured notes and learning maps across every subject.">
+  <header class="page-header page-shell"><span class="eyebrow">Learning spaces</span><h1 class="display-title">Subjects</h1><p class="lede">Each subject has its own map. Sections and modules come from content metadata, so every field can develop a structure that fits it.</p></header>
+  <section class="section page-shell"><div class="card-grid">{subjects.map((subject) => <SubjectCard subject={subject} lessonCount={lessons.filter((lesson) => lesson.data.subject === subject.data.slug).length} />)}</div></section>
+</BaseLayout>

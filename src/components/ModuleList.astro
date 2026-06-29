@@ -1,0 +1,16 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getLessonPath } from '../lib/content';
+interface Props { lessons: CollectionEntry<'lessons'>[]; }
+const { lessons } = Astro.props;
+const modules = [...new Set(lessons.map((lesson) => lesson.data.module))];
+---
+<div class="module-list">{modules.map((module) => <section><h4>{module}</h4><ol>{lessons.filter((lesson) => lesson.data.module === module).map((lesson) => <li><a href={getLessonPath(lesson)}><span>{lesson.data.title}</span><small>{lesson.data.description}</small></a></li>)}</ol></section>)}</div>
+<style>
+  .module-list { display: grid; gap: 1.1rem; }
+  section { padding: 1.3rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); }
+  h4 { margin: 0 0 .9rem; color: var(--muted); font-size: .68rem; letter-spacing: .13em; text-transform: uppercase; }
+  ol { padding: 0; margin: 0; display: grid; gap: .25rem; list-style: none; }
+  a { padding: .7rem .75rem; display: block; border-radius: .5rem; text-decoration: none; }a:hover { background: var(--surface-2); }
+  a span, a small { display: block; }a span { color: var(--ink); font-family: var(--font-serif); font-weight: 650; }a small { margin-top: .2rem; color: var(--muted); font-size: .73rem; }
+</style>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Small writing tools</title><desc id="desc">A notebook and pencil on a geometric background.</desc>
+  <rect width="1200" height="720" fill="#e9dfcf"/><path d="M0 0h460L220 720H0Z" fill="#d96645"/><circle cx="1045" cy="120" r="280" fill="#2c7e7b" opacity=".95"/>
+  <rect x="380" y="132" width="480" height="480" rx="24" fill="#fffaf0" stroke="#192936" stroke-width="10"/>
+  <path d="M470 245h300M470 325h260M470 405h285M470 485h190" stroke="#9aa5a7" stroke-width="14" stroke-linecap="round"/>
+  <path d="m805 515 208-313 42 28-208 313-75 43Z" fill="#f3b956" stroke="#192936" stroke-width="10" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,12 @@
+---
+import { getCollection } from 'astro:content';
+import SubjectLayout from '../../../layouts/SubjectLayout.astro';
+
+export async function getStaticPaths() {
+  const subjects = await getCollection('subjects');
+  const lessons = await getCollection('lessons', ({ data }) => !data.draft);
+  return subjects.map((subject) => ({ params: { subject: subject.data.slug }, props: { subject, lessons: lessons.filter((lesson) => lesson.data.subject === subject.data.slug) } }));
+}
+const { subject, lessons } = Astro.props;
+---
+<SubjectLayout subject={subject} lessons={lessons} />

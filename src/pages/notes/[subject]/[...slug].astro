@@ -1,0 +1,20 @@
+---
+import { getCollection, render } from 'astro:content';
+import LessonLayout from '../../../layouts/LessonLayout.astro';
+import { byLessonOrder } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const subjects = await getCollection('subjects');
+  const lessons = await getCollection('lessons', ({ data }) => !data.draft);
+  return lessons.map((lesson) => {
+    const subject = subjects.find((entry) => entry.data.slug === lesson.data.subject);
+    if (!subject) throw new Error(`Missing subject: ${lesson.data.subject}`);
+    const subjectLessons = lessons.filter((entry) => entry.data.subject === lesson.data.subject).sort(byLessonOrder);
+    const index = subjectLessons.findIndex((entry) => entry.id === lesson.id);
+    return { params: { subject: lesson.data.subject, slug: lesson.id }, props: { subject, lesson, lessons: subjectLessons, previous: subjectLessons[index - 1], next: subjectLessons[index + 1] } };
+  });
+}
+const { subject, lesson, lessons, previous, next } = Astro.props;
+const { Content, headings } = await render(lesson);
+---
+<LessonLayout subject={subject} lesson={lesson} lessons={lessons} headings={headings} previous={previous} next={next}><Content /></LessonLayout>

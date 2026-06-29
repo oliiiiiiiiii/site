@@ -1,0 +1,65 @@
+---
+import SiteIcon from './SiteIcon.astro';
+interface Props { currentPath: string; }
+const { currentPath } = Astro.props;
+const links = [
+  { href: '/', label: 'Home', icon: 'home' },
+  { href: '/library/', label: 'Library', icon: 'library' },
+  { href: '/posts/', label: 'Posts', icon: 'posts' },
+  { href: '/notes/', label: 'Subjects', icon: 'notes' },
+  { href: '/about/', label: 'About', icon: 'about' },
+] as const;
+const isActive = (href: string) => href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+---
+<aside class="app-sidebar" id="app-sidebar" aria-label="Site navigation" data-sidebar>
+  <div class="sidebar-inner">
+    <a class="identity" href="/" aria-label="Commonplace home">
+      <span class="identity-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span><strong>Commonplace</strong><small>Oli’s knowledge garden</small></span>
+    </a>
+    <nav class="primary-nav" aria-label="Primary">
+      {links.map((link) => (
+        <a class:list={{ active: isActive(link.href) }} href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
+          <SiteIcon name={link.icon} size={20} /><span>{link.label}</span>
+        </a>
+      ))}
+    </nav>
+    <div class="sidebar-note">
+      <span>Now cultivating</span>
+      <strong>Language & systems</strong>
+      <p>Notes are allowed to grow in public.</p>
+    </div>
+    <div class="sidebar-footer"><span>Built with Astro</span><span aria-hidden="true">✦</span></div>
+  </div>
+</aside>
+<button class="sidebar-scrim" type="button" aria-label="Close navigation" data-sidebar-close></button>
+
+<style>
+  .app-sidebar { position: fixed; z-index: 40; inset: 0 auto 0 0; width: 248px; padding: 1.25rem; background: var(--surface-2); border-right: 1px solid var(--line); }
+  .sidebar-inner { height: 100%; display: flex; flex-direction: column; }
+  .identity { padding: .65rem .4rem 1.65rem; display: flex; align-items: center; gap: .8rem; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+  .identity-mark { position: relative; width: 38px; height: 38px; display: block; flex: 0 0 auto; border-radius: 50%; background: var(--ink); }
+  .identity-mark i { position: absolute; width: 7px; height: 7px; border-radius: 50%; }
+  .identity-mark i:nth-child(1) { top: 9px; left: 10px; background: var(--coral); }
+  .identity-mark i:nth-child(2) { top: 9px; right: 9px; background: var(--gold); }
+  .identity-mark i:nth-child(3) { bottom: 9px; left: 16px; background: #62b9b1; }
+  .identity strong, .identity small { display: block; }
+  .identity strong { font-family: var(--font-serif); font-size: 1.05rem; }
+  .identity small { color: var(--muted); font-size: .67rem; letter-spacing: .02em; }
+  .primary-nav { padding-block: 1.5rem; display: grid; gap: .3rem; }
+  .primary-nav a { min-height: 46px; padding: .7rem .8rem; display: flex; align-items: center; gap: .75rem; border-radius: .65rem; color: var(--ink-soft); text-decoration: none; font-weight: 680; }
+  .primary-nav a:hover { color: var(--ink); background: color-mix(in srgb, var(--surface) 65%, transparent); }
+  .primary-nav a.active { color: var(--surface); background: var(--ink); box-shadow: var(--shadow-sm); }
+  .sidebar-note { margin-top: auto; padding: 1.1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); }
+  .sidebar-note span { color: var(--coral); font-size: .65rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+  .sidebar-note strong { display: block; margin-top: .45rem; font-family: var(--font-serif); }
+  .sidebar-note p { margin: .35rem 0 0; color: var(--muted); font-size: .77rem; line-height: 1.5; }
+  .sidebar-footer { padding: 1.3rem .4rem .25rem; display: flex; justify-content: space-between; color: var(--muted); font-size: .7rem; }
+  .sidebar-scrim { display: none; }
+  @media (max-width: 1020px) {
+    .app-sidebar { transform: translateX(-105%); transition: transform .24s ease; box-shadow: var(--shadow-md); }
+    :global(body.sidebar-open) .app-sidebar { transform: translateX(0); }
+    .sidebar-scrim { position: fixed; z-index: 35; inset: 0; width: 100%; height: 100%; border: 0; background: rgba(10, 22, 29, .48); }
+    :global(body.sidebar-open) .sidebar-scrim { display: block; }
+  }
+</style>

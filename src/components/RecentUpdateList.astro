@@ -1,0 +1,22 @@
+---
+interface Update { href: string; title: string; description: string; date: Date; kind: string; accent?: string; }
+interface Props { updates: Update[]; }
+const { updates } = Astro.props;
+const formatter = new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric' });
+---
+<div class="updates-list">{updates.map((item, index) => (
+  <a href={item.href} style={`--update-accent: ${item.accent ?? 'var(--teal)'}`}>
+    <span class="index">{String(index + 1).padStart(2, '0')}</span><span class="update-copy"><small>{item.kind}</small><strong>{item.title}</strong><span>{item.description}</span></span><time datetime={item.date.toISOString()}>{formatter.format(item.date)}</time>
+  </a>
+))}</div>
+<style>
+  .updates-list { border-top: 1px solid var(--line); }
+  a { min-height: 104px; display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; align-items: center; gap: 1rem; color: var(--ink); border-bottom: 1px solid var(--line); text-decoration: none; }
+  a:hover strong { color: var(--update-accent); }
+  .index { width: 42px; height: 42px; display: grid; place-items: center; color: var(--update-accent); border: 1px solid var(--update-accent); border-radius: 50%; font-size: .68rem; font-weight: 800; }
+  .update-copy small, .update-copy strong, .update-copy > span { display: block; }
+  .update-copy small { color: var(--update-accent); font-size: .61rem; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+  .update-copy strong { margin: .22rem 0; font-family: var(--font-serif); font-size: 1.15rem; }
+  .update-copy > span, time { color: var(--muted); font-size: .77rem; }
+  @media (max-width: 540px) { a { grid-template-columns: 42px minmax(0, 1fr); } time { display: none; } }
+</style>

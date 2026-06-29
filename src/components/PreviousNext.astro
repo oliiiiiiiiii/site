@@ -1,0 +1,14 @@
+---
+interface LinkItem { href: string; title: string; label?: string; }
+interface Props { previous?: LinkItem; next?: LinkItem; }
+const { previous, next } = Astro.props;
+---
+{(previous || next) && <nav class="previous-next" aria-label="Previous and next"><div>{previous && <a href={previous.href}><small>← {previous.label ?? 'Previous'}</small><strong>{previous.title}</strong></a>}</div><div>{next && <a class="next" href={next.href}><small>{next.label ?? 'Next'} →</small><strong>{next.title}</strong></a>}</div></nav>}
+<style>
+  .previous-next { margin-top: 4rem; padding-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; border-top: 1px solid var(--line); }
+  .previous-next > div:last-child { text-align: right; }
+  a { display: inline-flex; flex-direction: column; color: var(--ink); text-decoration: none; }
+  a:hover strong { color: var(--teal); }small { margin-bottom: .3rem; color: var(--muted); font-size: .67rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  strong { font-family: var(--font-serif); font-size: 1.05rem; font-weight: 600; }
+  @media (max-width: 560px) { .previous-next { grid-template-columns: 1fr; }.previous-next > div:last-child { text-align: left; } }
+</style>

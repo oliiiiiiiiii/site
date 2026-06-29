@@ -1,0 +1,44 @@
+---
+title: Building a Knowledge Garden That Can Grow
+description: Why this site separates finished writing from evolving subject notes.
+published: 2026-06-25
+updated: 2026-06-29
+tags:
+  - Design
+  - Knowledge management
+cover: /images/covers/knowledge-garden.svg
+featured: true
+draft: false
+---
+
+import Callout from '../../components/Callout.astro';
+import VideoEmbed from '../../components/VideoEmbed.astro';
+
+## Two kinds of writing
+
+A conventional blog treats every piece of writing as a dated item in one stream. That works for essays, but it is awkward for material that grows lesson by lesson.
+
+This site keeps two related systems:
+
+1. **Posts** are complete arguments or stories.
+2. **Subjects** are maps that gather many lessons into a navigable whole.
+
+<Callout type="note" title="The organizing principle">
+  Dates answer *when was this written?* Structure answers *where does this idea belong?* A useful knowledge site needs both.
+</Callout>
+
+## Content stays portable
+
+The source remains Markdown by default. MDX is available only when an idea benefits from a richer component such as a gallery, callout, or embedded video.
+
+```mdx
+<Callout type="tip" title="A richer aside">
+  Markdown still works inside the component.
+</Callout>
+```
+
+## A short field note
+
+<VideoEmbed src="https://www.youtube.com/embed/B_EM-S7U5ek" title="A sample embedded video" />
+
+The architecture matters because the collection will outlive any single visual style. Presentation can change; the content model should remain dependable.

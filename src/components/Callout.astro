@@ -1,0 +1,12 @@
+---
+interface Props { type?: 'note' | 'tip' | 'warning'; title?: string; }
+const { type = 'note', title } = Astro.props;
+const symbols = { note: '✦', tip: '↗', warning: '!' };
+---
+<aside class:list={['callout', type]}><span class="symbol" aria-hidden="true">{symbols[type]}</span><div>{title && <strong>{title}</strong>}<div class="callout-content"><slot /></div></div></aside>
+<style>
+  .callout { --callout: var(--teal); margin-block: 2rem; padding: 1rem 1.1rem; display: grid; grid-template-columns: 30px 1fr; gap: .75rem; color: var(--ink-soft); border: 1px solid color-mix(in srgb, var(--callout) 35%, var(--line)); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--callout) 8%, var(--surface)); font-family: var(--font-sans); font-size: .9rem; line-height: 1.65; }
+  .tip { --callout: var(--teal); }.warning { --callout: var(--coral); }.note { --callout: #7d6ca7; }
+  .symbol { width: 28px; height: 28px; display: grid; place-items: center; color: white; border-radius: 50%; background: var(--callout); font-size: .76rem; font-weight: 900; }
+  strong { color: var(--ink); }.callout-content :global(p) { margin: .25rem 0 0; }.callout-content :global(p:first-child) { margin-top: 0; }.callout-content :global(p:last-child) { margin-bottom: 0; }
+</style>

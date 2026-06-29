@@ -1,0 +1,36 @@
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">A personal knowledge garden</span>
+    <h1>Ideas become useful when they have somewhere to <em>grow.</em></h1>
+    <p>Long-form writing, connected study notes, and practical things worth remembering—kept in one calm, searchable place.</p>
+    <div class="hero-actions"><a class="button" href="/library/">Enter the library <span aria-hidden="true">→</span></a><a class="button button--ghost" href="/about/">About this place</a></div>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+    <div class="paper paper-one"><span>01</span><strong>Observe</strong><i></i><i></i><i></i></div>
+    <div class="paper paper-two"><span>02</span><strong>Connect</strong><i></i><i></i></div>
+    <div class="paper paper-three"><span>03</span><strong>Explain</strong><i></i><i></i><i></i></div>
+  </div>
+</section>
+
+<style>
+  .hero { min-height: calc(100vh - 72px); width: min(calc(100% - 3rem), var(--content-max)); margin-inline: auto; padding-block: clamp(4rem, 10vw, 8rem); display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(360px, .92fr); align-items: center; gap: clamp(3rem, 7vw, 7rem); }
+  h1 { max-width: 760px; margin: 1.2rem 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3.3rem, 7vw, 6.8rem); font-weight: 500; letter-spacing: -.055em; line-height: .92; }
+  h1 em { color: var(--coral); font-weight: inherit; }
+  .hero-copy > p { max-width: 620px; margin: 0; color: var(--ink-soft); font-size: 1.15rem; line-height: 1.75; }
+  .hero-actions { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: .8rem; }
+  .hero-art { position: relative; min-height: 510px; }
+  .orbit { position: absolute; border: 1px solid var(--line-strong); border-radius: 50%; }
+  .orbit-one { inset: 4% 0 8% 5%; }
+  .orbit-two { inset: 18% 14% 0 0; border-color: var(--coral); opacity: .55; }
+  .paper { position: absolute; width: 230px; height: 295px; padding: 1.4rem; color: #192936; background: #fffaf2; border: 1px solid #c9beae; border-radius: .7rem; box-shadow: var(--shadow-md); }
+  .paper span { color: #718087; font-size: .7rem; font-weight: 800; letter-spacing: .15em; }
+  .paper strong { display: block; margin: 2rem 0 1.3rem; font-family: var(--font-serif); font-size: 1.7rem; }
+  .paper i { display: block; height: 2px; margin-top: .85rem; background: #d5cdc1; }
+  .paper i:nth-of-type(2) { width: 75%; }.paper i:nth-of-type(3) { width: 45%; }
+  .paper-one { top: 12%; left: 3%; transform: rotate(-8deg); }
+  .paper-two { z-index: 2; top: 4%; right: 5%; background: #dcebea; transform: rotate(6deg); }
+  .paper-three { z-index: 3; bottom: 0; left: 28%; background: #f6e1d8; transform: rotate(-1deg); }
+  @media (max-width: 1120px) { .hero { grid-template-columns: 1fr; } .hero-art { max-width: 590px; width: 100%; margin-inline: auto; } }
+  @media (max-width: 680px) { .hero { width: calc(100% - 2rem); padding-block: 3.5rem; } .hero-art { min-height: 370px; } .paper { width: 170px; height: 225px; padding: 1rem; } .paper strong { margin-top: 1.3rem; font-size: 1.25rem; } }
+</style>

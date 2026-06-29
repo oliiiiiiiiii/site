@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getLessonPath, groupLessonsBySection } from '../lib/content';
+interface Props { subject: CollectionEntry<'subjects'>; lessons: CollectionEntry<'lessons'>[]; currentId?: string; }
+const { subject, lessons, currentId } = Astro.props;
+const groups = groupLessonsBySection(subject, lessons);
+---
+<nav class="subject-sidebar" aria-label={`${subject.data.title} lessons`} style={`--subject-accent: ${subject.data.accent}`}>
+  <a class="subject-home" href={`/notes/${subject.data.slug}/`}><span>{subject.data.icon}</span><strong>{subject.data.title}</strong></a>
+  {groups.map((group) => group.lessons.length > 0 && <section><h3>{group.title}</h3><ul>{group.lessons.map((lesson) => <li><a class:list={{ active: lesson.id === currentId }} href={getLessonPath(lesson)} aria-current={lesson.id === currentId ? 'page' : undefined}>{lesson.data.title}</a></li>)}</ul></section>)}
+</nav>
+<style>
+  .subject-sidebar { font-size: .76rem; }
+  .subject-home { padding-bottom: 1rem; display: flex; align-items: center; gap: .65rem; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+  .subject-home span { width: 32px; height: 32px; display: grid; place-items: center; color: white; border-radius: 50%; background: var(--subject-accent); font-size: .64rem; font-weight: 800; }
+  .subject-home strong { font-family: var(--font-serif); font-size: 1rem; }
+  section { margin-top: 1.25rem; }h3 { margin: 0 0 .55rem; color: var(--muted); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; }
+  ul { padding: 0; margin: 0; display: grid; gap: .2rem; list-style: none; }
+  li a { padding: .45rem .6rem; display: block; border-left: 2px solid transparent; color: var(--ink-soft); text-decoration: none; }
+  li a:hover, li a.active { color: var(--subject-accent); border-left-color: var(--subject-accent); background: color-mix(in srgb, var(--subject-accent) 8%, transparent); }
+</style>

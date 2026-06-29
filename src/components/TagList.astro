@@ -1,0 +1,9 @@
+---
+interface Props { tags: string[]; }
+const { tags } = Astro.props;
+---
+<ul class="tag-list" aria-label="Tags">{tags.map((tag) => <li>{tag}</li>)}</ul>
+<style>
+  .tag-list { padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: .45rem; list-style: none; }
+  li { padding: .3rem .62rem; color: var(--teal); border: 1px solid color-mix(in srgb, var(--teal) 36%, var(--line)); border-radius: 999px; background: var(--teal-soft); font-size: .69rem; font-weight: 750; }
+</style>
