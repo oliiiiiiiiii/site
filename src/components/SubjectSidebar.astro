@@ -12,9 +12,9 @@ const groups = groupLessonsBySection(subject, lessons);
 <style>
   .subject-sidebar { font-size: .76rem; }
   .subject-home { padding-bottom: 1rem; display: flex; align-items: center; gap: .65rem; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; }
-  .subject-home span { width: 32px; height: 32px; display: grid; place-items: center; color: white; border-radius: 50%; background: var(--subject-accent); font-size: .64rem; font-weight: 800; }
-  .subject-home strong { font-family: var(--font-serif); font-size: 1rem; }
-  section { margin-top: 1.25rem; }h3 { margin: 0 0 .55rem; color: var(--muted); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; }
+  .subject-home span { width: 32px; height: 32px; display: grid; place-items: center; color: white; border-radius: var(--radius-sm); background: var(--subject-accent); font-family: var(--font-mono); font-size: .6rem; font-weight: 800; }
+  .subject-home strong { font-family: var(--font-mono); font-size: .82rem; }
+  section { margin-top: 1.25rem; }h3 { margin: 0 0 .55rem; color: var(--muted); font-family: var(--font-mono); font-size: .58rem; letter-spacing: .06em; text-transform: lowercase; }
   ul { padding: 0; margin: 0; display: grid; gap: .2rem; list-style: none; }
   li a { padding: .45rem .6rem; display: block; border-left: 2px solid transparent; color: var(--ink-soft); text-decoration: none; }
   li a:hover, li a.active { color: var(--subject-accent); border-left-color: var(--subject-accent); background: color-mix(in srgb, var(--subject-accent) 8%, transparent); }

@@ -1,10 +1,36 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="About — Commonplace" description="About Oli and the thinking behind this personal knowledge garden.">
-  <header class="page-header page-shell"><span class="eyebrow">About this place</span><h1 class="display-title">Learning in public,<br />one useful note at a time.</h1></header>
-  <section class="section page-shell about-grid"><div class="portrait" aria-hidden="true"><span>O</span><i></i><i></i></div><div class="about-copy"><h2 class="section-title">Hello, I’m Oli.</h2><p class="lede">This is a personal knowledge site for the material I want to understand deeply enough to explain.</p><p>Some ideas become finished posts. Others remain part of a subject space, where lessons can be reorganized and improved as understanding changes. Keeping both formats together makes the site feel less like an archive and more like a working desk.</p><p>The sample content currently demonstrates the architecture. Personal biography, project links, and real social profiles can replace this text without changing the layout.</p><div class="principles"><article><strong>Write plainly</strong><span>Clarity before cleverness.</span></article><article><strong>Connect ideas</strong><span>Context makes facts useful.</span></article><article><strong>Revise openly</strong><span>Notes are allowed to mature.</span></article></div></div></section>
+<BaseLayout title="About — Olí's Blog" description="About Olivia, an NTU CSIE student who writes as Olí.">
+  <header class="page-header page-shell"><span class="eyebrow">about.md</span><h1 class="display-title">Hi, I’m Olivia.<br />You can call me Olí.</h1></header>
+
+  <section class="section page-shell about-grid">
+    <aside class="profile-card">
+      <img src="/images/site/avatar.png" alt="Olí's cloud-and-sky avatar" />
+      <div><strong>Yun-Chen Lin</strong><span>Olivia · Olí</span></div>
+      <dl><div><dt>school</dt><dd>NTU</dd></div><div><dt>major</dt><dd>CSIE</dd></div><div><dt>timezone</dt><dd>Asia/Taipei</dd></div></dl>
+    </aside>
+
+    <article class="about-copy">
+      <section><span class="eyebrow">About this blog</span><h2>想放什麼，就放什麼。</h2><p>不只會有 CS 有關的東西，什麼想放的都放。有些在建立這個部落格之前打過的文章——包括在網路上分享過的東西跟一些後記——也會照以前打的日期放上來。</p></section>
+
+      <section><span class="eyebrow">About me</span><h2>從「寫程式很帥」開始。</h2><p>我是 Olivia，在網路上通常叫 oliiiiiiiiii，學了西班牙文後更喜歡用 Olí。我目前大二，就讀台大資工系。</p><blockquote>國三的時候一直覺得寫程式很帥，所以立定志向要考台大資工。升高一的暑假開始接觸 C++，寫得越多就發現自己越喜歡。</blockquote><p>高中參加過資訊之芽語法班，也曾經在數學競賽裡隨緣探索；現在繼續把寫程式、學習和分享這些事情放在一起。</p></section>
+
+      <section><span class="eyebrow">Other learnings</span><h2>不只 Computer Science。</h2><p>大一的時候不想修大一英文，所以選了西班牙文，學了一陣子之後發現自己還蠻喜歡的，因此決定持續好好學。從小也很喜歡教學，對教育一直很有興趣。</p></section>
+
+      <section class="contacts"><span class="eyebrow">Contacts</span><h2>Find me online.</h2><div><a href="https://www.instagram.com/_y.chen_0108/" rel="noreferrer"><small>instagram</small><strong>@_y.chen_0108 ↗</strong></a><a href="https://github.com/oliiiiiiiiii" rel="noreferrer"><small>github</small><strong>@oliiiiiiiiii ↗</strong></a><a href="https://discord.com/users/801441766330859570" rel="noreferrer"><small>discord</small><strong>Olí. ↗</strong></a><a href="mailto:olivia950108@gmail.com"><small>email</small><strong>olivia950108@gmail.com ↗</strong></a></div></section>
+    </article>
+  </section>
 </BaseLayout>
+
 <style>
-  .about-grid { display: grid; grid-template-columns: minmax(280px, .7fr) minmax(0, 1.3fr); align-items: start; gap: clamp(3rem, 8vw, 8rem); }.portrait { position: relative; aspect-ratio: 4 / 5; display: grid; place-items: center; overflow: hidden; border-radius: 45% 45% 1rem 1rem; color: #fffaf2; background: #287b7a; box-shadow: var(--shadow-md); }.portrait span { z-index: 2; font-family: var(--font-serif); font-size: 8rem; }.portrait i { position: absolute; width: 230px; height: 230px; border: 1px solid rgba(255,255,255,.45); border-radius: 50%; }.portrait i:last-child { width: 360px; height: 360px; transform: translate(25%, 30%); }.about-copy > p:not(.lede) { max-width: 720px; color: var(--ink-soft); line-height: 1.8; }.principles { margin-top: 2rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; }.principles article { padding: 1rem; border-top: 3px solid var(--coral); background: var(--surface); box-shadow: var(--shadow-sm); }.principles strong,.principles span { display:block }.principles strong{font-family:var(--font-serif)}.principles span{margin-top:.25rem;color:var(--muted);font-size:.72rem}@media(max-width:850px){.about-grid{grid-template-columns:1fr}.portrait{max-width:420px;width:100%}}@media(max-width:600px){.principles{grid-template-columns:1fr}}
+  .about-grid { display: grid; grid-template-columns: minmax(250px, .55fr) minmax(0, 1.45fr); align-items: start; gap: clamp(3rem, 8vw, 8rem); }
+  .profile-card { position: sticky; top: 2rem; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); box-shadow: var(--shadow-md); }
+  .profile-card > img { width: 100%; aspect-ratio: 1; display: block; object-fit: cover; }
+  .profile-card > div { padding: 1rem; border-bottom: 1px solid var(--line); }.profile-card strong,.profile-card span { display: block; }.profile-card strong { font-size: 1rem; }.profile-card span { margin-top: .2rem; color: var(--muted); font-family: var(--font-mono); font-size: .65rem; }
+  dl { padding: .7rem 1rem 1rem; margin: 0; font-family: var(--font-mono); font-size: .64rem; }dl div { padding-block: .3rem; display: flex; justify-content: space-between; gap: 1rem; }dt { color: var(--teal); }dd { margin: 0; color: var(--muted); }
+  .about-copy { display: grid; gap: 4rem; }.about-copy h2 { margin: .55rem 0 1rem; font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: -.035em; line-height: 1.1; }.about-copy p { color: var(--ink-soft); line-height: 1.9; }.about-copy blockquote { margin: 1.5rem 0; padding: .3rem 0 .3rem 1.25rem; color: var(--ink); border-left: 3px solid var(--teal); font-family: var(--font-serif); font-size: 1.08rem; line-height: 1.8; }
+  .contacts > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }.contacts a { padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); text-decoration: none; }.contacts a:hover { border-color: var(--teal); }.contacts small,.contacts strong { display: block; }.contacts small { color: var(--teal); font-family: var(--font-mono); font-size: .6rem; }.contacts strong { margin-top: .25rem; font-size: .83rem; overflow-wrap: anywhere; }
+  @media (max-width: 850px) { .about-grid { grid-template-columns: 1fr; }.profile-card { position: static; max-width: 360px; } }
+  @media (max-width: 560px) { .contacts > div { grid-template-columns: 1fr; } }
 </style>

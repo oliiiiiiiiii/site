@@ -11,7 +11,7 @@ const { subject, lessons } = Astro.props;
 const groups = groupLessonsBySection(subject, lessons);
 const recent = [...lessons].sort((a, b) => b.data.updated.valueOf() - a.data.updated.valueOf()).slice(0, 4).map((lesson) => ({ href: getLessonPath(lesson), title: lesson.data.title, description: lesson.data.description, date: lesson.data.updated, kind: lesson.data.section, accent: subject.data.accent }));
 ---
-<BaseLayout title={`${subject.data.title} notes — Commonplace`} description={subject.data.description}>
+<BaseLayout title={`${subject.data.title} notes — Olí's Blog`} description={subject.data.description}>
   <header class="subject-hero" style={`--subject-accent: ${subject.data.accent}`}>
     <div class="page-shell"><Breadcrumbs items={[{ label: 'Subjects', href: '/notes/' }, { label: subject.data.title }]} /><div class="subject-title-row"><span class="subject-icon">{subject.data.icon}</span><div><span class="subject-status">{subject.data.status} subject</span><h1>{subject.data.title}</h1><p>{subject.data.description}</p></div></div><div class="subject-stats"><span><strong>{subject.data.sections.length}</strong> sections</span><span><strong>{lessons.length}</strong> lessons</span><span><strong>{new Set(lessons.map((lesson) => lesson.data.module)).size}</strong> modules</span></div></div>
   </header>
@@ -23,16 +23,16 @@ const recent = [...lessons].sort((a, b) => b.data.updated.valueOf() - a.data.upd
 <style>
   .subject-hero { padding-block: clamp(3rem, 8vw, 6rem); border-bottom: 1px solid var(--line); background: linear-gradient(120deg, color-mix(in srgb, var(--subject-accent) 12%, var(--paper)), var(--paper) 65%); }
   .subject-title-row { margin-top: 2rem; display: grid; grid-template-columns: 90px minmax(0, 1fr); align-items: start; gap: 1.6rem; }
-  .subject-icon { width: 90px; height: 90px; display: grid; place-items: center; color: white; border-radius: 50%; background: var(--subject-accent); font-family: var(--font-serif); font-size: 1.45rem; font-weight: 700; box-shadow: var(--shadow-md); }
-  .subject-status { color: var(--subject-accent); font-size: .69rem; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
-  h1 { margin: .35rem 0 .75rem; font-family: var(--font-serif); font-size: clamp(3rem, 7vw, 5.7rem); font-weight: 500; letter-spacing: -.045em; line-height: .95; }
+  .subject-icon { width: 90px; height: 90px; display: grid; place-items: center; color: white; border-radius: var(--radius-sm); background: var(--subject-accent); font-family: var(--font-mono); font-size: 1.3rem; font-weight: 700; box-shadow: 6px 6px 0 color-mix(in srgb, var(--subject-accent) 24%, transparent); }
+  .subject-status { color: var(--subject-accent); font-family: var(--font-mono); font-size: .64rem; font-weight: 800; letter-spacing: .08em; text-transform: lowercase; }
+  h1 { margin: .35rem 0 .75rem; font-family: var(--font-sans); font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 780; letter-spacing: -.055em; line-height: .95; }
   .subject-title-row p { max-width: 680px; margin: 0; color: var(--ink-soft); font-size: 1.05rem; line-height: 1.7; }
-  .subject-stats { margin-top: 2.4rem; padding-top: 1.2rem; display: flex; gap: 2rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .75rem; }
+  .subject-stats { margin-top: 2.4rem; padding-top: 1.2rem; display: flex; gap: 2rem; border-top: 1px solid var(--line); color: var(--muted); font-family: var(--font-mono); font-size: .65rem; }
   .subject-stats strong { color: var(--subject-accent); font-size: 1.2rem; }
   .subject-body { padding-top: clamp(3rem, 6vw, 5rem); }.section-grid { display: grid; gap: 1.2rem; }
-  .section-grid > article { padding: clamp(1.3rem, 3vw, 2rem); display: grid; grid-template-columns: 55px 1fr; gap: 1.2rem; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); }
-  .section-number { color: var(--subject-accent); font-family: var(--font-serif); font-size: 1.4rem; }
-  article h3 { margin: 0 0 .3rem; font-family: var(--font-serif); font-size: 1.7rem; font-weight: 500; }article p { margin: 0 0 1.2rem; color: var(--muted); font-size: .85rem; }
+  .section-grid > article { padding: clamp(1.3rem, 3vw, 2rem); display: grid; grid-template-columns: 55px 1fr; gap: 1.2rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }
+  .section-number { color: var(--subject-accent); font-family: var(--font-mono); font-size: 1rem; }
+  article h3 { margin: 0 0 .3rem; font-family: var(--font-sans); font-size: 1.55rem; font-weight: 740; letter-spacing: -.025em; }article p { margin: 0 0 1.2rem; color: var(--muted); font-size: .85rem; }
   .recent { margin-top: clamp(4rem, 8vw, 7rem); }
   @media (max-width: 600px) { .subject-title-row { grid-template-columns: 1fr; }.subject-icon { width: 68px; height: 68px; }.subject-stats { flex-wrap: wrap; gap: 1rem 1.5rem; }.section-grid > article { grid-template-columns: 1fr; } }
 </style>

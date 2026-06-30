@@ -4,18 +4,19 @@ interface Props { subject: CollectionEntry<'subjects'>; lessonCount?: number; }
 const { subject, lessonCount = 0 } = Astro.props;
 ---
 <a class="subject-card" href={`/notes/${subject.data.slug}/`} style={`--subject-accent: ${subject.data.accent}`}>
-  <span class="subject-icon" aria-hidden="true">{subject.data.icon ?? subject.data.title.slice(0, 2)}</span>
-  <div class="subject-copy"><span class="status">{subject.data.status}</span><h3>{subject.data.title}</h3><p>{subject.data.description}</p></div>
+  <div class="card-top"><span class="subject-icon" aria-hidden="true">{subject.data.icon ?? subject.data.title.slice(0, 2)}</span><code>{subject.data.slug}.md</code></div>
+  <div class="subject-copy"><span class="status">status::{subject.data.status}</span><h3>{subject.data.title}</h3><p>{subject.data.description}</p></div>
   <div class="subject-meta"><span>{subject.data.sections.length} sections</span><span>{lessonCount} lessons</span><strong aria-hidden="true">↗</strong></div>
 </a>
 <style>
-  .subject-card { min-height: 310px; padding: 1.6rem; display: flex; flex-direction: column; color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-sm); text-decoration: none; transition: transform .2s ease, box-shadow .2s ease; }
-  .subject-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-  .subject-icon { width: 52px; height: 52px; display: grid; place-items: center; color: white; border-radius: 50%; background: var(--subject-accent); font-family: var(--font-serif); font-weight: 700; }
+  .subject-card { min-height: 300px; padding: 1.45rem; display: flex; flex-direction: column; color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); box-shadow: var(--shadow-sm); text-decoration: none; transition: transform .2s ease, box-shadow .2s ease; }
+  .subject-card:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 color-mix(in srgb, var(--subject-accent) 22%, transparent); }
+  .card-top { display: flex; align-items: center; justify-content: space-between; }.card-top code { color: var(--muted); font-family: var(--font-mono); font-size: .62rem; }
+  .subject-icon { width: 46px; height: 46px; display: grid; place-items: center; color: white; border-radius: var(--radius-sm); background: var(--subject-accent); font-family: var(--font-mono); font-weight: 700; }
   .subject-copy { margin-block: 2rem auto; }
-  .status { color: var(--subject-accent); font-size: .65rem; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
-  h3 { margin: .45rem 0 .65rem; font-family: var(--font-serif); font-size: 1.8rem; font-weight: 500; }
+  .status { color: var(--subject-accent); font-family: var(--font-mono); font-size: .62rem; font-weight: 750; }
+  h3 { margin: .5rem 0 .65rem; font-family: var(--font-sans); font-size: 1.65rem; font-weight: 750; letter-spacing: -.025em; }
   p { margin: 0; color: var(--ink-soft); font-size: .9rem; line-height: 1.65; }
-  .subject-meta { padding-top: 1rem; display: flex; align-items: center; gap: .85rem; color: var(--muted); border-top: 1px solid var(--line); font-size: .72rem; }
+  .subject-meta { padding-top: 1rem; display: flex; align-items: center; gap: .85rem; color: var(--muted); border-top: 1px solid var(--line); font-family: var(--font-mono); font-size: .62rem; }
   .subject-meta strong { margin-left: auto; color: var(--subject-accent); font-size: 1rem; }
 </style>

@@ -1,36 +1,49 @@
 <section class="hero">
   <div class="hero-copy">
-    <span class="eyebrow">A personal knowledge garden</span>
-    <h1>Ideas become useful when they have somewhere to <em>grow.</em></h1>
-    <p>Long-form writing, connected study notes, and practical things worth remembering—kept in one calm, searchable place.</p>
-    <div class="hero-actions"><a class="button" href="/library/">Enter the library <span aria-hidden="true">→</span></a><a class="button button--ghost" href="/about/">About this place</a></div>
+    <span class="eyebrow">Olí's Blog · Notes, Projects, and Reflections</span>
+    <h1>Be the master and the <em>sculptor of yourself.</em></h1>
+    <p>A place where I share my thoughts, projects, and experiences—from NTU CSIE courses and technical notes to everything else I feel like writing down.</p>
+    <div class="hero-actions"><a class="button" href="/posts/">./read-posts <span aria-hidden="true">↗</span></a><a class="button button--ghost" href="/about/">cat about.md</a></div>
+    <div class="hero-status" aria-label="Current status"><span><i></i> NTU CSIE student</span><span>author: Yun-Chen Lin</span></div>
   </div>
-  <div class="hero-art" aria-hidden="true">
-    <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-    <div class="paper paper-one"><span>01</span><strong>Observe</strong><i></i><i></i><i></i></div>
-    <div class="paper paper-two"><span>02</span><strong>Connect</strong><i></i><i></i></div>
-    <div class="paper paper-three"><span>03</span><strong>Explain</strong><i></i><i></i><i></i></div>
+
+  <div class="editor" aria-label="Code editor illustration">
+    <div class="editor-titlebar"><span class="traffic"><i></i><i></i><i></i></span><span>~/workspace/commonplace/profile.ts</span><span>⌘K</span></div>
+    <div class="editor-tabs"><span class="active"><i>TS</i> profile.ts</span><span><i>MD</i> README.md</span></div>
+    <div class="editor-body" aria-hidden="true">
+      <ol class="line-numbers"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li></ol>
+      <pre><code><span class="pink">const</span> <span class="blue">student</span> = &#123;
+  name: <span class="green">'Olivia'</span>,
+  alias: <span class="green">'Olí'</span>,
+  major: <span class="green">'NTU CSIE'</span>,
+  interests: [
+    <span class="green">'computer science'</span>,
+    <span class="green">'Spanish'</span>,
+    <span class="green">'education'</span>,
+  ],
+  keepsLearning: <span class="yellow">true</span>,
+&#125;;</code></pre>
+    </div>
+    <div class="terminal"><div class="terminal-bar"><span>TERMINAL</span><span>＋ ×</span></div><p><span>oli@commonplace</span>:<b>~/site</b>$ astro dev</p><p class="success">▶ Local&nbsp;&nbsp; http://localhost:4321/</p><p><span>oli@commonplace</span>:<b>~/site</b>$ <i></i></p></div>
+    <div class="editor-status"><span>main*</span><span>0 errors&nbsp;&nbsp;0 warnings</span><span>Ln 10, Col 2&nbsp;&nbsp;UTF-8</span></div>
   </div>
 </section>
 
 <style>
-  .hero { min-height: calc(100vh - 72px); width: min(calc(100% - 3rem), var(--content-max)); margin-inline: auto; padding-block: clamp(4rem, 10vw, 8rem); display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(360px, .92fr); align-items: center; gap: clamp(3rem, 7vw, 7rem); }
-  h1 { max-width: 760px; margin: 1.2rem 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3.3rem, 7vw, 6.8rem); font-weight: 500; letter-spacing: -.055em; line-height: .92; }
-  h1 em { color: var(--coral); font-weight: inherit; }
-  .hero-copy > p { max-width: 620px; margin: 0; color: var(--ink-soft); font-size: 1.15rem; line-height: 1.75; }
+  .hero { min-height: calc(100vh - 72px); width: min(calc(100% - 3rem), var(--content-max)); margin-inline: auto; padding-block: clamp(4rem, 9vw, 7rem); display: grid; grid-template-columns: minmax(0, 1fr) minmax(430px, .92fr); align-items: center; gap: clamp(3rem, 6vw, 6rem); }
+  h1 { max-width: 760px; margin: 1.1rem 0 1.5rem; font-size: clamp(3.2rem, 6.8vw, 6.5rem); font-weight: 790; letter-spacing: -.065em; line-height: .93; }
+  h1 em { color: var(--teal); font-style: normal; font-weight: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--coral) 65%, transparent); text-decoration-thickness: .09em; text-underline-offset: .1em; }
+  .hero-copy > p { max-width: 620px; margin: 0; color: var(--ink-soft); font-size: 1.08rem; line-height: 1.75; }
   .hero-actions { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: .8rem; }
-  .hero-art { position: relative; min-height: 510px; }
-  .orbit { position: absolute; border: 1px solid var(--line-strong); border-radius: 50%; }
-  .orbit-one { inset: 4% 0 8% 5%; }
-  .orbit-two { inset: 18% 14% 0 0; border-color: var(--coral); opacity: .55; }
-  .paper { position: absolute; width: 230px; height: 295px; padding: 1.4rem; color: #192936; background: #fffaf2; border: 1px solid #c9beae; border-radius: .7rem; box-shadow: var(--shadow-md); }
-  .paper span { color: #718087; font-size: .7rem; font-weight: 800; letter-spacing: .15em; }
-  .paper strong { display: block; margin: 2rem 0 1.3rem; font-family: var(--font-serif); font-size: 1.7rem; }
-  .paper i { display: block; height: 2px; margin-top: .85rem; background: #d5cdc1; }
-  .paper i:nth-of-type(2) { width: 75%; }.paper i:nth-of-type(3) { width: 45%; }
-  .paper-one { top: 12%; left: 3%; transform: rotate(-8deg); }
-  .paper-two { z-index: 2; top: 4%; right: 5%; background: #dcebea; transform: rotate(6deg); }
-  .paper-three { z-index: 3; bottom: 0; left: 28%; background: #f6e1d8; transform: rotate(-1deg); }
-  @media (max-width: 1120px) { .hero { grid-template-columns: 1fr; } .hero-art { max-width: 590px; width: 100%; margin-inline: auto; } }
-  @media (max-width: 680px) { .hero { width: calc(100% - 2rem); padding-block: 3.5rem; } .hero-art { min-height: 370px; } .paper { width: 170px; height: 225px; padding: 1rem; } .paper strong { margin-top: 1.3rem; font-size: 1.25rem; } }
+  .hero-status { margin-top: 1.6rem; display: flex; flex-wrap: wrap; gap: .65rem 1.2rem; color: var(--muted); font-family: var(--font-mono); font-size: .62rem; }.hero-status span:first-child { color: var(--teal); }.hero-status i { width: 6px; height: 6px; display: inline-block; margin-right: .35rem; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+  .editor { overflow: hidden; color: #c8d3dc; border: 1px solid #334454; border-radius: .55rem; background: #0d141b; box-shadow: 12px 14px 0 color-mix(in srgb, var(--teal) 13%, transparent), var(--shadow-md); font-family: var(--font-mono); font-size: .7rem; transform: rotate(1deg); }
+  .editor-titlebar { height: 38px; padding: 0 .8rem; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; color: #7d8d99; border-bottom: 1px solid #253441; background: #111b24; font-size: .58rem; }.editor-titlebar > span:last-child { text-align: right; }
+  .traffic { display: flex; gap: 6px; }.traffic i { width: 9px; height: 9px; border-radius: 50%; background: #ff665a; }.traffic i:nth-child(2) { background: #e9b43b; }.traffic i:nth-child(3) { background: #47be62; }
+  .editor-tabs { height: 36px; display: flex; align-items: stretch; color: #7d8d99; border-bottom: 1px solid #253441; background: #101820; }.editor-tabs span { padding: 0 .9rem; display: flex; align-items: center; gap: .45rem; border-right: 1px solid #253441; }.editor-tabs .active { color: #dbe4ea; border-top: 2px solid #47d7c6; background: #0d141b; }.editor-tabs i { color: #55a7e7; font-style: normal; font-size: .57rem; }.editor-tabs span:nth-child(2) i { color: #b598f5; }
+  .editor-body { min-height: 290px; padding: 1.15rem 1rem; display: grid; grid-template-columns: 25px 1fr; line-height: 1.9; }.line-numbers { padding: 0; margin: 0; color: #445463; list-style: none; text-align: right; }.editor pre { margin: 0; white-space: pre-wrap; }.pink { color: #d889d8; }.blue { color: #64b5e8; }.green { color: #8dcc7a; }.yellow { color: #e6c676; }
+  .terminal { padding: .65rem .9rem .85rem; color: #b9c5ce; border-top: 1px solid #253441; background: #0a1016; font-size: .61rem; }.terminal-bar { padding-bottom: .45rem; display: flex; justify-content: space-between; color: #687986; font-size: .55rem; }.terminal p { margin: .22rem 0; }.terminal p span { color: #47d7c6; }.terminal p b { color: #64b5e8; }.terminal .success { color: #8dcc7a; }.terminal p i { width: 7px; height: 12px; display: inline-block; vertical-align: -2px; background: #c8d3dc; animation: blink 1s steps(1) infinite; }
+  .editor-status { height: 25px; padding: 0 .75rem; display: flex; align-items: center; justify-content: space-between; color: #071216; background: #47d7c6; font-size: .52rem; }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (max-width: 1160px) { .hero { grid-template-columns: 1fr; }.editor { width: min(100%, 690px); } }
+  @media (max-width: 680px) { .hero { width: calc(100% - 2rem); padding-block: 3.5rem; }.editor { font-size: .58rem; transform: none; box-shadow: 6px 7px 0 color-mix(in srgb, var(--teal) 13%, transparent); }.editor-body { min-height: 245px; padding-inline: .65rem; }.editor-tabs span:nth-child(2), .editor-status span:nth-child(2) { display: none; }.editor-titlebar { grid-template-columns: auto 1fr; }.editor-titlebar > span:last-child { display: none; } }
 </style>

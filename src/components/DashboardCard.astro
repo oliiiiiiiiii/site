@@ -2,11 +2,11 @@
 interface Props { label: string; value: string | number; detail: string; tone?: 'teal' | 'coral' | 'gold'; }
 const { label, value, detail, tone = 'teal' } = Astro.props;
 ---
-<article class:list={['dashboard-card', tone]}><span>{label}</span><strong>{value}</strong><p>{detail}</p></article>
+<article class:list={['dashboard-card', tone]}><span>const {label.toLowerCase()} =</span><strong>{value}<i>;</i></strong><p>{`// ${detail}`}</p></article>
 <style>
-  .dashboard-card { min-height: 190px; padding: 1.5rem; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow-sm); }
-  span { font-size: .68rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
-  strong { margin: auto 0 .2rem; font-family: var(--font-serif); font-size: 3.4rem; font-weight: 500; line-height: 1; }
-  p { margin: 0; color: var(--muted); font-size: .82rem; }
+  .dashboard-card { min-height: 180px; padding: 1.35rem; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); box-shadow: var(--shadow-sm); }
+  span { font-family: var(--font-mono); font-size: .62rem; font-weight: 700; }
+  strong { margin: auto 0 .2rem; font-family: var(--font-mono); font-size: 3.2rem; font-weight: 750; line-height: 1; }strong i { color: var(--muted); font-style: normal; }
+  p { margin: 0; color: var(--muted); font-family: var(--font-mono); font-size: .64rem; }
   .teal span, .teal strong { color: var(--teal); }.coral span, .coral strong { color: var(--coral); }.gold span, .gold strong { color: #9a6a13; }
 </style>

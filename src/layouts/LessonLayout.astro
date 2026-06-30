@@ -29,10 +29,10 @@ const { subject, lesson, lessons, headings, previous, next } = Astro.props;
   .lesson-shell { width: min(calc(100% - 3rem), 1320px); margin: 0 auto; padding-top: 3rem; display: grid; grid-template-columns: 210px minmax(0, 720px) 170px; grid-template-areas: 'nav main toc'; justify-content: center; align-items: start; gap: clamp(1.5rem, 3vw, 3.5rem); }
   .lesson-main { grid-area: main; min-width: 0; }
   .lesson-main header { margin: 1.8rem 0 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--line); }
-  .lesson-main header > span { color: var(--subject-accent); font-size: .67rem; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
-  h1 { margin: .5rem 0 .8rem; font-family: var(--font-serif); font-size: clamp(2.6rem, 6vw, 4.7rem); font-weight: 500; letter-spacing: -.04em; line-height: 1; }
+  .lesson-main header > span { color: var(--subject-accent); font-family: var(--font-mono); font-size: .62rem; font-weight: 800; letter-spacing: .08em; text-transform: lowercase; }
+  h1 { margin: .5rem 0 .8rem; font-family: var(--font-sans); font-size: clamp(2.6rem, 6vw, 4.5rem); font-weight: 770; letter-spacing: -.05em; line-height: 1; }
   header p { margin: 0; color: var(--ink-soft); font-size: 1.05rem; line-height: 1.65; }
-  .lesson-meta { margin-top: 1rem; display: flex; gap: 1rem; color: var(--muted); font-size: .7rem; text-transform: capitalize; }
+  .lesson-meta { margin-top: 1rem; display: flex; gap: 1rem; color: var(--muted); font-family: var(--font-mono); font-size: .62rem; text-transform: lowercase; }
   .lesson-nav { position: sticky; top: 1.5rem; grid-area: nav; max-height: calc(100vh - 3rem); overflow-y: auto; padding-right: .5rem; }.lesson-toc { position: sticky; top: 1.5rem; grid-area: toc; }
   .mobile-outline { display: none; }
   @media (max-width: 1160px) { .lesson-shell { grid-template-columns: 190px minmax(0, 720px); grid-template-areas: 'nav main'; }.lesson-toc { display: none; } }

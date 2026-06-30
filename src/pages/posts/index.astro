@@ -5,8 +5,8 @@ import PostCard from '../../components/PostCard.astro';
 import { byPublishedDesc } from '../../lib/content';
 const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(byPublishedDesc);
 ---
-<BaseLayout title="Posts — Commonplace" description="Long-form articles, essays, tutorials, and project notes.">
-  <header class="page-header page-shell"><span class="eyebrow">Long-form writing</span><h1 class="display-title">Posts</h1><p class="lede">Finished arguments, practical walkthroughs, and occasional essays—organized by date, but written to remain useful.</p></header>
+<BaseLayout title="Posts — Olí's Blog" description="Olí's articles, course reflections, technical notes, and experiences.">
+  <header class="page-header page-shell"><span class="eyebrow">All posts</span><h1 class="display-title">文章</h1><p class="lede">技術筆記、台大資工修課心得、考試準備分享，還有其他想記錄下來的經驗與反思。</p></header>
   <section class="section page-shell"><div class="posts-grid">{posts.map((post, index) => <PostCard post={post} featured={index === 0} />)}</div></section>
 </BaseLayout>
 <style>.posts-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }@media(max-width:760px){.posts-grid{grid-template-columns:1fr}}</style>

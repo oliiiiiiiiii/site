@@ -12,15 +12,15 @@ interface Props {
 }
 
 const {
-  title = 'Commonplace — Oli’s knowledge garden',
-  description = 'Long-form writing and connected learning notes in one personal knowledge garden.',
+  title = "Olí's Blog — Notes, Projects, and Reflections",
+  description = 'A place where I share my thoughts, projects, and experiences.',
   image,
   noFooter = false,
 } = Astro.props;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
 ---
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,7 +28,7 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefin
     <meta name="theme-color" content="#fffaf2" />
     <meta name="generator" content={Astro.generator} />
     {canonical && <link rel="canonical" href={canonical} />}
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/images/site/favicon.png" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />

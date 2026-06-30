@@ -1,9 +1,9 @@
-<footer class="site-footer"><div class="footer-inner"><div><strong>Commonplace</strong><p>A quiet structure for notes that are still becoming.</p></div><nav aria-label="Footer"><a href="/library/">Library</a><a href="/notes/">Subjects</a><a href="/posts/">Posts</a><a href="/about/">About</a></nav><p class="copyright">© {new Date().getFullYear()} Oli · Built with Astro</p></div></footer>
+<footer class="site-footer"><div class="footer-inner"><div><strong>Olí's Blog</strong><p>// Notes, Projects, and Reflections</p></div><nav aria-label="Footer"><a href="/posts/">posts/</a><a href="/about/">about.md</a><a href="https://github.com/oliiiiiiiiii" rel="noreferrer">github↗</a><a href="mailto:olivia950108@gmail.com">email↗</a></nav><p class="copyright">© {new Date().getFullYear()} Yun-Chen Lin · Astro 7 · static build</p></div></footer>
 <style>
   .site-footer { margin-top: clamp(4rem, 8vw, 7rem); border-top: 1px solid var(--line); }
   .footer-inner { width: min(calc(100% - 3rem), var(--content-max)); min-height: 190px; margin-inline: auto; padding-block: 2.5rem; display: grid; grid-template-columns: 1fr auto; align-content: center; gap: 1.5rem 3rem; }
-  strong { font-family: var(--font-serif); font-size: 1.2rem; }p { margin: .25rem 0 0; color: var(--muted); font-size: .78rem; }
-  nav { display: flex; align-items: center; gap: 1.3rem; }nav a { color: var(--ink-soft); font-size: .78rem; font-weight: 700; text-decoration: none; }nav a:hover { color: var(--teal); }
+  strong { font-family: var(--font-mono); font-size: 1rem; }p { margin: .25rem 0 0; color: var(--muted); font-family: var(--font-mono); font-size: .65rem; }
+  nav { display: flex; align-items: center; gap: 1.3rem; }nav a { color: var(--ink-soft); font-family: var(--font-mono); font-size: .68rem; font-weight: 700; text-decoration: none; }nav a:hover { color: var(--teal); }
   .copyright { grid-column: 1 / -1; padding-top: 1rem; border-top: 1px solid var(--line); }
   @media (max-width: 620px) { .footer-inner { width: calc(100% - 2rem); grid-template-columns: 1fr; }nav { flex-wrap: wrap; }.copyright { grid-column: auto; } }
 </style>

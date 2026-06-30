@@ -3,19 +3,19 @@ import SiteIcon from './SiteIcon.astro';
 interface Props { currentPath: string; }
 const { currentPath } = Astro.props;
 const links = [
-  { href: '/', label: 'Home', icon: 'home' },
-  { href: '/library/', label: 'Library', icon: 'library' },
-  { href: '/posts/', label: 'Posts', icon: 'posts' },
-  { href: '/notes/', label: 'Subjects', icon: 'notes' },
-  { href: '/about/', label: 'About', icon: 'about' },
+  { href: '/', label: '~/home', icon: 'home' },
+  { href: '/library/', label: '~/library', icon: 'library' },
+  { href: '/posts/', label: '~/posts', icon: 'posts' },
+  { href: '/notes/', label: '~/notes', icon: 'notes' },
+  { href: '/about/', label: '~/about', icon: 'about' },
 ] as const;
 const isActive = (href: string) => href === '/' ? currentPath === '/' : currentPath.startsWith(href);
 ---
 <aside class="app-sidebar" id="app-sidebar" aria-label="Site navigation" data-sidebar>
   <div class="sidebar-inner">
-    <a class="identity" href="/" aria-label="Commonplace home">
-      <span class="identity-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-      <span><strong>Commonplace</strong><small>Oli’s knowledge garden</small></span>
+    <a class="identity" href="/" aria-label="Olí's Blog home">
+      <span class="identity-mark"><img src="/images/site/avatar.png" alt="" /></span>
+      <span><strong>Olí's Blog</strong><small>notes / projects / reflections</small></span>
     </a>
     <nav class="primary-nav" aria-label="Primary">
       {links.map((link) => (
@@ -25,36 +25,32 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
       ))}
     </nav>
     <div class="sidebar-note">
-      <span>Now cultivating</span>
-      <strong>Language & systems</strong>
-      <p>Notes are allowed to grow in public.</p>
+      <span>~/currently</span>
+      <code><i>author</i>: Olivia</code>
+      <code><i>school</i>: NTU CSIE</code>
+      <code><i>status</i>: learning</code>
     </div>
-    <div class="sidebar-footer"><span>Built with Astro</span><span aria-hidden="true">✦</span></div>
+    <div class="sidebar-footer"><span>astro@7</span><span class="online"><i></i> online</span></div>
   </div>
 </aside>
 <button class="sidebar-scrim" type="button" aria-label="Close navigation" data-sidebar-close></button>
 
 <style>
-  .app-sidebar { position: fixed; z-index: 40; inset: 0 auto 0 0; width: 248px; padding: 1.25rem; background: var(--surface-2); border-right: 1px solid var(--line); }
+  .app-sidebar { position: fixed; z-index: 40; inset: 0 auto 0 0; width: 260px; padding: 1.1rem; background: color-mix(in srgb, var(--surface) 94%, var(--teal)); border-right: 1px solid var(--line); }
   .sidebar-inner { height: 100%; display: flex; flex-direction: column; }
-  .identity { padding: .65rem .4rem 1.65rem; display: flex; align-items: center; gap: .8rem; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
-  .identity-mark { position: relative; width: 38px; height: 38px; display: block; flex: 0 0 auto; border-radius: 50%; background: var(--ink); }
-  .identity-mark i { position: absolute; width: 7px; height: 7px; border-radius: 50%; }
-  .identity-mark i:nth-child(1) { top: 9px; left: 10px; background: var(--coral); }
-  .identity-mark i:nth-child(2) { top: 9px; right: 9px; background: var(--gold); }
-  .identity-mark i:nth-child(3) { bottom: 9px; left: 16px; background: #62b9b1; }
+  .identity { padding: .65rem .5rem 1.35rem; display: flex; align-items: center; gap: .8rem; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+  .identity-mark { width: 44px; height: 44px; display: block; flex: 0 0 auto; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 50%; background: var(--surface-2); box-shadow: 3px 3px 0 color-mix(in srgb, var(--teal) 30%, transparent); }.identity-mark img { width: 100%; height: 100%; display: block; object-fit: cover; }
   .identity strong, .identity small { display: block; }
-  .identity strong { font-family: var(--font-serif); font-size: 1.05rem; }
-  .identity small { color: var(--muted); font-size: .67rem; letter-spacing: .02em; }
+  .identity strong { font-family: var(--font-mono); font-size: .94rem; }
+  .identity small { color: var(--muted); font-family: var(--font-mono); font-size: .61rem; letter-spacing: .01em; }
   .primary-nav { padding-block: 1.5rem; display: grid; gap: .3rem; }
-  .primary-nav a { min-height: 46px; padding: .7rem .8rem; display: flex; align-items: center; gap: .75rem; border-radius: .65rem; color: var(--ink-soft); text-decoration: none; font-weight: 680; }
+  .primary-nav a { min-height: 44px; padding: .65rem .75rem; display: flex; align-items: center; gap: .75rem; border-radius: var(--radius-sm); color: var(--ink-soft); text-decoration: none; font-family: var(--font-mono); font-size: .75rem; font-weight: 650; }
   .primary-nav a:hover { color: var(--ink); background: color-mix(in srgb, var(--surface) 65%, transparent); }
-  .primary-nav a.active { color: var(--surface); background: var(--ink); box-shadow: var(--shadow-sm); }
-  .sidebar-note { margin-top: auto; padding: 1.1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); }
-  .sidebar-note span { color: var(--coral); font-size: .65rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
-  .sidebar-note strong { display: block; margin-top: .45rem; font-family: var(--font-serif); }
-  .sidebar-note p { margin: .35rem 0 0; color: var(--muted); font-size: .77rem; line-height: 1.5; }
-  .sidebar-footer { padding: 1.3rem .4rem .25rem; display: flex; justify-content: space-between; color: var(--muted); font-size: .7rem; }
+  .primary-nav a.active { color: #071216; background: var(--teal); box-shadow: 3px 3px 0 color-mix(in srgb, var(--teal) 30%, transparent); }
+  .sidebar-note { margin-top: auto; padding: 1rem; display: grid; gap: .35rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--paper); font-family: var(--font-mono); }
+  .sidebar-note span { margin-bottom: .3rem; color: var(--coral); font-size: .64rem; font-weight: 800; }
+  .sidebar-note code { color: var(--muted); font-size: .67rem; }.sidebar-note code i { color: var(--teal); font-style: normal; }
+  .sidebar-footer { padding: 1.1rem .4rem .2rem; display: flex; justify-content: space-between; color: var(--muted); font-family: var(--font-mono); font-size: .61rem; }.online { display: flex; align-items: center; gap: .35rem; }.online i { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 8px var(--teal); }
   .sidebar-scrim { display: none; }
   @media (max-width: 1020px) {
     .app-sidebar { transform: translateX(-105%); transition: transform .24s ease; box-shadow: var(--shadow-md); }

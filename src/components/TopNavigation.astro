@@ -3,10 +3,10 @@ import SiteIcon from './SiteIcon.astro';
 ---
 <header class="top-navigation">
   <button class="icon-button mobile-menu" type="button" aria-label="Open navigation" aria-controls="app-sidebar" data-sidebar-open><SiteIcon name="menu" /></button>
-  <a class="mobile-wordmark" href="/">Commonplace</a>
+  <a class="mobile-wordmark" href="/">Olí's Blog</a>
   <nav aria-label="Quick navigation">
-    <a href="/notes/">Explore subjects</a>
-    <a href="/posts/">Read posts</a>
+    <a href="/notes/">notes/</a>
+    <a href="/posts/">posts/</a>
   </nav>
   <button class="icon-button theme-toggle" type="button" aria-label="Toggle color theme" data-theme-toggle>
     <span class="theme-sun"><SiteIcon name="sun" /></span><span class="theme-moon"><SiteIcon name="moon" /></span>
@@ -16,7 +16,7 @@ import SiteIcon from './SiteIcon.astro';
 <style>
   .top-navigation { position: relative; z-index: 20; width: min(calc(100% - 3rem), var(--content-max)); min-height: 72px; margin-inline: auto; display: flex; align-items: center; justify-content: flex-end; gap: 1.25rem; border-bottom: 1px solid var(--line); }
   nav { display: flex; gap: 1.5rem; }
-  nav a { color: var(--ink-soft); text-decoration: none; font-size: .84rem; font-weight: 700; }
+  nav a { color: var(--ink-soft); font-family: var(--font-mono); text-decoration: none; font-size: .72rem; font-weight: 700; }
   nav a:hover { color: var(--teal); }
   .icon-button { width: 42px; height: 42px; padding: 0; display: grid; place-items: center; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 50%; cursor: pointer; }
   .icon-button:hover { background: var(--surface-2); }
@@ -27,7 +27,7 @@ import SiteIcon from './SiteIcon.astro';
   @media (max-width: 1020px) {
     .top-navigation { justify-content: space-between; }
     .mobile-menu { display: grid; }
-    .mobile-wordmark { display: block; margin-right: auto; color: var(--ink); font-family: var(--font-serif); font-weight: 700; text-decoration: none; }
+  .mobile-wordmark { display: block; margin-right: auto; color: var(--ink); font-family: var(--font-mono); font-weight: 800; text-decoration: none; }
   }
   @media (max-width: 620px) { .top-navigation { width: calc(100% - 2rem); } nav { display: none; } }
 </style>
