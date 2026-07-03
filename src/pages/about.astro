@@ -12,13 +12,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </aside>
 
     <article class="about-copy">
-      <section><span class="eyebrow">About this blog</span><h2>想放什麼，就放什麼。</h2><p>不只會有 CS 有關的東西，什麼想放的都放。有些在建立這個部落格之前打過的文章——包括在網路上分享過的東西跟一些後記——也會照以前打的日期放上來。</p></section>
+      <section>
+        <h2>About This Blog</h2>
+        <p>不只會有 CS 有關的東西，什麼想放的都放。有些在建立這個部落格之前打過的文章（包括在網路上分享過的東西跟一些後記什麼的）也會照以前打的日期會放上來。</p>
+      </section>
 
-      <section><span class="eyebrow">About me</span><h2>從「寫程式很帥」開始。</h2><p>我是 Olivia，在網路上通常叫 oliiiiiiiiii，學了西班牙文後更喜歡用 Olí。我目前大二，就讀台大資工系。</p><blockquote>國三的時候一直覺得寫程式很帥，所以立定志向要考台大資工。升高一的暑假開始接觸 C++，寫得越多就發現自己越喜歡。</blockquote><p>高中參加過資訊之芽語法班，也曾經在數學競賽裡隨緣探索；現在繼續把寫程式、學習和分享這些事情放在一起。</p></section>
+      <section>
+        <h2>About Me</h2>
+        <p>我是 Olivia，在網路上通常叫 oliiiiiiiiii，學了西班牙文後更喜歡用 Olí。</p>
 
-      <section><span class="eyebrow">Other learnings</span><h2>不只 Computer Science。</h2><p>大一的時候不想修大一英文，所以選了西班牙文，學了一陣子之後發現自己還蠻喜歡的，因此決定持續好好學。從小也很喜歡教學，對教育一直很有興趣。</p></section>
+        <h3>Education</h3>
+        <p>我目前大二，就讀台大資工系。</p>
+        <blockquote>國三的時候，一直覺得寫程式很帥，所以就立定了志向要考到台大資工，升高一的暑假因為身邊有寫程式很厲害的人，所以就接處了 C++，然後寫越多發現自己越喜歡，高一下的時候還放棄了清大數學人才培育的下半學期，跑去參加竹區的資訊之芽語法班（期中考我還考全班最高哈哈哈，但期末考我神經太大條忘記考了）。</blockquote>
 
-      <section class="contacts"><span class="eyebrow">Contacts</span><h2>Find me online.</h2><div><a href="https://www.instagram.com/_y.chen_0108/" rel="noreferrer"><small>instagram</small><strong>@_y.chen_0108 ↗</strong></a><a href="https://github.com/oliiiiiiiiii" rel="noreferrer"><small>github</small><strong>@oliiiiiiiiii ↗</strong></a><a href="https://discord.com/users/801441766330859570" rel="noreferrer"><small>discord</small><strong>Olí. ↗</strong></a><a href="mailto:olivia950108@gmail.com"><small>email</small><strong>olivia950108@gmail.com ↗</strong></a></div></section>
+        <h3>Other Learnings</h3>
+        <p>大一的時候不想修大一英文，所以選了西班牙文，學了一陣子之後發現我還蠻喜歡的，所以就決定好好持續的學。<br />從小就蠻喜歡教學的，對教育也蠻有興趣。<br />也很喜歡下西洋棋，目前 Magnus Carlsen 還沒有贏過我。</p>
+
+        <h3>Contacts</h3>
+        <ul class="contact-list">
+          <li>Instagram: <a href="https://www.instagram.com/_y.chen_0108/" rel="noreferrer">_y.chen_0108</a></li>
+          <li>GitHub: <a href="https://github.com/oliiiiiiiiii" rel="noreferrer">oliiiiiiiiii</a></li>
+          <li>Discord: <a href="https://discord.com/users/801441766330859570" rel="noreferrer">Olí.</a></li>
+          <li>Email: <a href="mailto:olivia950108@gmail.com">olivia950108@gmail.com</a></li>
+        </ul>
+      </section>
     </article>
   </section>
 </BaseLayout>
@@ -29,8 +46,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .profile-card > img { width: 100%; aspect-ratio: 1; display: block; object-fit: cover; }
   .profile-card > div { padding: 1rem; border-bottom: 1px solid var(--line); }.profile-card strong,.profile-card span { display: block; }.profile-card strong { font-size: 1rem; }.profile-card span { margin-top: .2rem; color: var(--muted); font-family: var(--font-mono); font-size: .65rem; }
   dl { padding: .7rem 1rem 1rem; margin: 0; font-family: var(--font-mono); font-size: .64rem; }dl div { padding-block: .3rem; display: flex; justify-content: space-between; gap: 1rem; }dt { color: var(--teal); }dd { margin: 0; color: var(--muted); }
-  .about-copy { display: grid; gap: 4rem; }.about-copy h2 { margin: .55rem 0 1rem; font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: -.035em; line-height: 1.1; }.about-copy p { color: var(--ink-soft); line-height: 1.9; }.about-copy blockquote { margin: 1.5rem 0; padding: .3rem 0 .3rem 1.25rem; color: var(--ink); border-left: 3px solid var(--teal); font-family: var(--font-serif); font-size: 1.08rem; line-height: 1.8; }
-  .contacts > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }.contacts a { padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); text-decoration: none; }.contacts a:hover { border-color: var(--teal); }.contacts small,.contacts strong { display: block; }.contacts small { color: var(--teal); font-family: var(--font-mono); font-size: .6rem; }.contacts strong { margin-top: .25rem; font-size: .83rem; overflow-wrap: anywhere; }
+  .about-copy { display: grid; gap: 4rem; }.about-copy h2 { margin: 0 0 1rem; font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: -.035em; line-height: 1.1; }.about-copy h3 { margin: 2.5rem 0 .75rem; color: var(--teal); font-family: var(--font-mono); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }.about-copy p { color: var(--ink-soft); line-height: 1.9; }.about-copy blockquote { margin: 1.5rem 0; padding: .3rem 0 .3rem 1.25rem; color: var(--ink); border-left: 3px solid var(--teal); font-family: var(--font-serif); font-size: 1.08rem; line-height: 1.8; }
+  .contact-list { padding: 0; margin: 0; display: grid; gap: .55rem; color: var(--ink-soft); list-style: none; }.contact-list a { color: var(--teal); text-underline-offset: .2em; }.contact-list a:hover { color: var(--coral); }
   @media (max-width: 850px) { .about-grid { grid-template-columns: 1fr; }.profile-card { position: static; max-width: 360px; } }
-  @media (max-width: 560px) { .contacts > div { grid-template-columns: 1fr; } }
 </style>

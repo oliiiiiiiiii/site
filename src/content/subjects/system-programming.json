@@ -6,17 +6,5 @@
   "accent": "#238b85",
   "status": "growing",
   "order": 2,
-  "featured": true,
-  "sections": [
-    {
-      "id": "processes",
-      "title": "Processes",
-      "description": "Process creation, execution, and coordination."
-    },
-    {
-      "id": "memory",
-      "title": "Memory",
-      "description": "Address spaces, allocation, and virtual memory."
-    }
-  ]
+  "featured": true
 }

@@ -20,8 +20,27 @@ export const getPostPath = (post: PostEntry) => `/posts/${post.id}/`;
 export const getLessonPath = (lesson: LessonEntry) => `/notes/${lesson.data.subject}/${lesson.id}/`;
 
 export function groupLessonsBySection(subject: SubjectEntry, lessons: LessonEntry[]) {
-  return subject.data.sections.map((section) => ({
+  const sectionIds = new Set(subject.data.sections.map((section) => section.id));
+  const groups = subject.data.sections.map((section) => ({
     ...section,
     lessons: lessons.filter((lesson) => lesson.data.section === section.id).sort(byLessonOrder),
   }));
+  const ungrouped = lessons.filter((lesson) => !lesson.data.section || !sectionIds.has(lesson.data.section)).sort(byLessonOrder);
+
+  return ungrouped.length > 0
+    ? [...groups, { id: 'lessons', title: 'Lessons', lessons: ungrouped }]
+    : groups;
+}
+
+export function groupLessonsByModule(lessons: LessonEntry[]) {
+  const moduleNames = [...new Set(lessons.map((lesson) => lesson.data.module).filter((module): module is string => Boolean(module)))];
+  const groups = moduleNames.map((module) => ({
+    module,
+    lessons: lessons.filter((lesson) => lesson.data.module === module).sort(byLessonOrder),
+  }));
+  const ungrouped = lessons.filter((lesson) => !lesson.data.module).sort(byLessonOrder);
+
+  return ungrouped.length > 0
+    ? [{ module: undefined, lessons: ungrouped }, ...groups]
+    : groups;
 }

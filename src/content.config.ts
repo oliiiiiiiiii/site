@@ -18,7 +18,7 @@ const subjects = defineCollection({
       id: z.string(),
       title: z.string(),
       description: z.string().optional(),
-    })),
+    })).default([]),
   }),
 });
 
@@ -28,8 +28,8 @@ const lessons = defineCollection({
     title: z.string(),
     description: z.string(),
     subject: z.string(),
-    section: z.string(),
-    module: z.string(),
+    section: z.string().optional(),
+    module: z.string().optional(),
     order: z.number().int().default(0),
     published: z.coerce.date(),
     updated: z.coerce.date(),

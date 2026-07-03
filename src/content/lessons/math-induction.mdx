@@ -1,0 +1,31 @@
+---
+title: Proof by Induction
+description: The basic structure of a mathematical induction proof.
+subject: mathematics
+order: 1
+published: 2026-07-04
+updated: 2026-07-04
+draft: false
+---
+
+import Callout from '../../components/Callout.astro';
+
+## The idea
+
+Mathematical induction proves that a statement holds for every integer from a chosen starting point onward.
+
+1. Prove the **base case**.
+2. Assume the statement is true for an arbitrary integer `k`.
+3. Use that assumption to prove the statement for `k + 1`.
+
+<Callout title="Key point" type="tip">
+  The induction hypothesis is an assumption used inside the inductive step, not a conclusion that may be used without explanation.
+</Callout>
+
+## A small example
+
+For positive integers `n`, the sum from `1` to `n` is:
+
+```text
+1 + 2 + ... + n = n(n + 1) / 2
+```

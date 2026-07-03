@@ -9,14 +9,18 @@ import { getLessonPath, groupLessonsBySection } from '../lib/content';
 interface Props { subject: CollectionEntry<'subjects'>; lessons: CollectionEntry<'lessons'>[]; }
 const { subject, lessons } = Astro.props;
 const groups = groupLessonsBySection(subject, lessons);
-const recent = [...lessons].sort((a, b) => b.data.updated.valueOf() - a.data.updated.valueOf()).slice(0, 4).map((lesson) => ({ href: getLessonPath(lesson), title: lesson.data.title, description: lesson.data.description, date: lesson.data.updated, kind: lesson.data.section, accent: 'var(--teal)' }));
+const hasSections = subject.data.sections.length > 0;
+const modules = [...new Set(lessons.map((lesson) => lesson.data.module).filter((module): module is string => Boolean(module)))];
+const hasModules = modules.length > 0;
+const browseTitle = hasSections ? 'Browse by section' : hasModules ? 'Browse by module' : 'Lessons';
+const recent = [...lessons].sort((a, b) => b.data.updated.valueOf() - a.data.updated.valueOf()).slice(0, 4).map((lesson) => ({ href: getLessonPath(lesson), title: lesson.data.title, description: lesson.data.description, date: lesson.data.updated, kind: lesson.data.section ?? lesson.data.module ?? subject.data.slug, accent: 'var(--teal)' }));
 ---
 <BaseLayout title={`${subject.data.title} notes — Oli's Blog`} description={subject.data.description}>
   <header class="subject-hero">
-    <div class="page-shell"><Breadcrumbs items={[{ label: 'Subjects', href: '/notes/' }, { label: subject.data.title }]} /><div class="subject-title-row"><span class="subject-icon">{subject.data.icon}</span><div><span class="subject-status">{subject.data.status} subject</span><h1>{subject.data.title}</h1><p>{subject.data.description}</p></div></div><div class="subject-stats"><span><strong>{subject.data.sections.length}</strong> sections</span><span><strong>{lessons.length}</strong> lessons</span><span><strong>{new Set(lessons.map((lesson) => lesson.data.module)).size}</strong> modules</span></div></div>
+    <div class="page-shell"><Breadcrumbs items={[{ label: 'Subjects', href: '/notes/' }, { label: subject.data.title }]} /><div class="subject-title-row"><span class="subject-icon">{subject.data.icon}</span><div><span class="subject-status">{subject.data.status} subject</span><h1>{subject.data.title}</h1><p>{subject.data.description}</p></div></div><div class="subject-stats">{hasSections && <span><strong>{subject.data.sections.length}</strong> sections</span>}{hasModules && <span><strong>{modules.length}</strong> modules</span>}<span><strong>{lessons.length}</strong> lessons</span></div></div>
   </header>
   <div class="page-shell subject-body">
-    <section><div class="section-heading"><div><span class="eyebrow">Learning map</span><h2 class="section-title">Browse by section</h2></div></div><div class="section-grid">{groups.map((group, index) => <article><span class="section-number">{String(index + 1).padStart(2, '0')}</span><div><h3>{group.title}</h3>{group.description && <p>{group.description}</p>}<ModuleList lessons={group.lessons} /></div></article>)}</div></section>
+    <section><div class="section-heading"><div><span class="eyebrow">Learning map</span><h2 class="section-title">{browseTitle}</h2></div></div>{hasSections ? <div class="section-grid">{groups.map((group, index) => <article><span class="section-number">{String(index + 1).padStart(2, '0')}</span><div><h3>{group.title}</h3>{group.description && <p>{group.description}</p>}<ModuleList lessons={group.lessons} /></div></article>)}</div> : <div class="flat-lessons"><ModuleList lessons={lessons} /></div>}</section>
     {recent.length > 0 && <section class="recent"><div class="section-heading"><div><span class="eyebrow">Latest changes</span><h2 class="section-title">Recently updated</h2></div></div><RecentUpdateList updates={recent} /></section>}
   </div>
 </BaseLayout>
@@ -30,10 +34,11 @@ const recent = [...lessons].sort((a, b) => b.data.updated.valueOf() - a.data.upd
   .subject-title-row p { max-width: 680px; margin: 0; color: var(--ink-soft); font-size: 1.05rem; line-height: 1.7; }
   .subject-stats { margin-top: 2.4rem; padding-top: 1.2rem; display: flex; gap: 2rem; border-top: 1px solid var(--line); color: var(--muted); font-family: var(--font-mono); font-size: .65rem; }
   .subject-stats strong { color: var(--subject-accent); font-size: 1.2rem; }
-  .subject-body { padding-top: clamp(3rem, 6vw, 5rem); }.section-grid { display: grid; gap: 1.2rem; }
-  .section-grid > article { padding: clamp(1.3rem, 3vw, 2rem); display: grid; grid-template-columns: 55px 1fr; gap: 1.2rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }
-  .section-number { color: var(--subject-accent); font-family: var(--font-mono); font-size: 1rem; }
-  article h3 { margin: 0 0 .3rem; font-family: var(--font-sans); font-size: 1.55rem; font-weight: 740; letter-spacing: -.025em; }article p { margin: 0 0 1.2rem; color: var(--muted); font-size: .85rem; }
+  .subject-body { padding-top: clamp(3rem, 6vw, 5rem); }.section-grid { border-bottom: 1px solid var(--line); }
+  .section-grid > article { padding: clamp(2rem, 5vw, 3.5rem) 0; display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: clamp(1rem, 3vw, 2.5rem); border-top: 1px solid var(--line); }
+  .flat-lessons { max-width: 820px; }
+  .section-number { padding-top: .25rem; color: var(--subject-accent); font-family: var(--font-mono); font-size: .82rem; font-weight: 800; }
+  article h3 { margin: 0 0 .45rem; font-family: var(--font-sans); font-size: clamp(1.8rem, 4vw, 2.7rem); font-weight: 740; letter-spacing: -.035em; }article p { max-width: 680px; margin: 0 0 1.5rem; color: var(--muted); font-size: .88rem; line-height: 1.7; }
   .recent { margin-top: clamp(4rem, 8vw, 7rem); }
-  @media (max-width: 600px) { .subject-title-row { grid-template-columns: 1fr; }.subject-icon { width: 68px; height: 68px; }.subject-stats { flex-wrap: wrap; gap: 1rem 1.5rem; }.section-grid > article { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) { .subject-title-row { grid-template-columns: 1fr; }.subject-icon { width: 68px; height: 68px; }.subject-stats { flex-wrap: wrap; gap: 1rem 1.5rem; }.section-grid > article { grid-template-columns: 1fr; gap: .6rem; }.section-number { padding-top: 0; } }
 </style>

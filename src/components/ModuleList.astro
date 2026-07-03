@@ -1,11 +1,11 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { getLessonPath } from '../lib/content';
+import { getLessonPath, groupLessonsByModule } from '../lib/content';
 interface Props { lessons: CollectionEntry<'lessons'>[]; }
 const { lessons } = Astro.props;
-const modules = [...new Set(lessons.map((lesson) => lesson.data.module))];
+const groups = groupLessonsByModule(lessons);
 ---
-<div class="module-list">{modules.map((module) => <section><h4>{module}</h4><ol>{lessons.filter((lesson) => lesson.data.module === module).map((lesson) => <li><a href={getLessonPath(lesson)}><span>{lesson.data.title}</span><small>{lesson.data.description}</small></a></li>)}</ol></section>)}</div>
+<div class="module-list">{groups.map((group) => <section>{group.module && <h4>{group.module}</h4>}<ol>{group.lessons.map((lesson) => <li><a href={getLessonPath(lesson)}><span>{lesson.data.title}</span><small>{lesson.data.description}</small></a></li>)}</ol></section>)}</div>
 <style>
   .module-list { display: grid; gap: 1.1rem; }
   section { padding: 1.3rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }

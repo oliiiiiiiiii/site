@@ -7,5 +7,5 @@ const lessons = await getCollection('lessons', ({ data }) => !data.draft);
 ---
 <BaseLayout title="Notes — Oli's Blog" description="Structured subject notes from Oli's Blog.">
   <header class="page-header page-shell"><h1 class="display-title">NOTES</h1></header>
-  <section class="section page-shell">{subjects.length > 0 ? <div class="card-grid">{subjects.map((subject) => <SubjectCard subject={subject} lessonCount={lessons.filter((lesson) => lesson.data.subject === subject.data.slug).length} />)}</div> : <div class="empty-state"><strong>notes/ is empty for now.</strong><p>之後新增的主題筆記會出現在這裡。</p></div>}</section>
+  <section class="section page-shell">{subjects.length > 0 ? <div class="card-grid">{subjects.map((subject) => <SubjectCard subject={subject} lessons={lessons.filter((lesson) => lesson.data.subject === subject.data.slug)} />)}</div> : <div class="empty-state"><strong>notes/ is empty for now.</strong><p>之後新增的主題筆記會出現在這裡。</p></div>}</section>
 </BaseLayout>

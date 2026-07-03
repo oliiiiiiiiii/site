@@ -21,7 +21,7 @@ const entries = [
     description: lesson.data.description,
     date: lesson.data.published,
     type: 'note',
-    tags: [lesson.data.subject, lesson.data.section],
+    tags: [lesson.data.subject, lesson.data.section, lesson.data.module].filter((tag): tag is string => Boolean(tag)),
   })),
 ].sort((a, b) => b.date.valueOf() - a.date.valueOf());
 

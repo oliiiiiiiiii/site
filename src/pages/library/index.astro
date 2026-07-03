@@ -12,7 +12,7 @@ const updates = [...lessons.map((lesson) => ({ href: getLessonPath(lesson), titl
 ---
 <BaseLayout title="Library — Oli's Blog" description="All articles and notes from Oli's Blog.">
   <header class="page-header page-shell"><h1 class="display-title">LIBRARY</h1></header>
-  {subjects.length > 0 && <section class="section page-shell"><div class="section-heading"><div><h2 class="section-title">Notes</h2></div><a class="text-link" href="/notes/">All notes →</a></div><div class="card-grid">{subjects.map((subject) => <SubjectCard subject={subject} lessonCount={lessons.filter((lesson) => lesson.data.subject === subject.data.slug).length} />)}</div></section>}
+  {subjects.length > 0 && <section class="section page-shell"><div class="section-heading"><div><h2 class="section-title">Notes</h2></div><a class="text-link" href="/notes/">All notes →</a></div><div class="card-grid">{subjects.map((subject) => <SubjectCard subject={subject} lessons={lessons.filter((lesson) => lesson.data.subject === subject.data.slug)} />)}</div></section>}
   <section class="section--tight page-shell"><div class="section-heading"><div><h2 class="section-title">Posts</h2></div><a class="text-link" href="/posts/">All posts →</a></div><div class="card-grid">{posts.map((post) => <PostCard post={post} />)}</div></section>
   <section class="section page-shell"><div class="section-heading"><div><span class="eyebrow">Latest Posts</span><h2 class="section-title">最近更新</h2></div></div><RecentUpdateList updates={updates} /></section>
 </BaseLayout>

@@ -1,12 +1,13 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-interface Props { subject: CollectionEntry<'subjects'>; lessonCount?: number; }
-const { subject, lessonCount = 0 } = Astro.props;
+interface Props { subject: CollectionEntry<'subjects'>; lessons?: CollectionEntry<'lessons'>[]; }
+const { subject, lessons = [] } = Astro.props;
+const moduleCount = new Set(lessons.map((lesson) => lesson.data.module).filter(Boolean)).size;
 ---
 <a class="subject-card" href={`/notes/${subject.data.slug}/`}>
   <div class="card-top"><span class="subject-icon" aria-hidden="true">{subject.data.icon ?? subject.data.title.slice(0, 2)}</span><code>{subject.data.slug}.md</code></div>
   <div class="subject-copy"><span class="status">status::{subject.data.status}</span><h3>{subject.data.title}</h3><p>{subject.data.description}</p></div>
-  <div class="subject-meta"><span>{subject.data.sections.length} sections</span><span>{lessonCount} lessons</span><strong aria-hidden="true">↗</strong></div>
+  <div class="subject-meta">{subject.data.sections.length > 0 && <span>{subject.data.sections.length} sections</span>}{subject.data.sections.length === 0 && moduleCount > 0 && <span>{moduleCount} modules</span>}<span>{lessons.length} lessons</span><strong aria-hidden="true">↗</strong></div>
 </a>
 <style>
   .subject-card { --subject-accent: var(--teal); min-height: 300px; padding: 1.45rem; display: flex; flex-direction: column; color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); box-shadow: var(--shadow-sm); text-decoration: none; transition: transform .2s ease, box-shadow .2s ease; }
