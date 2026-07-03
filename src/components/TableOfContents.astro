@@ -1,14 +1,64 @@
 ---
 interface Heading { depth: number; slug: string; text: string; }
-interface Props { headings: Heading[]; label?: string; }
-const { headings, label = 'On this page' } = Astro.props;
+interface Props { headings: Heading[]; label?: string; accent?: string; }
+const { headings, label = 'On this page', accent = 'var(--teal)' } = Astro.props;
 const visible = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 3);
 ---
-{visible.length > 0 && <nav class="toc" aria-label={label}><strong>{label}</strong><ol>{visible.map((heading) => <li class={`depth-${heading.depth}`}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></nav>}
+{visible.length > 0 && <nav class="toc" aria-label={label} style={`--toc-accent: ${accent}`}><strong>{label}</strong><ol>{visible.map((heading) => <li class={`depth-${heading.depth}`}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></nav>}
 <style>
   .toc { font-size: .76rem; }
   strong { display: block; margin-bottom: .75rem; color: var(--ink); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; }
-  ol { padding: 0 0 0 .9rem; margin: 0; border-left: 1px solid var(--line); list-style: none; }
+  ol { padding: 0; margin: 0; list-style: none; }
   li + li { margin-top: .55rem; }.depth-3 { padding-left: .8rem; }
-  a { color: var(--muted); text-decoration: none; line-height: 1.4; }a:hover { color: var(--teal); }
+  a { padding: .25rem .45rem; display: block; color: var(--muted); border-radius: .25rem; text-decoration: none; line-height: 1.4; transition: color .18s ease, background-color .18s ease; }
+  a:hover { color: var(--toc-accent); }
+  a.active { color: var(--toc-accent); font-weight: 750; }
 </style>
+
+<script>
+  const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('.toc a[href^="#"]')];
+  const headingIds = [...new Set(tocLinks.map((link) => decodeURIComponent(link.hash.slice(1))))];
+  const pageHeadings = headingIds.map((id) => document.getElementById(id)).filter((heading): heading is HTMLElement => Boolean(heading));
+
+  if (tocLinks.length > 0 && pageHeadings.length > 0) {
+    let frameRequested = false;
+
+    const setActiveHeading = (id: string) => {
+      tocLinks.forEach((link) => {
+        const active = decodeURIComponent(link.hash.slice(1)) === id;
+        link.classList.toggle('active', active);
+        if (active) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    };
+
+    const updateActiveHeading = () => {
+      const marker = Math.min(window.innerHeight * .28, 180);
+      let active = pageHeadings[0];
+
+      for (const heading of pageHeadings) {
+        if (heading.getBoundingClientRect().top <= marker) active = heading;
+        else break;
+      }
+
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+        active = pageHeadings[pageHeadings.length - 1];
+      }
+
+      setActiveHeading(active.id);
+      frameRequested = false;
+    };
+
+    const requestUpdate = () => {
+      if (!frameRequested) {
+        frameRequested = true;
+        window.requestAnimationFrame(updateActiveHeading);
+      }
+    };
+
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+    window.addEventListener('hashchange', requestUpdate);
+    updateActiveHeading();
+  }
+</script>

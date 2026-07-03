@@ -1,0 +1,153 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getLessonPath, getPostPath } from '../../lib/content';
+
+const posts = await getCollection('posts', ({ data }) => !data.draft);
+const lessons = await getCollection('lessons', ({ data }) => !data.draft);
+
+const entries = [
+  ...posts.map((post) => ({
+    href: getPostPath(post),
+    title: post.data.title,
+    description: post.data.description,
+    date: post.data.published,
+    type: 'post',
+    tags: post.data.tags,
+  })),
+  ...lessons.map((lesson) => ({
+    href: getLessonPath(lesson),
+    title: lesson.data.title,
+    description: lesson.data.description,
+    date: lesson.data.published,
+    type: 'note',
+    tags: [lesson.data.subject, lesson.data.section],
+  })),
+].sort((a, b) => b.date.valueOf() - a.date.valueOf());
+
+const years = [...new Set(entries.map((entry) => entry.date.getFullYear()))];
+const tags = [...new Set(entries.flatMap((entry) => entry.tags))].sort((a, b) => a.localeCompare(b));
+const dateFormatter = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+---
+<BaseLayout title="Archive — Oli's Blog" description="Browse every post and note by date or tag.">
+  <header class="page-header page-shell"><h1 class="display-title">ARCHIVE</h1></header>
+
+  <section class="archive page-shell" data-archive>
+    <div class="filter-bar" aria-label="Archive filters">
+      <div class="filter-modes" role="group" aria-label="Filter mode">
+        <button class="active" type="button" data-mode="all" aria-pressed="true">all</button>
+        <button type="button" data-mode="tags" aria-pressed="false">tags</button>
+      </div>
+
+      <div class="filter-options" data-panel="tags" hidden>
+        <button class="active" type="button" data-filter="all">all tags</button>
+        {tags.map((tag) => <button type="button" data-filter={tag}>{tag}</button>)}
+      </div>
+
+    </div>
+
+    <p class="result-count" aria-live="polite"><span data-result-count>{entries.length}</span> entries</p>
+
+    <div class="timeline">
+      {years.map((year) => (
+        <section class="archive-year" data-year={year}>
+          <h2><span>{year}</span><small>{entries.filter((entry) => entry.date.getFullYear() === year).length} entries</small></h2>
+          <ol>
+            {entries.filter((entry) => entry.date.getFullYear() === year).map((entry) => (
+              <li data-entry data-tags={entry.tags.join('|')}>
+                <time datetime={entry.date.toISOString()}>{dateFormatter.format(entry.date).replaceAll('-', '.')}</time>
+                <a href={entry.href}>
+                  <span class:list={['entry-type', entry.type]}>{entry.type}</span>
+                  <strong>{entry.title}</strong>
+                  <small>{entry.description}</small>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
+    </div>
+
+    <p class="empty" data-empty hidden>No entries match this filter.</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .archive { padding-block: clamp(2.5rem, 6vw, 5rem); }
+  .filter-bar { position: sticky; z-index: 10; top: 0; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--surface) 92%, transparent); box-shadow: var(--shadow-sm); backdrop-filter: blur(14px); }
+  .filter-modes, .filter-options { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .filter-options { margin-top: .8rem; padding-top: .8rem; border-top: 1px solid var(--line); }
+  button { min-height: 38px; padding: .55rem .8rem; color: var(--ink-soft); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); cursor: pointer; font-family: var(--font-mono); font-size: .67rem; font-weight: 750; }
+  button:hover { border-color: var(--teal); color: var(--ink); }
+  .filter-modes button.active { color: #071216; border-color: var(--teal); background: var(--teal); }
+  .filter-options button.active { color: white; border-color: var(--coral); background: var(--coral); }
+  .result-count { margin: 1rem 0 0; color: var(--muted); font-family: var(--font-mono); font-size: .65rem; text-align: right; }
+  .timeline { margin-top: 2.5rem; display: grid; gap: 3rem; }
+  .archive-year { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 4rem); }
+  .archive-year h2 { margin: 0; align-self: start; position: sticky; top: 7rem; font-family: var(--font-mono); }
+  .archive-year h2 span, .archive-year h2 small { display: block; }.archive-year h2 span { color: var(--ink); font-size: 1.7rem; }.archive-year h2 small { margin-top: .3rem; color: var(--muted); font-size: .58rem; font-weight: 600; }
+  ol { padding: 0; margin: 0; border-top: 1px solid var(--line); list-style: none; }
+  li { min-width: 0; display: grid; grid-template-columns: 108px minmax(0, 1fr); border-bottom: 1px solid var(--line); }
+  time { padding: 1.3rem 1rem 1.3rem 0; color: var(--muted); font-family: var(--font-mono); font-size: .64rem; }
+  li > a { min-width: 0; padding: 1.15rem 0; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: .35rem .8rem; text-decoration: none; }
+  .entry-type { grid-row: 1 / span 2; width: 48px; padding: .25rem .4rem; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: .56rem; font-weight: 800; text-align: center; }
+  .entry-type.post { color: var(--coral); border: 1px solid color-mix(in srgb, var(--coral) 42%, var(--line)); background: var(--coral-soft); }
+  .entry-type.note { color: var(--teal); border: 1px solid color-mix(in srgb, var(--teal) 42%, var(--line)); background: var(--teal-soft); }
+  li strong { overflow-wrap: anywhere; font-size: 1rem; }li small { overflow: hidden; color: var(--muted); font-size: .72rem; text-overflow: ellipsis; white-space: nowrap; }
+  li > a:hover strong { color: var(--teal); }
+  .empty { padding: 3rem; color: var(--muted); border: 1px dashed var(--line); text-align: center; }
+  [hidden] { display: none !important; }
+  @media (max-width: 700px) {
+    .archive-year { grid-template-columns: 1fr; gap: .8rem; }.archive-year h2 { position: static; }.archive-year h2 span, .archive-year h2 small { display: inline; }.archive-year h2 small { margin-left: .7rem; }
+    li { grid-template-columns: 1fr; }time { padding: 1rem 0 0; }li > a { padding-top: .65rem; }
+  }
+</style>
+
+<script>
+  const archive = document.querySelector<HTMLElement>('[data-archive]');
+
+  if (archive) {
+    const modeButtons = [...archive.querySelectorAll<HTMLButtonElement>('[data-mode]')];
+    const panels = [...archive.querySelectorAll<HTMLElement>('[data-panel]')];
+    const entries = [...archive.querySelectorAll<HTMLElement>('[data-entry]')];
+    const years = [...archive.querySelectorAll<HTMLElement>('[data-year]')];
+    const resultCount = archive.querySelector<HTMLElement>('[data-result-count]');
+    const empty = archive.querySelector<HTMLElement>('[data-empty]');
+    let mode = 'all';
+    let filter = 'all';
+
+    const render = () => {
+      let visible = 0;
+      entries.forEach((entry) => {
+        const tags = (entry.dataset.tags ?? '').split('|');
+        const matches = mode === 'all' || filter === 'all' || tags.includes(filter);
+        entry.hidden = !matches;
+        if (matches) visible += 1;
+      });
+      years.forEach((year) => { year.hidden = !year.querySelector('[data-entry]:not([hidden])'); });
+      if (resultCount) resultCount.textContent = String(visible);
+      if (empty) empty.hidden = visible !== 0;
+    };
+
+    modeButtons.forEach((button) => button.addEventListener('click', () => {
+      mode = button.dataset.mode ?? 'all';
+      filter = 'all';
+      modeButtons.forEach((item) => {
+        const active = item === button;
+        item.classList.toggle('active', active);
+        item.setAttribute('aria-pressed', String(active));
+      });
+      panels.forEach((panel) => {
+        panel.hidden = panel.dataset.panel !== mode;
+        panel.querySelectorAll('button').forEach((item) => item.classList.toggle('active', item.dataset.filter === 'all'));
+      });
+      render();
+    }));
+
+    panels.forEach((panel) => panel.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach((button) => button.addEventListener('click', () => {
+      filter = button.dataset.filter ?? 'all';
+      panel.querySelectorAll('button').forEach((item) => item.classList.toggle('active', item === button));
+      render();
+    })));
+  }
+</script>

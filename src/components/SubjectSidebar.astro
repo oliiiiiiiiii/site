@@ -5,12 +5,12 @@ interface Props { subject: CollectionEntry<'subjects'>; lessons: CollectionEntry
 const { subject, lessons, currentId } = Astro.props;
 const groups = groupLessonsBySection(subject, lessons);
 ---
-<nav class="subject-sidebar" aria-label={`${subject.data.title} lessons`} style={`--subject-accent: ${subject.data.accent}`}>
+<nav class="subject-sidebar" aria-label={`${subject.data.title} lessons`}>
   <a class="subject-home" href={`/notes/${subject.data.slug}/`}><span>{subject.data.icon}</span><strong>{subject.data.title}</strong></a>
   {groups.map((group) => group.lessons.length > 0 && <section><h3>{group.title}</h3><ul>{group.lessons.map((lesson) => <li><a class:list={{ active: lesson.id === currentId }} href={getLessonPath(lesson)} aria-current={lesson.id === currentId ? 'page' : undefined}>{lesson.data.title}</a></li>)}</ul></section>)}
 </nav>
 <style>
-  .subject-sidebar { font-size: .76rem; }
+  .subject-sidebar { --subject-accent: var(--teal); font-size: .76rem; }
   .subject-home { padding-bottom: 1rem; display: flex; align-items: center; gap: .65rem; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; }
   .subject-home span { width: 32px; height: 32px; display: grid; place-items: center; color: white; border-radius: var(--radius-sm); background: var(--subject-accent); font-family: var(--font-mono); font-size: .6rem; font-weight: 800; }
   .subject-home strong { font-family: var(--font-mono); font-size: .82rem; }

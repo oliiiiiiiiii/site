@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+// File-based collections keep posts and notes statically generated and MDX-ready.
 const subjects = defineCollection({
   loader: glob({ base: './src/content/subjects', pattern: '**/*.{json,yaml,yml,md,mdx}' }),
   schema: z.object({

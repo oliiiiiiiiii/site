@@ -3,13 +3,13 @@ import type { CollectionEntry } from 'astro:content';
 interface Props { subject: CollectionEntry<'subjects'>; lessonCount?: number; }
 const { subject, lessonCount = 0 } = Astro.props;
 ---
-<a class="subject-card" href={`/notes/${subject.data.slug}/`} style={`--subject-accent: ${subject.data.accent}`}>
+<a class="subject-card" href={`/notes/${subject.data.slug}/`}>
   <div class="card-top"><span class="subject-icon" aria-hidden="true">{subject.data.icon ?? subject.data.title.slice(0, 2)}</span><code>{subject.data.slug}.md</code></div>
   <div class="subject-copy"><span class="status">status::{subject.data.status}</span><h3>{subject.data.title}</h3><p>{subject.data.description}</p></div>
   <div class="subject-meta"><span>{subject.data.sections.length} sections</span><span>{lessonCount} lessons</span><strong aria-hidden="true">↗</strong></div>
 </a>
 <style>
-  .subject-card { min-height: 300px; padding: 1.45rem; display: flex; flex-direction: column; color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); box-shadow: var(--shadow-sm); text-decoration: none; transition: transform .2s ease, box-shadow .2s ease; }
+  .subject-card { --subject-accent: var(--teal); min-height: 300px; padding: 1.45rem; display: flex; flex-direction: column; color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); box-shadow: var(--shadow-sm); text-decoration: none; transition: transform .2s ease, box-shadow .2s ease; }
   .subject-card:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 color-mix(in srgb, var(--subject-accent) 22%, transparent); }
   .card-top { display: flex; align-items: center; justify-content: space-between; }.card-top code { color: var(--muted); font-family: var(--font-mono); font-size: .62rem; }
   .subject-icon { width: 46px; height: 46px; display: grid; place-items: center; color: white; border-radius: var(--radius-sm); background: var(--subject-accent); font-family: var(--font-mono); font-weight: 700; }

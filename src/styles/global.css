@@ -97,6 +97,33 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .text-link { color: var(--teal); font-family: var(--font-mono); font-size: .78rem; font-weight: 750; text-underline-offset: .25em; }
 .text-link:hover { color: var(--coral); }
 
+/* Post cards are full-card links; keep interaction styles global for reliable HMR. */
+.post-card,
+.post-card * {
+  text-decoration: none !important;
+}
+
+.post-card {
+  transition: transform .2s ease, box-shadow .2s ease !important;
+}
+
+.post-card:hover {
+  transform: translate(-3px, -3px) !important;
+  box-shadow: 6px 6px 0 color-mix(in srgb, var(--coral) 22%, transparent) !important;
+}
+
+.post-card:hover h3 {
+  color: var(--coral) !important;
+}
+
+/* Runtime scroll-spy state must remain global because the active class is added by JavaScript. */
+.toc a.active,
+.toc a[aria-current="location"] {
+  color: var(--toc-accent, var(--teal)) !important;
+  background: color-mix(in srgb, var(--toc-accent, var(--teal)) 9%, transparent);
+  font-weight: 750 !important;
+}
+
 .button {
   min-height: 46px;
   padding: .75rem 1.15rem;

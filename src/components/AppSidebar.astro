@@ -7,19 +7,20 @@ const links = [
   { href: '/library/', label: '~/library', icon: 'library' },
   { href: '/posts/', label: '~/posts', icon: 'posts' },
   { href: '/notes/', label: '~/notes', icon: 'notes' },
+  { href: '/archive/', label: '~/archive', icon: 'archive' },
   { href: '/about/', label: '~/about', icon: 'about' },
 ] as const;
 const isActive = (href: string) => href === '/' ? currentPath === '/' : currentPath.startsWith(href);
 ---
 <aside class="app-sidebar" id="app-sidebar" aria-label="Site navigation" data-sidebar>
   <div class="sidebar-inner">
-    <a class="identity" href="/" aria-label="Olí's Blog home">
+    <a class="identity" href="/" aria-label="Oli's Blog home">
       <span class="identity-mark"><img src="/images/site/avatar.png" alt="" /></span>
-      <span><strong>Olí's Blog</strong><small>notes / projects / reflections</small></span>
+      <span><strong>Oli's Blog</strong></span>
     </a>
     <nav class="primary-nav" aria-label="Primary">
       {links.map((link) => (
-        <a class:list={{ active: isActive(link.href) }} href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
+        <a class:list={[link.icon, { active: isActive(link.href) }]} href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
           <SiteIcon name={link.icon} size={20} /><span>{link.label}</span>
         </a>
       ))}
@@ -40,13 +41,14 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
   .sidebar-inner { height: 100%; display: flex; flex-direction: column; }
   .identity { padding: .65rem .5rem 1.35rem; display: flex; align-items: center; gap: .8rem; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
   .identity-mark { width: 44px; height: 44px; display: block; flex: 0 0 auto; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 50%; background: var(--surface-2); box-shadow: 3px 3px 0 color-mix(in srgb, var(--teal) 30%, transparent); }.identity-mark img { width: 100%; height: 100%; display: block; object-fit: cover; }
-  .identity strong, .identity small { display: block; }
-  .identity strong { font-family: var(--font-mono); font-size: .94rem; }
-  .identity small { color: var(--muted); font-family: var(--font-mono); font-size: .61rem; letter-spacing: .01em; }
+  .identity strong { display: block; }
+  .identity strong { font-family: var(--font-mono); font-size: 1.3rem; }
   .primary-nav { padding-block: 1.5rem; display: grid; gap: .3rem; }
   .primary-nav a { min-height: 44px; padding: .65rem .75rem; display: flex; align-items: center; gap: .75rem; border-radius: var(--radius-sm); color: var(--ink-soft); text-decoration: none; font-family: var(--font-mono); font-size: .75rem; font-weight: 650; }
   .primary-nav a:hover { color: var(--ink); background: color-mix(in srgb, var(--surface) 65%, transparent); }
   .primary-nav a.active { color: #071216; background: var(--teal); box-shadow: 3px 3px 0 color-mix(in srgb, var(--teal) 30%, transparent); }
+  .primary-nav a.posts.active { color: white; background: var(--coral); box-shadow: 3px 3px 0 color-mix(in srgb, var(--coral) 30%, transparent); }
+  .primary-nav a.notes.active { color: #071216; background: var(--teal); }
   .sidebar-note { margin-top: auto; padding: 1rem; display: grid; gap: .35rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--paper); font-family: var(--font-mono); }
   .sidebar-note span { margin-bottom: .3rem; color: var(--coral); font-size: .64rem; font-weight: 800; }
   .sidebar-note code { color: var(--muted); font-size: .67rem; }.sidebar-note code i { color: var(--teal); font-style: normal; }

@@ -9,10 +9,10 @@ import { getLessonPath, groupLessonsBySection } from '../lib/content';
 interface Props { subject: CollectionEntry<'subjects'>; lessons: CollectionEntry<'lessons'>[]; }
 const { subject, lessons } = Astro.props;
 const groups = groupLessonsBySection(subject, lessons);
-const recent = [...lessons].sort((a, b) => b.data.updated.valueOf() - a.data.updated.valueOf()).slice(0, 4).map((lesson) => ({ href: getLessonPath(lesson), title: lesson.data.title, description: lesson.data.description, date: lesson.data.updated, kind: lesson.data.section, accent: subject.data.accent }));
+const recent = [...lessons].sort((a, b) => b.data.updated.valueOf() - a.data.updated.valueOf()).slice(0, 4).map((lesson) => ({ href: getLessonPath(lesson), title: lesson.data.title, description: lesson.data.description, date: lesson.data.updated, kind: lesson.data.section, accent: 'var(--teal)' }));
 ---
-<BaseLayout title={`${subject.data.title} notes — Olí's Blog`} description={subject.data.description}>
-  <header class="subject-hero" style={`--subject-accent: ${subject.data.accent}`}>
+<BaseLayout title={`${subject.data.title} notes — Oli's Blog`} description={subject.data.description}>
+  <header class="subject-hero">
     <div class="page-shell"><Breadcrumbs items={[{ label: 'Subjects', href: '/notes/' }, { label: subject.data.title }]} /><div class="subject-title-row"><span class="subject-icon">{subject.data.icon}</span><div><span class="subject-status">{subject.data.status} subject</span><h1>{subject.data.title}</h1><p>{subject.data.description}</p></div></div><div class="subject-stats"><span><strong>{subject.data.sections.length}</strong> sections</span><span><strong>{lessons.length}</strong> lessons</span><span><strong>{new Set(lessons.map((lesson) => lesson.data.module)).size}</strong> modules</span></div></div>
   </header>
   <div class="page-shell subject-body">
@@ -21,7 +21,8 @@ const recent = [...lessons].sort((a, b) => b.data.updated.valueOf() - a.data.upd
   </div>
 </BaseLayout>
 <style>
-  .subject-hero { padding-block: clamp(3rem, 8vw, 6rem); border-bottom: 1px solid var(--line); background: linear-gradient(120deg, color-mix(in srgb, var(--subject-accent) 12%, var(--paper)), var(--paper) 65%); }
+  .subject-hero { --subject-accent: var(--teal); padding-block: clamp(3rem, 8vw, 6rem); border-bottom: 1px solid var(--line); background: linear-gradient(120deg, color-mix(in srgb, var(--subject-accent) 12%, var(--paper)), var(--paper) 65%); }
+  .subject-body { --subject-accent: var(--teal); }
   .subject-title-row { margin-top: 2rem; display: grid; grid-template-columns: 90px minmax(0, 1fr); align-items: start; gap: 1.6rem; }
   .subject-icon { width: 90px; height: 90px; display: grid; place-items: center; color: white; border-radius: var(--radius-sm); background: var(--subject-accent); font-family: var(--font-mono); font-size: 1.3rem; font-weight: 700; box-shadow: 6px 6px 0 color-mix(in srgb, var(--subject-accent) 24%, transparent); }
   .subject-status { color: var(--subject-accent); font-family: var(--font-mono); font-size: .64rem; font-weight: 800; letter-spacing: .08em; text-transform: lowercase; }

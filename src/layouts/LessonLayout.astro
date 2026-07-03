@@ -13,7 +13,7 @@ interface Props { subject: CollectionEntry<'subjects'>; lesson: CollectionEntry<
 const { subject, lesson, lessons, headings, previous, next } = Astro.props;
 ---
 <BaseLayout title={`${lesson.data.title} — ${subject.data.title}`} description={lesson.data.description}>
-  <div class="lesson-shell" style={`--subject-accent: ${subject.data.accent}`}>
+  <div class="lesson-shell">
     <article class="lesson-main">
       <Breadcrumbs items={[{ label: 'Subjects', href: '/notes/' }, { label: subject.data.title, href: `/notes/${subject.data.slug}/` }, { label: lesson.data.title }]} />
       <header><span>{lesson.data.module}</span><h1>{lesson.data.title}</h1><p>{lesson.data.description}</p><div class="lesson-meta"><time datetime={lesson.data.updated.toISOString()}>Updated {formatDate(lesson.data.updated)}</time><span>{lesson.data.section}</span></div></header>
@@ -26,7 +26,7 @@ const { subject, lesson, lessons, headings, previous, next } = Astro.props;
   </div>
 </BaseLayout>
 <style>
-  .lesson-shell { width: min(calc(100% - 3rem), 1320px); margin: 0 auto; padding-top: 3rem; display: grid; grid-template-columns: 210px minmax(0, 720px) 170px; grid-template-areas: 'nav main toc'; justify-content: center; align-items: start; gap: clamp(1.5rem, 3vw, 3.5rem); }
+  .lesson-shell { --subject-accent: var(--teal); width: min(calc(100% - 3rem), 1320px); margin: 0 auto; padding-top: 3rem; display: grid; grid-template-columns: 210px minmax(0, 720px) 170px; grid-template-areas: 'nav main toc'; justify-content: center; align-items: start; gap: clamp(1.5rem, 3vw, 3.5rem); }
   .lesson-main { grid-area: main; min-width: 0; }
   .lesson-main header { margin: 1.8rem 0 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--line); }
   .lesson-main header > span { color: var(--subject-accent); font-family: var(--font-mono); font-size: .62rem; font-weight: 800; letter-spacing: .08em; text-transform: lowercase; }

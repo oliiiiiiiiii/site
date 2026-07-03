@@ -1,0 +1,46 @@
+---
+title: Virtual Memory Map
+description: A first look at process address spaces, pages, and memory mappings.
+subject: system-programming
+section: memory
+module: Memory Fundamentals
+order: 2
+published: 2026-06-27
+updated: 2026-06-28
+draft: false
+---
+
+import Callout from '../../components/Callout.astro';
+
+## Why virtual memory exists
+
+Each process works with its own virtual address space. The operating system and hardware translate virtual addresses into physical memory through page tables.
+
+Typical regions include:
+
+1. executable code
+2. static data
+3. heap allocations
+4. memory-mapped files and libraries
+5. the stack
+
+## Pages and mappings
+
+Memory is managed in fixed-size pages. A page-table entry can describe where a page lives and whether it is readable, writable, or executable.
+
+```text
+virtual address
+      │
+      ▼
+ page-table lookup ──► physical frame
+      │
+      └──────────────► page fault if absent
+```
+
+<Callout title="Key distinction" type="tip">
+  Reserving virtual address space does not always allocate a physical frame immediately. Demand paging can defer that work until the page is first accessed.
+</Callout>
+
+## Useful tools
+
+On Linux, `/proc/<pid>/maps` shows a process's current mappings. Tools such as `pmap`, `strace`, and a debugger help connect those mappings to program behavior.

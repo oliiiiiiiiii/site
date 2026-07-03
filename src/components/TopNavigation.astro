@@ -3,7 +3,7 @@ import SiteIcon from './SiteIcon.astro';
 ---
 <header class="top-navigation">
   <button class="icon-button mobile-menu" type="button" aria-label="Open navigation" aria-controls="app-sidebar" data-sidebar-open><SiteIcon name="menu" /></button>
-  <a class="mobile-wordmark" href="/">Olí's Blog</a>
+  <a class="mobile-wordmark" href="/">Oli's Blog</a>
   <nav aria-label="Quick navigation">
     <a href="/notes/">notes/</a>
     <a href="/posts/">posts/</a>
@@ -21,7 +21,8 @@ import SiteIcon from './SiteIcon.astro';
   .icon-button { width: 42px; height: 42px; padding: 0; display: grid; place-items: center; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 50%; cursor: pointer; }
   .icon-button:hover { background: var(--surface-2); }
   .mobile-menu, .mobile-wordmark { display: none; }
-  .theme-moon { display: none; }
+  .theme-sun { display: inline-flex; align-items: center; justify-content: center; line-height: 0; }
+  .theme-moon { display: none; align-items: center; justify-content: center; line-height: 0; }
   :global(:root[data-theme="dark"]) .theme-sun { display: none; }
   :global(:root[data-theme="dark"]) .theme-moon { display: inline-flex; }
   @media (max-width: 1020px) {
