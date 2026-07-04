@@ -34,4 +34,21 @@
 .prose th { color: var(--ink); background: var(--surface-2); }
 .prose img { border-radius: var(--radius-sm); }
 
-@media (max-width: 680px) { .prose { font-size: 1.02rem; line-height: 1.78; } }
+.prose details { margin-block: 1.5rem; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); box-shadow: var(--shadow-sm); }
+.prose details[open] { padding: 0 1.5rem 1.5rem; }
+.prose summary { min-height: 48px; padding: .8rem 1rem; display: flex; align-items: center; gap: .75rem; color: var(--ink); background: color-mix(in srgb, var(--surface-2) 62%, var(--surface)); cursor: pointer; list-style: none; font-family: var(--font-mono); font-size: .76rem; font-weight: 800; }
+.prose summary::-webkit-details-marker { display: none; }
+.prose summary::before { content: '>'; color: var(--teal); transition: transform .18s ease; }
+.prose details[open] summary { margin: 0 -1.5rem 1.25rem; border-bottom: 1px solid var(--line); }
+.prose details[open] summary::before { transform: rotate(90deg); }
+.prose details > :not(summary) { margin-inline: 0; }
+
+.prose .course-toc { border-color: color-mix(in srgb, var(--teal) 32%, var(--line)); }
+.prose .course-toc summary { color: var(--teal); background: color-mix(in srgb, var(--teal) 8%, var(--surface)); letter-spacing: .04em; }
+.prose .course-toc > p { margin-top: 1.25rem; margin-bottom: .35rem; color: var(--ink); font-family: var(--font-sans); font-size: .84rem; }
+.prose .course-toc > ul { margin-top: 0; margin-bottom: 1.25rem; padding-left: 1.1rem; font-family: var(--font-sans); font-size: .86rem; line-height: 1.55; }
+.prose .course-toc > ul li { break-inside: avoid; margin-top: .35rem; }
+.prose .course-toc a { text-decoration: none; }
+.prose .course-toc a:hover { color: var(--coral); }
+
+@media (max-width: 680px) { .prose { font-size: 1.02rem; line-height: 1.78; }.prose details[open] { padding-inline: 1rem; }.prose details[open] summary { margin-inline: -1rem; } }
