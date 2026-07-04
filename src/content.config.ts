@@ -10,7 +10,6 @@ const subjects = defineCollection({
     slug: z.string(),
     description: z.string(),
     icon: z.string().optional(),
-    accent: z.string(),
     status: z.enum(['active', 'growing', 'archived']).default('growing'),
     order: z.number().int().default(0),
     featured: z.boolean().default(false),

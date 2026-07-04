@@ -3,7 +3,6 @@
   "slug": "spanish",
   "description": "Vocabulary, grammar, and practical notes collected while learning Spanish.",
   "icon": "ES",
-  "accent": "#e56b4f",
   "status": "active",
   "order": 1,
   "featured": true,

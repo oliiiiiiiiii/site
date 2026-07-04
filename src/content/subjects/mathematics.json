@@ -3,7 +3,6 @@
   "slug": "mathematics",
   "description": "Standalone mathematics notes without section or module grouping.",
   "icon": "MA",
-  "accent": "#087f8c",
   "status": "growing",
   "order": 3,
   "featured": false
