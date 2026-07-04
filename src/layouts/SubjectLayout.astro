@@ -59,7 +59,7 @@ const recent = [...lessons].sort((a, b) => b.data.updated.valueOf() - a.data.upd
   .tab-list button:hover { color: var(--subject-accent); background: color-mix(in srgb, var(--subject-accent) 7%, transparent); transform: translateY(-1px); }
   .tab-list button:hover span { color: var(--subject-accent); border-color: color-mix(in srgb, var(--subject-accent) 45%, var(--line)); }
   .tab-list button.active { color: var(--ink); background: color-mix(in srgb, var(--subject-accent) 14%, var(--surface)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--subject-accent) 42%, transparent), 0 3px 10px color-mix(in srgb, var(--subject-accent) 12%, transparent); transform: none; }
-  .tab-list button.active span { color: #071216; border-color: var(--subject-accent); background: var(--subject-accent); }
+  .tab-list button.active span { color: var(--accent-ink); border-color: var(--subject-accent); background: var(--subject-accent); }
   .section-panels { min-width: 0; }
   .section-panel[hidden] { display: none; }
   .recent { margin-top: clamp(4rem, 8vw, 7rem); }

@@ -21,13 +21,13 @@
 .prose blockquote > :first-child { margin-top: 0; }
 .prose blockquote > :last-child { margin-bottom: 0; }
 .prose code { padding: .15em .36em; border-radius: .3rem; color: var(--ink); background: var(--surface-2); font-family: var(--font-mono); font-size: .86em; }
-.prose pre { max-width: 100%; padding: 1.25rem; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #15232b !important; box-shadow: var(--shadow-sm); }
+.prose pre { max-width: 100%; padding: 1.25rem; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--code-surface) !important; box-shadow: var(--shadow-sm); }
 .prose pre code { padding: 0; color: inherit; background: transparent; font-size: .86rem; }
-.prose .code-block { margin-block: 1.35rem; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #15232b; box-shadow: var(--shadow-sm); }
-.prose .code-toolbar { min-height: 42px; padding: .45rem .65rem .45rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #2b3c49; background: #0f161e; }
-.prose .code-language { color: #8ea0ae; font-family: var(--font-mono); font-size: .62rem; font-weight: 750; letter-spacing: .08em; text-transform: lowercase; }
+.prose .code-block { margin-block: 1.35rem; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--code-surface); box-shadow: var(--shadow-sm); }
+.prose .code-toolbar { min-height: 42px; padding: .45rem .65rem .45rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--code-line); background: var(--code-toolbar); }
+.prose .code-language { color: var(--code-muted); font-family: var(--font-mono); font-size: .62rem; font-weight: 750; letter-spacing: .08em; text-transform: lowercase; }
 .prose .code-block pre { margin: 0; padding: 1.25rem; border: 0; border-radius: 0; box-shadow: none; }
-.prose .copy-code { min-height: 30px; padding: .35rem .6rem; color: #b8c5d0; border: 1px solid #425363; border-radius: .3rem; background: #0f161e; cursor: pointer; font-family: var(--font-mono); font-size: .62rem; font-weight: 750; }
+.prose .copy-code { min-height: 30px; padding: .35rem .6rem; color: var(--code-muted); border: 1px solid var(--code-line); border-radius: .3rem; background: var(--code-toolbar); cursor: pointer; font-family: var(--font-mono); font-size: .62rem; font-weight: 750; }
 .prose .copy-code:hover { color: white; border-color: var(--teal); }
 .prose table { display: block; width: 100%; overflow-x: auto; border-spacing: 0; border-collapse: collapse; font-family: var(--font-sans); font-size: .93rem; }
 .prose th, .prose td { min-width: 8rem; padding: .75rem .9rem; border: 1px solid var(--line); text-align: left; }

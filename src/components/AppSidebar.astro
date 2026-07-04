@@ -46,9 +46,8 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
   .primary-nav { padding-block: 1.5rem; display: grid; gap: .3rem; }
   .primary-nav a { min-height: 44px; padding: .65rem .75rem; display: flex; align-items: center; gap: .75rem; border-radius: var(--radius-sm); color: var(--ink-soft); text-decoration: none; font-family: var(--font-mono); font-size: .75rem; font-weight: 650; }
   .primary-nav a:hover { color: var(--ink); background: color-mix(in srgb, var(--surface) 65%, transparent); }
-  .primary-nav a.active { color: #071216; background: var(--teal); box-shadow: 3px 3px 0 color-mix(in srgb, var(--teal) 30%, transparent); }
-  .primary-nav a.posts.active { color: white; background: var(--coral); box-shadow: 3px 3px 0 color-mix(in srgb, var(--coral) 30%, transparent); }
-  .primary-nav a.notes.active { color: #071216; background: var(--teal); }
+  .primary-nav a.active { color: var(--accent-ink); background: var(--teal); box-shadow: 3px 3px 0 color-mix(in srgb, var(--teal) 30%, transparent); }
+  .primary-nav a.notes.active { color: var(--accent-ink); background: var(--teal); }
   .sidebar-note { margin-top: auto; padding: 1rem; display: grid; gap: .35rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--paper); font-family: var(--font-mono); }
   .sidebar-note span { margin-bottom: .3rem; color: var(--coral); font-size: .64rem; font-weight: 800; }
   .sidebar-note code { color: var(--muted); font-size: .67rem; }.sidebar-note code i { color: var(--teal); font-style: normal; }

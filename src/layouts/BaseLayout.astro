@@ -12,7 +12,7 @@ interface Props {
 }
 
 const {
-  title = "Oli's Blog — Notes, Projects, and Reflections",
+  title = "Oli's Blog",
   description = 'A place where I share my thoughts, projects, and experiences.',
   image,
   noFooter = false,
@@ -25,7 +25,8 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefin
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#fffaf2" />
+    <meta name="theme-color" content="#f6f7fb" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0f18" media="(prefers-color-scheme: dark)" />
     <meta name="generator" content={Astro.generator} />
     {canonical && <link rel="canonical" href={canonical} />}
     <link rel="icon" type="image/png" href="/images/site/favicon.png" />
