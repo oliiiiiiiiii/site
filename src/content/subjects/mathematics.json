@@ -1,9 +1,0 @@
-{
-  "title": "Mathematics",
-  "slug": "mathematics",
-  "description": "Standalone mathematics notes without section or module grouping.",
-  "icon": "MA",
-  "status": "growing",
-  "order": 3,
-  "featured": false
-}

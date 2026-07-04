@@ -1,9 +1,0 @@
-{
-  "title": "System Programming",
-  "slug": "system-programming",
-  "description": "Notes on processes, memory, files, and the interfaces between programs and the operating system.",
-  "icon": "SP",
-  "status": "growing",
-  "order": 2,
-  "featured": true
-}
