@@ -53,6 +53,17 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefin
         {!noFooter && <Footer />}
       </div>
     </div>
+    <dialog class="image-lightbox" data-image-lightbox aria-label="Image preview">
+      <button class="image-lightbox__close" type="button" aria-label="Close image preview" data-image-lightbox-close>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18" />
+        </svg>
+      </button>
+      <figure>
+        <img src="" alt="" data-image-lightbox-image />
+        <figcaption data-image-lightbox-caption></figcaption>
+      </figure>
+    </dialog>
     <script>
       const body = document.body;
       document.querySelector('[data-sidebar-open]')?.addEventListener('click', () => body.classList.add('sidebar-open'));
@@ -100,6 +111,42 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefin
           }
           window.setTimeout(() => { button.textContent = 'copy'; }, 1600);
         });
+      });
+
+      const lightbox = document.querySelector<HTMLDialogElement>('[data-image-lightbox]');
+      const lightboxImage = lightbox?.querySelector<HTMLImageElement>('[data-image-lightbox-image]');
+      const lightboxCaption = lightbox?.querySelector<HTMLElement>('[data-image-lightbox-caption]');
+      const lightboxClose = lightbox?.querySelector<HTMLButtonElement>('[data-image-lightbox-close]');
+
+      const closeLightbox = () => lightbox?.close();
+      const openLightbox = (image: HTMLImageElement) => {
+        if (!lightbox || !lightboxImage || !lightboxCaption) return;
+        lightboxImage.src = image.currentSrc || image.src;
+        lightboxImage.alt = image.alt;
+        lightboxCaption.textContent = image.alt;
+        lightboxCaption.hidden = !image.alt;
+        lightbox.showModal();
+      };
+
+      document.querySelectorAll<HTMLImageElement>('.prose img:not([data-no-lightbox])').forEach((image) => {
+        image.tabIndex = 0;
+        image.setAttribute('role', 'button');
+        image.setAttribute('aria-label', image.alt ? `Open image: ${image.alt}` : 'Open image preview');
+        image.addEventListener('click', (event) => {
+          event.preventDefault();
+          openLightbox(image);
+        });
+        image.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openLightbox(image);
+          }
+        });
+      });
+
+      lightboxClose?.addEventListener('click', closeLightbox);
+      lightbox?.addEventListener('click', (event) => {
+        if (event.target === lightbox) closeLightbox();
       });
     </script>
   </body>
