@@ -17,7 +17,7 @@ const contextLabel = lesson.data.module ?? sectionTitle ?? subject.data.title;
 <BaseLayout title={`${lesson.data.title} — ${subject.data.title}`} description={lesson.data.description}>
   <div class="lesson-shell">
     <article class="lesson-main">
-      <Breadcrumbs items={[{ label: 'Subjects', href: '/notes/' }, { label: subject.data.title, href: `/notes/${subject.data.slug}/` }, { label: lesson.data.title }]} />
+      <Breadcrumbs items={[{ label: 'Notes', href: '/notes/' }, { label: subject.data.title, href: `/notes/${subject.data.slug}/` }, { label: lesson.data.title }]} />
       <header><span>{contextLabel}</span><h1>{lesson.data.title}</h1><p>{lesson.data.description}</p><div class="lesson-meta"><time datetime={lesson.data.updated.toISOString()}>Updated {formatDate(lesson.data.updated)}</time>{sectionTitle && lesson.data.module && <span>{sectionTitle}</span>}</div></header>
       <details class="mobile-outline"><summary>Browse lesson outline</summary><div><SubjectSidebar subject={subject} lessons={lessons} currentId={lesson.id} /><TableOfContents headings={headings} /></div></details>
       <div class="prose"><slot /></div>
