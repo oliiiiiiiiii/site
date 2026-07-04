@@ -1,0 +1,19 @@
+{
+  "title": "Español",
+  "slug": "espanol",
+  "description": "Apuntes de vocabulario y gramática española.",
+  "icon": "ES",
+  "status": "active",
+  "order": 1,
+  "featured": true,
+  "sections": [
+    {
+      "id": "vocabulario",
+      "title": "Vocabulario"
+    },
+    {
+      "id": "gramatica",
+      "title": "Gramática"
+    }
+  ]
+}
