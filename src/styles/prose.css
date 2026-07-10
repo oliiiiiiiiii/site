@@ -30,6 +30,19 @@
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
+.prose .spoiler {
+  padding-inline: .18em;
+  color: transparent;
+  border-radius: .2em;
+  background: var(--ink);
+  cursor: pointer;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  user-select: none;
+  transition: color .16s ease, background-color .16s ease;
+}
+.prose .spoiler:hover, .prose .spoiler:focus-visible { background: var(--line-strong); }
+.prose .spoiler.revealed { color: var(--ink); background: var(--surface-2); user-select: text; }
 .prose ul, .prose ol { padding-left: 1.35rem; }
 .prose li + li { margin-top: .45rem; }
 .prose blockquote { position: relative; margin-inline: 0; padding: 1rem 1.15rem 1rem 3.2rem; color: var(--ink-soft); border: 1px solid color-mix(in srgb, var(--coral) 34%, var(--line)); border-left: 3px solid var(--coral); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--coral) 7%, var(--surface)); font-family: var(--font-sans); font-size: .96rem; font-style: normal; line-height: 1.75; }

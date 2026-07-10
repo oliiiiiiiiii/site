@@ -148,6 +148,20 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefin
       lightbox?.addEventListener('click', (event) => {
         if (event.target === lightbox) closeLightbox();
       });
+
+      const revealSpoiler = (spoiler: HTMLElement) => {
+        spoiler.classList.add('revealed');
+        spoiler.setAttribute('aria-label', '已顯示的 spoiler 內容');
+      };
+      document.querySelectorAll<HTMLElement>('[data-spoiler]').forEach((spoiler) => {
+        spoiler.addEventListener('click', () => revealSpoiler(spoiler));
+        spoiler.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            revealSpoiler(spoiler);
+          }
+        });
+      });
     </script>
   </body>
 </html>

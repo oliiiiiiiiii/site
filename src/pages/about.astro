@@ -26,7 +26,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <blockquote>國三的時候，一直覺得寫程式很帥，所以就立定了志向要考到台大資工，升高一的暑假因為身邊有寫程式很厲害的人，所以就接處了 C++，然後寫越多發現自己越喜歡，高一下的時候還放棄了清大數學人才培育的下半學期，跑去參加竹區的資訊之芽語法班（期中考我還考全班最高哈哈哈，但期末考我神經太大條忘記考了）。</blockquote>
 
         <h3>Other Learnings</h3>
-        <p>大一的時候不想修大一英文，所以選了西班牙文，學了一陣子之後發現我還蠻喜歡的，所以就決定好好持續的學。<br />從小就蠻喜歡教學的，對教育也蠻有興趣。<br />也很喜歡下西洋棋，目前 Magnus Carlsen 還沒有贏過我，歡迎跟我加好友：<a href="https://link.chess.com/friend/60hLzA" rel="noreferrer">oli950108</a>。</p>
+        <p>大一的時候不想修大一英文，所以選了西班牙文，學了一陣子之後發現我還蠻喜歡的，所以就決定好好持續的學。<br />從小就蠻喜歡教學的，對教育也蠻有興趣。<br />也很喜歡下西洋棋，目前 Magnus Carlsen 還沒有贏過我，歡迎跟我加好友：<a href="https://link.chess.com/friend/60hLzA" rel="noreferrer">oli950108</a>（別嫌棄我爛）。</p>
 
         <h3>Contacts</h3>
         <ul class="contact-list">
@@ -46,7 +46,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .profile-card > img { width: 100%; aspect-ratio: 1; display: block; object-fit: cover; }
   .profile-card > div { padding: 1rem; border-bottom: 1px solid var(--line); }.profile-card strong,.profile-card span { display: block; }.profile-card strong { font-size: 1rem; }.profile-card span { margin-top: .2rem; color: var(--muted); font-family: var(--font-mono); font-size: .65rem; }
   dl { padding: .7rem 1rem 1rem; margin: 0; font-family: var(--font-mono); font-size: .64rem; }dl div { padding-block: .3rem; display: flex; justify-content: space-between; gap: 1rem; }dt { color: var(--teal); }dd { margin: 0; color: var(--muted); }
-  .about-copy { display: grid; gap: 4rem; }.about-copy h2 { margin: 0 0 1rem; font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: -.035em; line-height: 1.1; }.about-copy h3 { margin: 2.5rem 0 .75rem; color: var(--teal); font-family: var(--font-mono); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }.about-copy p { color: var(--ink-soft); line-height: 1.9; }.about-copy blockquote { margin: 1.5rem 0; padding: 1.15rem 1.25rem; color: var(--ink-soft); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); box-shadow: var(--shadow-sm); font-family: var(--font-sans); font-size: .95rem; line-height: 1.85; }.about-copy blockquote::before { display: block; margin-bottom: .55rem; content: '// story'; color: var(--teal); font-family: var(--font-mono); font-size: .62rem; font-weight: 800; letter-spacing: .08em; }
+  .about-copy { display: grid; gap: 4rem; }.about-copy h2 { margin: 0 0 1rem; font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: -.035em; line-height: 1.1; }.about-copy h3 { margin: 2.5rem 0 .75rem; color: var(--teal); font-family: var(--font-mono); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }.about-copy p { color: var(--ink-soft); line-height: 1.9; }.about-copy p a { color: var(--teal); text-underline-offset: .2em; }.about-copy p a:hover { color: var(--coral); }.about-copy blockquote { margin: 1.5rem 0; padding: 1.15rem 1.25rem; color: var(--ink-soft); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); box-shadow: var(--shadow-sm); font-family: var(--font-sans); font-size: .95rem; line-height: 1.85; }.about-copy blockquote::before { display: block; margin-bottom: .55rem; content: '// story'; color: var(--teal); font-family: var(--font-mono); font-size: .62rem; font-weight: 800; letter-spacing: .08em; }
   .contact-list { padding: 0; margin: 0; display: grid; gap: .55rem; color: var(--ink-soft); list-style: none; }.contact-list a { color: var(--teal); text-underline-offset: .2em; }.contact-list a:hover { color: var(--coral); }
+  .about-copy a { color: var(--teal); text-underline-offset: .2em; }
+  .about-copy a:hover { color: var(--coral); }
   @media (max-width: 850px) { .about-grid { grid-template-columns: 1fr; }.profile-card { position: static; max-width: 360px; } }
 </style>
