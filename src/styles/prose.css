@@ -3,6 +3,8 @@
   font-family: var(--font-sans);
   font-size: 1.08rem;
   line-height: 1.86;
+  overflow-wrap: anywhere;
+  min-width: 0;
 }
 
 .prose > *:first-child { margin-top: 0; }

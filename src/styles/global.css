@@ -209,7 +209,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 @media (max-width: 680px) {
-  .page-shell { width: min(calc(100% - 2rem), var(--content-max)); }
+  .page-shell { width: min(calc(100% - 2.5rem), var(--content-max)); }
   .section-heading { align-items: start; flex-direction: column; gap: 1rem; }
   .card-grid, .card-grid--three { grid-template-columns: 1fr; }
   .display-title { font-size: clamp(2.65rem, 14vw, 4.3rem); }
