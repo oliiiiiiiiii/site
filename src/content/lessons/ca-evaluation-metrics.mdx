@@ -1,0 +1,364 @@
+---
+title: Lecture 2 - Evaluation Metrics
+description: "Performance、CPU time、CPI、power wall、IC cost、benchmark 與 Amdahl's Law。"
+subject: computer-architecture
+order: 2
+published: 2026-09-15
+updated: 2026-10-26
+draft: false
+---
+
+## Computer Architecture
+![截圖 2026-09-15 12.41.36](https://hackmd.io/_uploads/Synt3S8FGl.png) \
+![截圖 2026-09-15 12.50.50](https://hackmd.io/_uploads/SkSnCSUYfx.png)
+## Application
+![截圖 2026-09-15 12.51.36](https://hackmd.io/_uploads/S1FykLIFfg.png) \
+![截圖 2026-09-15 13.00.23](https://hackmd.io/_uploads/BJYx-LLtGe.png) \
+![截圖 2026-09-15 13.01.15](https://hackmd.io/_uploads/B12XZLIKGg.png)
+## Technology Node
+The technology node (also process node, process technology or simply node) refers to a specific semiconductor manufacturing process and its design rules. Different nodes often imply different circuit generations and architectures. Generally, the smaller the technology node means the smaller the feature size, producing smaller transistors which are both faster and more power-efficient.
+## Technology Outlook
+![截圖 2026-09-15 13.04.38](https://hackmd.io/_uploads/BJHeMLLKzg.png) \
+![截圖 2026-09-15 13.04.16](https://hackmd.io/_uploads/Hy3A-ILtzx.png) \
+![截圖 2026-09-15 13.05.46](https://hackmd.io/_uploads/HkDEzIIKfg.png) \
+![截圖 2026-09-15 13.05.58](https://hackmd.io/_uploads/rJGHfLLYze.png) \
+![截圖 2026-09-15 13.07.31](https://hackmd.io/_uploads/r1esGLIKMg.png) \
+![截圖 2026-09-15 13.08.16](https://hackmd.io/_uploads/ByTTMLIFfx.png) \
+![截圖 2026-09-15 13.08.27](https://hackmd.io/_uploads/BkvCzI8YGg.png) \
+![截圖 2026-09-15 13.08.37](https://hackmd.io/_uploads/BkzJQUItfl.png) \
+![截圖 2026-09-15 13.09.01](https://hackmd.io/_uploads/Sk5xmUUYGg.png) \
+![截圖 2026-09-15 13.09.25](https://hackmd.io/_uploads/rkGf78UYzl.png) \
+![截圖 2026-09-15 13.09.36](https://hackmd.io/_uploads/r13f7LUYzl.png)
+## Computer Engineering Methodology、Performance
+Architecture is an iterative process：searching the space of possible designs at all levels of computer systems \
+![截圖 2026-09-15 13.18.29](https://hackmd.io/_uploads/rkVNrLLYMl.png)
+
+Design 跟 Analysis 是最重要的：
+- purchasing perspective（消費者觀點）: \
+    需要將市場上的機器做比較
+    - best performance？
+    - lowest power？
+    - least cost？
+- design perspective（製造者觀點）： \
+    需要決定怎麼設計
+    - improve performance？
+    - improve energy-efficiency？
+    - least cost？
+
+上面那些很重要，所以需要一個方法測量、量化 performance / power / cost：
+- metric
+- benchmark
+
+下圖用四個不同的 metric（passenger capacity、cruising range、cruising speed、passengers capacity x cruising speed）來比較飛機： \
+![截圖 2026-09-15 13.38.50](https://hackmd.io/_uploads/S1Bgc8UFGx.png) \
+哪一架飛機的 performance 最好？因人而異，每個人在乎的不一樣 \
+在 computing platform 的世界裡，performance 有兩個最主要的 metrics：
+1. response time
+    - 做一個工作要多久
+2. throughput
+    - 單位時間可以做多少工作
+
+兩個 metrics 是有關的但不是完全等價的（response time 越短 throughput 就會越大），還要考慮其他因素（例如 queueing delay） \
+how are response time and throughput affected by：
+- replacing the processor w/ a faster version \
+  response time 變短、throughput 變大
+- adding more processors \
+  response time 不變、throughput 變大
+
+Relative Performance：
+$$
+\text{performance}=\frac{1}{\text{execution time}}
+$$
+如果有人說 $X$ is $n$ time faster than $Y$：
+$$
+\frac{\text{performance}_X}{\text{performance}_Y}=\frac{\text{execution time}_Y}{\text{execution time}_X}=n
+$$
+example：$10\text{s}$ on A、$15\text{s}$ on B $\Rightarrow\frac{\text{execution time}_B}{\text{execution time}_A}=\frac{15\text{s}}{10\text{s}}=1.5\Rightarrow$ A is $1.5$ times faster than B
+
+Execution Time 分兩種：
+- elapsed time
+    - total response time（包含所有會花到的時間：processing、IO、OS、idle time⋯⋯）
+    - determine system performance
+- CPU time
+    - 真正在 CPU 上執行的時間（IO time 還有一些有的沒的都不算進去）
+    - 可以進一步分成 user CPU time（執行 user code）跟 system CPU time（執行 system software）
+    - different peograms are affected differently by CPU and system performance
+
+## CPU time
+$$
+\text{CPU time}=\text{CPU clock cycles}\times\text{clock cycle time}=\frac{\text{CPU clock cycles}}{\text{clock rate}}
+$$
+performance time 可以由下列的方式優化：
+- reduce # of clock cycles
+- increase clock rate
+- hardware designer must often trade off clock rate against cycle count
+
+CPU clocking：所有 digital hardware 被一個 constant-rate clock 管理 \
+![截圖 2026-09-15 14.19.34](https://hackmd.io/_uploads/ry7YQwLtzl.png)
+- clock period：duration of a clock cycle（ex. $250\text{ps} = 0.25\text{ns} = 250 \times 10^{-12} \text{s}$）
+- clock frequency（rate）：cycles per sec（ex. $4.0\text{GHz} = 4000\text{MHz} = 4.0 \times 10^{9} \text{Hz}$）
+- clock period 和 clock frequency 互為倒數
+
+example：
+- computer A：$2\text{GHz}$ clock、$10\text{s}$ CPU time
+- designing computer B：
+    - aim for $6\text{s}$ CPU time
+    - can do faster clock but causes $1.2 \times \text{clock cycles}$
+- how fast must computer B clock be？
+  $$
+  \text{clock rate}_B=\frac{\text{clock cycles}_B}{\text{CPU time}_B}=\frac{1.2\times\text{clock cycles}_A}{6\text{s}}
+  $$
+  $$
+  \text{clock cycles}_A=\text{CPU time}_A\times\text{clock rate}_A=10\text{s}\times 2\text{GHz}=20\times 10^9
+  $$
+  $$
+  \text{clock rate}_B=\frac{1.2\times 20\times 10^9}{6\text{s}}=4\text{GHz}
+  $$
+
+Instruction Count and CPI：
+$$
+\text{CPU time}=\text{CPU clock cycles}\times\text{clock cycle time}=\frac{\text{CPU clock cycles}}{\text{clock rate}}
+$$
+$$
+\text{CPU clock cycles}=\text{instruction count}\times\text{cycles per instruction}
+$$
+$$
+\text{CPU time}=\text{instruction count}\times\text{CPI}\times\text{clock cycle time}=\frac{\text{instruction count}\times\text{CPI}}{\text{clock rate}}
+$$
+- instruction count for a program：determined by program、ISA、compiler
+- avg cycles per instruction：受 hardware（CPI per instruction type）和 software（instruction mix）影響
+
+example：
+- computer A：cycle time = $250\text{ps}$、CPI = $2.0$
+- computer B：cycle time = $500\text{ps}$、CPI = $1.2$
+- same ISA
+- which one is faster
+  $$
+  \text{CPU time}_A=\text{instruction count}\times\text{CPI}_A\times\text{clock cycle time}_A=\text{I}\times 2.0\times 250\text{ps}=\text{I}\times 500\text{ps}
+  $$
+  $$
+  \text{CPU time}_B=\text{instruction count}\times\text{CPI}_B\times\text{clock cycle time}_B=\text{I}\times 1.2\times 500\text{ps}=\text{I}\times 600\text{ps}
+  $$
+  $$
+  \Rightarrow A \text{ is faster by } \frac{\text{CPU time}_B}{\text{CPU time}_A}=\frac{\text{I}\times 600\text{ps}}{\text{I}\times 500\text{ps}}=1.2
+  $$
+
+如果不同的 instruction classes 有不同的 # of cycles：
+$$
+\text{Clock Cycles}=\sum_{i=1}^n(\text{CPI}_i\times\text{instruction count}_i)
+$$
+weighted avg CPI：
+$$
+\text{CPI}=\frac{\text{Clock Cycles}}{\text{instruction count}}=\sum_{i=1}^n(\text{CPI}_i\times\frac{\text{instruction count}_i}{\text{instruction count}})
+$$
+其中 $\frac{\text{instruction count}_i}{\text{instruction count}}$ 是 relative frequency
+
+example：
+- Alternative compiled code sequences using instructions in classes A、B、C
+
+  | class | A | B | C |
+  | - | - | - | - |
+  | CPI for class | 1 | 2 | 3 |
+  | IC in sequence 1 | 2 | 1 | 2 |
+  | IC in sequence 2 | 4 | 1 | 1 |
+- sequence 1：$\text{IC}=5$
+    - clock cycles = $2\times 1 + 1\times 2 + 2\times 3=10$
+    - avg CPI = $\frac{10}{5}=2.0$
+- sequence 2：$\text{IC}=6$
+    - clock cycles = $4\times 1 + 1\times 2 + 1\times 3=9$
+    - avg CPI = $\frac{9}{6}=1.5$
+
+$$
+\text{CPU time} = \text{執行一個 program 所需時間} = \text{執行一個 program 的 instruction 個數} \times \text{CPI} \times \text{clock rate}
+$$
+|  | inst count 會被什麼影響 | CPI 會被什麼影響 | clock rate 會被什麼影響 |
+| - | - | - | - |
+| algorithm | v | v |  |
+| programming language | v | v |  |
+| compiler | v | v |  |
+| ISA（instruction set architeture） | v | v | v |
+
+比較兩個機器的時候 inst count、CPI、clock rate 都要考慮到，不能只考慮一個 \
+![截圖 2026-09-23 00.20.13](https://hackmd.io/_uploads/H1hT97x5zx.png)
+## Power Trends
+![截圖 2026-09-23 00.23.01](https://hackmd.io/_uploads/rJzuo7l5Ml.png) \
+in CMOS IC technology： \
+$\text{power}\approx \text{capacitive load}\times \text{voltage}^2\times\text{frequency}$ \
+隨著製程的進步，voltage 從 5V 降到 1V，所以用一樣的 power 的時候 frequency 已經能拉高到 1000 倍了 \
+![截圖 2026-09-23 00.49.43](https://hackmd.io/_uploads/BJShWNx5fx.png) \
+![截圖 2026-09-23 01.16.21](https://hackmd.io/_uploads/rJrg_Ex5fl.png) \
+example：
+- a new CPU has
+    - 85% of capacitive load of old CPU
+    - 15% voltage and 15% frequency reduction
+    - $\Rightarrow \frac{P_\text{new}}{P_\text{old}}=\frac{C_\text{old}\times 0.85\times (V_\text{old}\times 0.85)^2\times F_\text{old}\times 0.85}{C_\text{old}\times V_\text{old}^2\times F_\text{old}}=0.85^4=0.52$ \
+the power wall：
+- we can't reduce voltage further
+- we can't remove more heat（散熱裝置有極限）
+
+既然存在 power wall，那要怎麼 improve performance？ \
+![截圖 2026-09-23 01.16.39](https://hackmd.io/_uploads/rJw-OElcMl.png) \
+![截圖 2026-09-23 03.04.08](https://hackmd.io/_uploads/rkwNZ8l5zl.png) \
+![截圖 2026-09-23 03.12.26](https://hackmd.io/_uploads/HJP7mIe9fl.png) \
+兩個 core 用的 energy 用的 power 是一個的 1/4，所以開始發展 multicore（more than 1 processor per chip） \
+multicore 需要 parallel programming
+- compare w/ instruction level parallelism
+    - hardware executes multiple instructions at once
+    - hidden from the programmer
+- hard to do
+    - programming for performance
+    - load balancing
+    - optimizing communication synchronization
+
+![截圖 2026-09-23 03.27.00](https://hackmd.io/_uploads/HJG5IIe9Gl.png) \
+![截圖 2026-09-23 03.28.40](https://hackmd.io/_uploads/ByuxwIx5Ml.png)
+$$
+\text{cost per die}=\frac{\text{cost per wafer}}{\text{dies per wafer}\times \text{yield}}
+$$
+$$
+\text{die per wafer} \approx \frac{\text{wafer area}}{\text{die area}}
+$$
+$$
+\text{yield}=\frac{1}{(1+(\text{defects per area}\times\frac{\text{die area}}{2}))^2}
+$$
+wafer = 晶圓 \
+die = 晶粒 / 裸晶 \
+yield（良率）= proportion of working dies per wafer \
+IC cost is nonlinear relation to area and defect rate
+- wafer cost and area are fixed
+- defect rate determined by manufacturing process
+- die area determined by architecture and circurt design
+## Benchmark
+SPEC CPU benchmark
+- programs used to measure performance
+    - supposedly typical of actual workload
+- Standard Performance Evaluation Crop（SPEC）
+    - develops benchmarks for CPU, I/O, web
+- elapsed time to execute a selection of programs
+    - negligible I/O, so focus on CPU performance
+- contain both integer and floating point applications
+    - CINT（integer） and CFP（floating-point）
+
+![截圖 2026-09-23 09.26.48](https://hackmd.io/_uploads/S1Lysseqzl.png) \
+how to summarize suite performance
+1. 算數平均 of execution time of all programs，但如果有一個跑特別久會被他 dominate
+2. SPECRatio：normalize execution times to reference computer, yielding a ratio proportional to performance = $\frac{\text{time on reference computer}}{\text{time on computer being rated}}$
+
+if program SPECRatio on computer A is 1.25 times bigger than computer B：
+$$
+1.25=\frac{\text{SPECRatio}_A}{\text{SPECRatio}_B}=\frac{\frac{\text{execution time}_\text{reference}}{\text{execution time}_A}}{\frac{\text{execution time}_\text{reference}}{\text{execution time}_B}}=\frac{\text{execution time}_B}{\text{execution time}_A}=\frac{\text{performance}_A}{\text{performance}_B}
+$$
+![截圖 2026-09-23 09.36.45](https://hackmd.io/_uploads/H1jVasxqMl.png)
+$$
+\text{geometric mean}=(\prod_{i=1}^n \text{SPERatio}_i)^{\frac{1}{n}}
+$$
+剛剛講的都是 performance benchmark，現在講 power benchmark \
+specpower：power consumption of server at different workload levels
+- run SPECJBB2005（java business application）
+- report power consumption of servers **at different workload levels**, divided into 10% increments
+- performance：ssj_ops / sec
+- power：watts（焦耳 / 秒）
+- energy efficiency：# of operation / watt
+$$
+\text{overall ssj\_ops per watt}=\frac{\sum_{i=0}^{10} \text{ssj\_ops}_i}{\sum_{i=0}^{10} \text{power}_i}
+$$
+![截圖 2026-09-23 09.43.27](https://hackmd.io/_uploads/B1xR0il9fg.png) \
+pitfall（陷阱）：Amdahl's Law
+- improving an aspect of a computer and expecting a proportional improvement in overall performance \
+  ![截圖 2026-09-23 09.50.41](https://hackmd.io/_uploads/ByTdl3e5fl.png) \
+  （黃色那塊執行時間變小了） \
+  $T_{\text{improved}}=\frac{T_{\text{affected}}}{\text{improvement factor}}+T_{\text{unaffected}}$ \
+  example：乘法佔了 80s/100s，乘法的 performance 要有多少 improvement 才可以快 5 倍 \
+  $\Rightarrow 20=\frac{80}{n}+20\Rightarrow \text{can't be done}$ \
+  corollary：make the common case fast
+
+fallacy（謬誤）：lower power at idle \
+其實 idle 的時候 power 很高
+- look back at x4 power benchmark
+    - at 100% load：295W
+    - at 50% load：246W（83%）
+    - at 10% load：180W（61%）
+- google data center
+    - mostly operates at 10% - 50% load
+    - at 100% load less than 1% of the time
+- consider designing processors to make power proportional to load
+
+pitfall：MIPS as a performance metric
+- MIPS：millions of instructions per second
+    - doesn't account for
+        - differences in ISAs between computers
+        - differences in complexity between instructions
+            - CPI varies between programson a given CPU（can't have single MIPS index for a processor）
+    - $$ \text{MIPS}=\frac{\text{instruction count}}{\text{execution time}\times 10^6}=\frac{\text{instruction count}}{\frac{\text{instruction count}\times\text{CPI}}{\text{clock rate}}\times 10^6}=\frac{\text{clock rate}}{\text{CPI}\times 10^6} $$
+    - CPU's performance can't be represented by a single MIPS value
+    - different CPU's can't be compared w/ MIPS
+
+8 design principle for computer architecture / system
+- design for **Moore's Law**
+- use **abstraction** to simplify design
+- make the common case fast
+- performance via **parallelism**
+- performance via **pipelining**
+- performacne via **prediction**
+- **hierarchy** of memories
+- **dependability** via redundency
+
+![截圖 2026-09-23 10.16.17](https://hackmd.io/_uploads/BJ6dIhxqGe.png)
+## 一些題目
+### 9/16 分組討論題
+#### Q1
+![截圖 2026-09-16 20.04.16](https://hackmd.io/_uploads/Hy3TBbdFGx.png) \
+A： \
+由 (i) $\Rightarrow$ ALU 佔 exec time 的 20% \
+由 (ii) $\Rightarrow$ Branch 佔 exec time 的 20% \
+$\Rightarrow$ Load/Store 佔 60% \
+$\Rightarrow$ 20% : 60% : 20% = 1 : 3 : 1 \
+IC 正比於 $\frac{\text{exec time}}{\text{CPI}}$ $\Rightarrow$ IC = $\frac{1}{1}$ : $\frac{3}{5}$ : $\frac{1}{3}$ = 15 : 9 : 5
+
+| Instruction Type | CPI | exec time | IC |
+| - | - | - | - |
+| ALU | 1 | 1 | 15 |
+| Load/Store | 5 | 3 | 9 |
+| Branch | 3 | 1 | 5 |
+
+avg CPI = $\frac{1\times 15 + 5\times 9 + 3\times 5}{15 + 9 + 5}=2.59$
+#### Q2
+![截圖 2026-09-16 20.13.58](https://hackmd.io/_uploads/BJ-MO-_tze.png) \
+(a) 12 + 12 + 3 = 27 \
+(b) 變 a x (b + c) $\Rightarrow$ 12 + 3 = 15
+### 9/16 小考
+#### Q1
+![截圖 2026-09-16 20.15.42](https://hackmd.io/_uploads/HJFddWOYMl.png) \
+A： \
+CPU time = clock cycle time x IC x CPI \
+$40 \times 1 + 40 \times 6 + 20 \times 4=1.5(40 \times 1 + 40 \times x + 20 \times 4)$ \
+$\Rightarrow x = 3$
+#### Q2
+![截圖 2026-09-16 20.21.35](https://hackmd.io/_uploads/Bkrlq-dtfg.png)
+1. $\frac{1.2\times 5\times 10^9}{4\times 10^9}=1.5$
+2. $\frac{1.5}{2.5}=60\%$
+
+### 9/23 分組討論題
+#### Q3
+![截圖 2026-09-28 17.42.01](https://hackmd.io/_uploads/BkuuU3v9fx.png)
+1. $\frac{1}{\frac{0.9}{16} + 0.1}=6.4$
+2. $\frac{1}{\frac{0.9}{16} + 0.0025 * 15 + 0.1}=6.4 = 5.16$
+3. $\frac{1}{\frac{0.9}{32} + 0.0025 * 31 + 0.1}=6.4 = 4.86$ \
+=> Although using more processors reduces the parallel execution time, the additional communication overhead becomes larger than the benefit gained from parallelization.
+### 9/23 小考
+#### Q2
+![截圖 2026-09-28 17.47.51](https://hackmd.io/_uploads/Synl_nvqze.png) \
+Design A：$\frac{1}{\frac{0.25}{8}+0.75}=1.28$ \
+Design B：$\frac{1}{\frac{0.6}{1.5}+0.4}=1.25$ \
+=> Design A is better by a speedup of 1.28
+### 10/7 分組討論題
+#### Q2
+![截圖 2026-10-26 16.26.29](https://hackmd.io/_uploads/HygT0t22fx.png) \
+![截圖 2026-10-26 16.26.44](https://hackmd.io/_uploads/rkyCCKh2Ml.png) \
+$16000\times(300+12.5X+300)+(50000+1000X)\times(\frac{64}{X})=9664000+200000X+\frac{3200000}{X}$ \
+用算幾不等式可以知道 $X$ 的最小值在 $200000X=\frac{3200000}{X}$ 的時候，也就是 $X=4$
+### 10/7 小考
+#### Q2
+![截圖 2026-10-26 17.19.02](https://hackmd.io/_uploads/Hk_Ni93hzl.png) \
+$4000\times(300+12.5X+300)+(50000+1000X)\times(\frac{64}{X})=2464000+50000X+\frac{3200000}{X}$ \
+用算幾不等式可以知道 $X$ 的最小值在 $50000X=\frac{3200000}{X}$ 的時候，也就是 $X=8$

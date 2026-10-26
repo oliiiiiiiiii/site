@@ -1,0 +1,9 @@
+{
+  "title": "Computer Architecture",
+  "slug": "computer-architecture",
+  "description": "計算機結構筆記：performance、RISC-V ISA、datapath 與 pipeline。",
+  "icon": "CA",
+  "status": "growing",
+  "order": 1,
+  "featured": true
+}
