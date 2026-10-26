@@ -43,6 +43,7 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefin
         const dark = saved === 'dark' || (!saved && matchMedia('(prefers-color-scheme: dark)').matches);
         document.documentElement.dataset.theme = dark ? 'dark' : 'light';
       } catch { document.documentElement.dataset.theme = 'light'; }
+      try { if (localStorage.getItem('sidebar') === 'collapsed') document.documentElement.classList.add('sidebar-collapsed'); } catch {}
     </script>
   </head>
   <body>
@@ -67,7 +68,19 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefin
     </dialog>
     <script>
       const body = document.body;
-      document.querySelector('[data-sidebar-open]')?.addEventListener('click', () => body.classList.add('sidebar-open'));
+      const isDesktop = () => window.matchMedia('(min-width: 1021px)').matches;
+      const setCollapsed = (collapsed: boolean) => {
+        document.documentElement.classList.toggle('sidebar-collapsed', collapsed);
+        try { localStorage.setItem('sidebar', collapsed ? 'collapsed' : 'open'); } catch {}
+      };
+      document.querySelector('[data-sidebar-open]')?.addEventListener('click', () => {
+        if (isDesktop()) setCollapsed(false);
+        else body.classList.add('sidebar-open');
+      });
+      document.querySelector('[data-sidebar-collapse]')?.addEventListener('click', () => {
+        if (isDesktop()) setCollapsed(true);
+        else body.classList.remove('sidebar-open');
+      });
       document.querySelector('[data-sidebar-close]')?.addEventListener('click', () => body.classList.remove('sidebar-open'));
       document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
         const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';

@@ -79,7 +79,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 ::selection { color: var(--ink); background: var(--gold); }
 
-.app-frame { min-height: 100vh; padding-left: var(--sidebar-width); }
+.app-frame { min-height: 100vh; padding-left: var(--sidebar-width); transition: padding-left .24s ease; }
+@media (min-width: 1021px) { :root.sidebar-collapsed { --sidebar-width: 0px; } }
 .main-frame { min-height: 100vh; display: flex; flex-direction: column; }
 .page-content { flex: 1; }
 .page-shell { width: min(calc(100% - 3rem), var(--content-max)); margin-inline: auto; }

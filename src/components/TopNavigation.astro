@@ -25,6 +25,11 @@ import SiteIcon from './SiteIcon.astro';
   .theme-moon { display: none; align-items: center; justify-content: center; line-height: 0; }
   :global(:root[data-theme="dark"]) .theme-sun { display: none; }
   :global(:root[data-theme="dark"]) .theme-moon { display: inline-flex; }
+  @media (min-width: 1021px) {
+    :global(html.sidebar-collapsed) .top-navigation { justify-content: space-between; }
+    :global(html.sidebar-collapsed) .mobile-menu { display: grid; }
+    :global(html.sidebar-collapsed) .mobile-wordmark { display: block; margin-right: auto; color: var(--ink); font-family: var(--font-mono); font-weight: 800; text-decoration: none; }
+  }
   @media (max-width: 1020px) {
     .top-navigation { justify-content: space-between; }
     .mobile-menu { display: grid; }

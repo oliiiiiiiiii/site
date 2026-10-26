@@ -13,6 +13,9 @@ const links = [
 const isActive = (href: string) => href === '/' ? currentPath === '/' : currentPath.startsWith(href);
 ---
 <aside class="app-sidebar" id="app-sidebar" aria-label="Site navigation" data-sidebar>
+  <button class="sidebar-collapse" type="button" aria-label="Collapse navigation" title="收起側欄" data-sidebar-collapse>
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
   <div class="sidebar-inner">
     <a class="identity" href="/" aria-label="Oli's Blog home">
       <span class="identity-mark"><img src="/images/site/avatar.png" alt="" /></span>
@@ -52,6 +55,13 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
   .sidebar-note span { margin-bottom: .3rem; color: var(--coral); font-size: .64rem; font-weight: 800; }
   .sidebar-note code { color: var(--muted); font-size: .67rem; }.sidebar-note code i { color: var(--teal); font-style: normal; }
   .sidebar-footer { padding: 1.1rem .4rem .2rem; display: flex; justify-content: space-between; color: var(--muted); font-family: var(--font-mono); font-size: .61rem; }.online { display: flex; align-items: center; gap: .35rem; }.online i { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 8px var(--teal); }
+  .app-sidebar { transition: transform .24s ease; }
+  .sidebar-collapse { position: absolute; z-index: 1; top: .55rem; right: .55rem; width: 30px; height: 30px; padding: 0; display: grid; place-items: center; color: var(--muted); background: transparent; border: 1px solid transparent; border-radius: var(--radius-sm); cursor: pointer; transition: color .15s, background .15s, border-color .15s; }
+  .sidebar-collapse:hover { color: var(--ink); background: color-mix(in srgb, var(--surface) 65%, transparent); border-color: var(--line); }
+  @media (min-width: 1021px) {
+    :global(html.sidebar-collapsed) .app-sidebar { transform: translateX(-105%); }
+    :global(html.sidebar-collapsed) .sidebar-collapse { opacity: 0; pointer-events: none; }
+  }
   .sidebar-scrim { display: none; }
   @media (max-width: 1020px) {
     .app-sidebar { transform: translateX(-105%); transition: transform .24s ease; box-shadow: var(--shadow-md); }
