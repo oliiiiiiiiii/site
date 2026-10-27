@@ -5,6 +5,7 @@ import { unified } from '@astrojs/markdown-remark';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkSpoilers from './src/lib/remark-spoilers.mjs';
+import asmGrammar from './src/lib/riscv-asm-grammar.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,5 +16,9 @@ export default defineConfig({
       remarkPlugins: [remarkMath, remarkSpoilers],
       rehypePlugins: [rehypeKatex],
     }),
+    shikiConfig: {
+      langs: [asmGrammar],
+      langAlias: { asm: 'riscv-asm' },
+    },
   },
 });

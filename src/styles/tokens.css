@@ -30,6 +30,7 @@
   --radius-lg: .9rem;
   --sidebar-width: 260px;
   --content-max: 1180px;
+  --wide-max: 1340px;
 }
 
 :root[data-theme="dark"] {

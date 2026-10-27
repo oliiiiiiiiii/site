@@ -10,19 +10,23 @@ draft: false
 
 ## Instruction Set Architecture
 instruction set architecture 是軟體跟硬體之間的 interface
-![截圖 2026-09-23 10.30.55](https://hackmd.io/_uploads/ryj1cng9zg.png)
-![截圖 2026-09-23 10.31.16](https://hackmd.io/_uploads/BJxZq3g5Ge.png)
+![instruction set architecture 1](https://hackmd.io/_uploads/ryj1cng9zg.png)
+![instruction set architecture 2](https://hackmd.io/_uploads/BJxZq3g5Ge.png)
 ISA design principle：To find a language that makes it easy to build the hardware and the compiler while maximizing performance and minimizing cost.（hardware 簡單，這樣才會速度快，才會省點）
-![截圖 2026-09-23 10.32.28](https://hackmd.io/_uploads/r1PS5he9fe.png)
+> "It is easy to see by formal-logical methods that there exist certain [instruction set] that are in abstract adequate to control and cause the execution of any sequence of operations....The really decisive considerations from the present point of view, in selecting an [instruction set], are more of a practical nature: simplicity of the equipment demanded by the [instruction set], and the clarity of its application to the actually important problems together with the speed of its handling of those problems."
+> 「透過形式邏輯方法很容易看出，存在某些［指令集］，它們在抽象層面上足以控制並促成任何操作序列的執行……。從當前的觀點來看，在選擇［指令集］時真正具決定性的考量更多是基於實用性質：即該［指令集］所需的設備簡潔度、其應用於實際重要問題時的清晰度，以及其處理這些問題的速度。」
+> \- Burks, Goldstine, and von Neumann, 1947
+
 a good interface：
 - lasts through many implementations（portability, compatibility）
 - is used in many different ways（generality）
 - provides convenient functionality to higher levels
 - permits an efficient implementation at lower levels
 
-![截圖 2026-09-23 10.35.06](https://hackmd.io/_uploads/ByIks3l9fl.png)
+各種不同的 use 傳到 interface，後面的 implement 由 imp1 -> imp2 -> imp3 按照順序實作：
+![ISA interface](https://hackmd.io/_uploads/ByIks3l9fl.png)
 instruction 的運作：
-![截圖 2026-09-23 10.36.37](https://hackmd.io/_uploads/r1bHjnxqGe.png)
+![how does instructions function](https://hackmd.io/_uploads/r1bHjnxqGe.png)
 general purpose register ISA：
 - register-memory
   ```asm
@@ -39,15 +43,15 @@ general purpose register ISA：
 以 perform `A * B` 為例，假設 A 放在 2:3、B 放在 5:2（`A->2:3`、`B->5:2`）
 1. RISC（reduced instruction set architecture）
    ```asm
-   LOAD a, 2:3
-   LOAD B, 5:2
-   MULTI A, B
-   STORE 2:3, A
+   load A, 2:3
+   load B, 5:2
+   multi A, B
+   store 2:3, A
    ```
    example：ARM、MIPS、RISC-V
 2. CISC（complex instruction set architecture）
    ```asm
-   MULT 2:3, 5:2
+   mult 2:3, 5:2
    ```
    example：intel x86
 ## Overview of RISC-V
@@ -59,10 +63,50 @@ RISC-V（risk-five）is a new instruction set architecture（ISA）
 SiFive – Silicon at the speed of software
 - founded in 2015
 - produces computer chips based on the RISC-V instruction set architecture
+  <div
+    style={{
+      display: 'flex',
+      gap: '1rem',
+      overflowX: 'auto',
+      scrollSnapType: 'x mandatory',
+      padding: '0.5rem 0 1rem'
+    }}
+  >
+    <img
+      src="https://hackmd.io/_uploads/ryZoG6lcfl.png"
+      alt="SiFive 1"
+      style={{
+        width: 'auto',
+        height: 'auto',
+        flex: '0 0 auto',
+        zoom: 0.52,
+        scrollSnapAlign: 'start'
+      }}
+    />
+    <img
+      src="https://hackmd.io/_uploads/rJ7nG6ecMx.png"
+      alt="SiFive 2"
+      style={{
+        width: 'auto',
+        height: 'auto',
+        flex: '0 0 auto',
+        zoom: 0.6,
+        scrollSnapAlign: 'start'
+      }}
+    />
+    <img
+      src="https://hackmd.io/_uploads/SJahzalcfl.png"
+      alt="SiFive"
+      style={{
+        width: 'auto',
+        height: 'auto',
+        flex: '0 0 auto',
+        zoom: 0.6,
+        scrollSnapAlign: 'start'
+      }}
+    />
+  </div>
 
-![截圖 2026-09-23 11.08.05](https://hackmd.io/_uploads/ryZoG6lcfl.png)
-![截圖 2026-09-23 11.08.23](https://hackmd.io/_uploads/rJ7nG6ecMx.png)
-![截圖 2026-09-23 11.08.34](https://hackmd.io/_uploads/SJahzalcfl.png)
 the RISC-V instruction set：
 - used as the example throughout the book
 - developed at UC Berkeley as open ISA
@@ -118,26 +162,27 @@ example：
 ## Memory Operations：Load and Store
 load operands from & store results to memory：data transfer instructions
 - ```asm
-  lw x9, 8 (x22) ; x9 = mem[8+reg[x22]]
+  lw x9, 8(x22) ; x9 = mem[8+reg[x22]]
   ```
 - ```asm
-  sw x9, 8 (x22) ; mem[8+reg[x22]] = x9
+  sw x9, 8(x22) ; mem[8+reg[x22]] = x9
   ```
 
 example：
-- C code：`A[12]=h+A[8]`（h 在 x21、A 的 base address 在 x22）
+- C code：`A[12] = h + A[8]`（h 在 x21、A 的 base address 在 x22）
 - compiled RISC-V code
   ```asm
-  ld x9, offset1(x22) ; x9 gets A[8], [x22] + offset
+  ld x9, 64(x22) ; x9 = mem[x22 + 64 / 8] = mem[x22 + 8] = A[8]
   add x9, x21, x9
-  sd x9, offset2(x22)
+  sd x9, 96(x22) ; mem[x22 + 96 / 8] = mem[x22 + 12] = A[12] = x9
   ```
   offset 是什麼？每個 element 是兩個 word，所以要放 index * 8，所以在這個 example 要放 12 * 8
-  ![截圖 2026-09-23 11.56.09](https://hackmd.io/_uploads/S1LJRaxqzg.png)
-  ![截圖 2026-09-23 11.57.02](https://hackmd.io/_uploads/HkjMCpx5fl.png)
+  ![address & byte address](https://hackmd.io/_uploads/S1LJRaxqzg.png)
 
-![截圖 2026-09-23 12.04.35](https://hackmd.io/_uploads/B1JygRx9Mx.png)
-![截圖 2026-09-23 12.06.47](https://hackmd.io/_uploads/BJQveRxqGg.png)
+addressing：
+![addressing](https://hackmd.io/_uploads/B1JygRx9Mx.png)
+alignment：
+![alignment](https://hackmd.io/_uploads/BJQveRxqGg.png)
 align 會比較快，RISC-5 沒有強制 align
 
 | register | memory |
@@ -150,9 +195,9 @@ align 會比較快，RISC-5 沒有強制 align
     - register optimization is important
 ## Immediate Operations
 - design principle 3 - make the common case fast
-  - small constants are used quite frequently（50% of operands）
-    example：`A=A+5`、`B=B+1`、`C=C-18`
-  - solutions：put 'typical constants' in memory and load them
+  - small constants are used quite frequently（50% of operands） \
+    example：`A = A + 5`、`B = B + 1`、`C = C - 18`
+  - solutions：put 'typical constants' in memory and load them \
     example：add constant 4 to register x22
     ```asm
     ld x21, AddrConstant4(x22)
@@ -163,16 +208,18 @@ align 會比較快，RISC-5 沒有強制 align
     addi x22, x22, 4
     ```
 
-![截圖 2026-09-23 12.33.54](https://hackmd.io/_uploads/rkTnIAeqfg.png)
+representing instruction in the computer：
+![representing instruction in the computer](https://hackmd.io/_uploads/rkTnIAeqfg.png)
 ## Instruction Encoding & Formats
 Computers built on 2 key principles:
 1. instructions are represented as numbers
 2. thus, entire programs can be stored in memory to be read or written just like numbers
 
-![截圖 2026-09-23 12.34.36](https://hackmd.io/_uploads/BkFyv0gqfe.png)
-![截圖 2026-09-23 12.35.23](https://hackmd.io/_uploads/HJwMv0x9fl.png)
+所有東西都以一樣的形式儲存：
+![von Neumann architecture](https://hackmd.io/_uploads/BkFyv0gqfe.png)
+![instruction & data representation](https://hackmd.io/_uploads/HJwMv0x9fl.png)
 RISC-V R-format instructions：
-![截圖 2026-09-23 12.35.50](https://hackmd.io/_uploads/HybNwCe5fg.png)
+![R-format instructions format](https://hackmd.io/_uploads/HybNwCe5fg.png)
 - opcode：operation code
 - rd：destination register number
 - funct3：3-bit function code（additional opcode）
@@ -180,27 +227,27 @@ RISC-V R-format instructions：
 - rs2：the second source register number
 - funct7：7-bit function code（additional opcode）
 
-![截圖 2026-09-23 12.37.04](https://hackmd.io/_uploads/Sk0_v0ecMe.png)
+![R-format instructions table](https://hackmd.io/_uploads/Sk0_v0ecMe.png)
 example：`add x9, x20, x21`
-![截圖 2026-09-23 12.38.13](https://hackmd.io/_uploads/r1WTwCe5Ge.png)
+![R-format instructions example](https://hackmd.io/_uploads/r1WTwCe5Ge.png)
 
 - design principle 4 - good design demands good compromises
     - can we use the same format for lw/sw instruction？
     - 5-bit constant is too small to index arrays or data structures => more instruction formats
 
 RISC-V I-format instructions：
-![截圖 2026-09-23 12.42.05](https://hackmd.io/_uploads/Bydo_AxcMe.png)
+![RISC-V I-format instructions format](https://hackmd.io/_uploads/Bydo_AxcMe.png)
 immediate arithmetic and load instructions
 - rs1：source or base address register number
 - immediate：constant operand, or offset added to base address
     - 2s-complement, sign extended
-      ![截圖 2026-09-23 12.45.50](https://hackmd.io/_uploads/S15FF0g9Mg.png)
+      ![2s-complement](https://hackmd.io/_uploads/S15FF0g9Mg.png)
 
 example：`ld x9, 64(x22)`
-![截圖 2026-09-23 12.43.44](https://hackmd.io/_uploads/SJF7tAeqze.png)
+![RISC-V I-format instructions example](https://hackmd.io/_uploads/SJF7tAeqze.png)
 
 RISC-V S-format instructions：
-![截圖 2026-09-23 12.47.09](https://hackmd.io/_uploads/B1uAF0ecMl.png)
+![RISC-V S-format instructions format](https://hackmd.io/_uploads/B1uAF0ecMl.png)
 different immediate format for store instructions
 - rs1：base address register number
 - rs2：source operand register number
@@ -208,48 +255,48 @@ different immediate format for store instructions
     - split so that rs1 and rs2 fields always in the same place
 
 example：`sd x9, 64(x22)`
-![截圖 2026-09-23 12.48.12](https://hackmd.io/_uploads/rya7q0l9Ml.png)
+![RISC-V S-format instructions example](https://hackmd.io/_uploads/rya7q0l9Ml.png)
 
 三種 type 比較：
-![截圖 2026-09-23 12.49.17](https://hackmd.io/_uploads/ryw85Al5Gl.png)
+![3 format compare](https://hackmd.io/_uploads/ryw85Al5Gl.png)
 ## Logical Operations
 logical operations：
-![截圖 2026-09-23 12.50.11](https://hackmd.io/_uploads/rk0t90l9fg.png)
+![logical operations](https://hackmd.io/_uploads/rk0t90l9fg.png)
 useful for extracting and inserting groups of bits in a word
 
 shift operations：
-![截圖 2026-09-23 12.54.58](https://hackmd.io/_uploads/rkRjjAlqfe.png)
+![shift operations](https://hackmd.io/_uploads/rkRjjAlqfe.png)
 - immed: how many positions to shift
 - shift left logical
     - shift left and fill with 0 bits
     - slli by i bits（multiplies by 2^i）
-    - ![截圖 2026-09-23 13.03.44](https://hackmd.io/_uploads/rk036Agcfl.png)
+    - ![shift left example](https://hackmd.io/_uploads/rk036Agcfl.png)
 - shift right logical
     - shift right and fill with 0 bits
     - srli by i bits（divides by 2^i、unsigned only）
-    - ![截圖 2026-09-23 13.03.21](https://hackmd.io/_uploads/BySip0l9Gx.png)
+    - ![shift right example](https://hackmd.io/_uploads/BySip0l9Gx.png)
 
 AND operations：
 useful to mask bits in a word（select some bits, clear others to 0）
 `and x9, x10, x11`：
-![截圖 2026-09-23 13.10.09](https://hackmd.io/_uploads/Hk641JZ9Mg.png)
+![AND operations](https://hackmd.io/_uploads/Hk641JZ9Mg.png)
 
 OR operations：
 useful to include bits in a word（set some bits to 1, leave others unchanged）
 `or x9, x10, x11`：
-![截圖 2026-09-23 13.10.19](https://hackmd.io/_uploads/S1dSkyWqfx.png)
+![OR operations](https://hackmd.io/_uploads/S1dSkyWqfx.png)
 
 XOR operations：
 differencing operation（set some bits to 1, leave others unchanged）
 `xor x9, x10, x12`（NOT operation）：
-![截圖 2026-09-23 13.10.29](https://hackmd.io/_uploads/SJ-IkkZ9Gl.png)
+![XOR operations](https://hackmd.io/_uploads/SJ-IkkZ9Gl.png)
 ## Instructions for Making Desicions
 decision making instructions（ex. branch, procedure call）
 - alter the control flow
 - 也就是 change the "next" instruction to be executed
 - 也就是 change the program counter（PC）
 
-![截圖 2026-09-25 12.14.50](https://hackmd.io/_uploads/Sk68HOm9Mx.png)
+![decision making instructions](https://hackmd.io/_uploads/Sk68HOm9Mx.png)
 - fetch instructions from `mem[PC]`
 - without decision making instruction：next instruction = `mem[PC + instruction size]`
 
@@ -317,11 +364,11 @@ signed vs. unsigned
 
 example：
 - 把 C 的 `if` 轉乘 RISC-V
-  ![截圖 2026-09-25 12.22.25](https://hackmd.io/_uploads/S1JzP_7qMg.png)
+  ![if](https://hackmd.io/_uploads/S1JzP_7qMg.png)
 - 把 C 的 `while` 轉乘 RISC-V
-  ![截圖 2026-09-25 12.25.59](https://hackmd.io/_uploads/By5yuuX9fl.png)
+  ![while](https://hackmd.io/_uploads/By5yuuX9fl.png)
 - 把 C 的 `switch` 轉乘 RISC-V
-  ![截圖 2026-09-25 14.31.23](https://hackmd.io/_uploads/ry_BB5QqGe.png)
+  ![switch](https://hackmd.io/_uploads/ry_BB5QqGe.png)
   pseudo instruction（不是真正的 instruction，但把比較複雜的 instruction 簡化成一行，assembly 會再把他轉成 RISC-V）：
   - `la x28, JumpTable`（load address：`R[x28] = jumptable address`）
   - `jr x7`（`PC = R[x7]`）
