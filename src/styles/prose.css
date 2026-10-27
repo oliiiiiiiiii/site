@@ -9,7 +9,7 @@
 
 .prose > *:first-child { margin-top: 0; }
 .prose > *:last-child { margin-bottom: 0; }
-.prose h2, .prose h3, .prose h4 { color: var(--ink); font-family: var(--font-sans); line-height: 1.22; scroll-margin-top: 6rem; }
+.prose h2, .prose h3, .prose h4 { color: var(--ink); font-family: var(--font-sans); line-height: 1.22; scroll-margin-top: 2rem; }
 .prose h2 { margin: 3.2rem 0 1.1rem; font-size: 1.75rem; letter-spacing: -.025em; }
 .prose h3 { margin: 2.5rem 0 .8rem; font-size: 1.32rem; }
 .prose p, .prose ul, .prose ol, .prose blockquote, .prose table, .prose pre { margin-block: 1.35rem; }
@@ -64,6 +64,11 @@
 .prose th, .prose td { min-width: 8rem; padding: .75rem .9rem; border: 1px solid var(--line); text-align: left; }
 .prose th { color: var(--ink); background: var(--surface-2); }
 .prose img { border-radius: var(--radius-sm); }
+/* 預設圖片：沒有自己寫 style / width / class 的圖片一律 60% 寬、左右置中（ImageGrid 與左右滑動列除外） */
+.prose :where(img:not([style]):not([width]):not([class])):not(.image-grid img):not([style*="overflow-x"] > img) { width: 60%; height: auto; display: block; margin-inline: auto; }
+/* 左右滑動的圖片列（MDX 裡 display:flex + overflowX:auto 的 div）：高度不同時上下置中、不拉伸變形 */
+.prose div[style*="overflow-x"][style*="flex"] { align-items: center; }
+.prose div[style*="overflow-x"][style*="flex"] > img { height: auto; }
 
 .prose details { margin-block: 1.5rem; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); box-shadow: var(--shadow-sm); }
 .prose details[open] { padding: 0 1.5rem 1.5rem; }
@@ -83,3 +88,13 @@
 .prose .course-toc a:hover { color: var(--coral); }
 
 @media (max-width: 680px) { .prose { font-size: 1.02rem; line-height: 1.78; }.prose details[open] { padding-inline: 1rem; }.prose details[open] summary { margin-inline: -1rem; } }
+
+/* 太寬的 display math：在自己的框裡左右滑動，不要蓋到旁邊的目錄 */
+.prose .katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: .35em;
+  -webkit-overflow-scrolling: touch;
+}
+.prose .katex-display > .katex { overflow-wrap: normal; }
