@@ -13,10 +13,10 @@ draft: false
 - Assembler：
     - 把 assembly language 轉成 object file
     - object file 裡面的 symbol table：a table that matches names of labels to the address of the memory words that instruction occupy
-    - object file： \
+    - object file：
       ![截圖 2026-10-04 16.22.57](https://hackmd.io/_uploads/rkTyTF1sfl.png)
-    - 把 psudoinstruction 轉成真正的 instruction set 有 support 的 real instructions \
-      `li x9, 123` -> `addi x9, x0, 123` \
+    - 把 psudoinstruction 轉成真正的 instruction set 有 support 的 real instructions
+      `li x9, 123` -> `addi x9, x0, 123`
       `mv x10, x11` -> `addi x10, x11, 0`
 - linker（link editor）：
     - linker takes all the independently assembled machine language programs and "switches" them togethor to produce an executable file that can be run on a computer
@@ -24,7 +24,7 @@ draft: false
       1. place code and data modules symbolically in memory
       2. determine the address of data and instruction labels
       3. patch both the internal and external references
-    - example（有兩個 object file） \
+    - example（有兩個 object file）
       ![截圖 2026-10-04 17.01.41](https://hackmd.io/_uploads/S1HWI51jGx.png)
 ## Loading a Program
 ```asm
@@ -54,8 +54,8 @@ dynamic linked library：
 - lazy procedure linkage（each routine is linked only after it is called）
 - dynamic linker：不會一次把要 link、要 call 的 library 拿進來
 
-![截圖 2026-10-04 19.43.55](https://hackmd.io/_uploads/Hk9Z3hyiMl.png) \
-![截圖 2026-10-04 19.45.54](https://hackmd.io/_uploads/Byetn21oze.png) \
+![截圖 2026-10-04 19.43.55](https://hackmd.io/_uploads/Hk9Z3hyiMl.png)
+![截圖 2026-10-04 19.45.54](https://hackmd.io/_uploads/Byetn21oze.png)
 ![截圖 2026-10-04 19.48.15](https://hackmd.io/_uploads/ry3b631iGx.png)
 ## MIPS instructions
 - MIPS：commercial predecessor to RISC-V
@@ -71,15 +71,15 @@ dynamic linked library：
     - MIPS：`slt`、`sltu`（set less than, result is 0 or 1）
         - then use `beq`, `bne` to complete the branch
 
-RISC-V 有五種、MIPS 只有三種 \
+RISC-V 有五種、MIPS 只有三種
 ![截圖 2026-10-04 22.41.18](https://hackmd.io/_uploads/rka9r1xjfx.png)
 
-RISC-V 跟 MIPS 其實很接近，Intel x86 就很不一樣 \
-![截圖 2026-10-04 23.55.35](https://hackmd.io/_uploads/rk4-Plxjfx.png) \
+RISC-V 跟 MIPS 其實很接近，Intel x86 就很不一樣
+![截圖 2026-10-04 23.55.35](https://hackmd.io/_uploads/rk4-Plxjfx.png)
 ![截圖 2026-10-05 00.40.40](https://hackmd.io/_uploads/HJSc--gjfx.png)
 
-x86 registers： \
-![截圖 2026-10-05 00.43.19](https://hackmd.io/_uploads/BJNVfbxjfl.png) \
+x86 registers：
+![截圖 2026-10-05 00.43.19](https://hackmd.io/_uploads/BJNVfbxjfl.png)
 2 operands per instruction
 
 | source / dest operand | second source operand |
@@ -96,7 +96,7 @@ memory addressing modes：
 - address = R_base + 2^scale * R_index + displacement
 - address = R_base + 2^scale * R_index + displacement（ex. `MOV EAX, [EDX + EBX*4 + 8]`）
 
-x86 instruction encoding \
+x86 instruction encoding
 ![截圖 2026-10-05 00.51.39](https://hackmd.io/_uploads/H1KQEWeize.png)
 
 implementing IA-32
@@ -121,16 +121,16 @@ implementing IA-32
 - use assembly code for high performance
     - but modern compilers are better at dealing w/ modern processors
     - more lines of code => more errors and less productivity
-- Backward compatibility => instruction set \
+- Backward compatibility => instruction set
 doesn't change
-    - but they do accrete more instructions \
+    - but they do accrete more instructions
       ![截圖 2026-10-05 02.40.13](https://hackmd.io/_uploads/H1u5TGxiGe.png)
 ## 一些題目
 ### 10/7 分組討論題
 #### Q1
-![截圖 2026-10-26 03.00.51](https://hackmd.io/_uploads/HJJlzCj2Mg.png) \
-![截圖 2026-10-26 03.01.03](https://hackmd.io/_uploads/H1cef0j3Gx.png) \
-(a) \
+![截圖 2026-10-26 03.00.51](https://hackmd.io/_uploads/HJJlzCj2Mg.png)
+![截圖 2026-10-26 03.01.03](https://hackmd.io/_uploads/H1cef0j3Gx.png)
+(a)
 合起來
 ```c
 int x;
@@ -138,8 +138,8 @@ int main () {}
 int x;
 int main () {}
 ```
-會失敗，因為有兩個 main function，都是 strong symbol，違反 rule 1 \
-(b) \
+會失敗，因為有兩個 main function，都是 strong symbol，違反 rule 1
+(b)
 合起來
 ```c
 void f();
@@ -152,15 +152,15 @@ int main () {
 double x;
 void f () { x = -0.0; }
 ```
-linker 會選 `int x = 3`，因為他是 strong symbol，所以 x 是 int，佔 4 bytes \
-執行 `f()` 的時候：`x = -0.0`（-0.0 = 0x8000000000000000）會誤產生一條寫入 0x0000000000000080（little-endian 這樣存）的指令（double 有 8 byte），但其實前面 4 byte 是 x 的、後面 4 byte 是 y 的 \
-所以現在 x 存了 0x00000000、y 存了 0x00000080，然後 printf 會把順序倒回來，所以 x 會輸出 0x0、y 會輸出 0x80000000 \
+linker 會選 `int x = 3`，因為他是 strong symbol，所以 x 是 int，佔 4 bytes
+執行 `f()` 的時候：`x = -0.0`（-0.0 = 0x8000000000000000）會誤產生一條寫入 0x0000000000000080（little-endian 這樣存）的指令（double 有 8 byte），但其實前面 4 byte 是 x 的、後面 4 byte 是 y 的
+所以現在 x 存了 0x00000000、y 存了 0x00000080，然後 printf 會把順序倒回來，所以 x 會輸出 0x0、y 會輸出 0x80000000
 => `0x0 0x80000000`
 ### 10/7 小考
 #### Q1
-![截圖 2026-10-26 17.11.59](https://hackmd.io/_uploads/rJiPtq23Mg.png) \
-![截圖 2026-10-26 17.12.10](https://hackmd.io/_uploads/S1cYYc3hGx.png) \
-(a) \
+![截圖 2026-10-26 17.11.59](https://hackmd.io/_uploads/rJiPtq23Mg.png)
+![截圖 2026-10-26 17.12.10](https://hackmd.io/_uploads/S1cYYc3hGx.png)
+(a)
 合起來
 ```c
 #include <stdio.h>
@@ -174,8 +174,8 @@ int main () {
 int x;
 void f () { x = 6; }
 ```
-就 `6` \
-(b) \
+就 `6`
+(b)
 合起來
 ```c
 #include <stdio.h>

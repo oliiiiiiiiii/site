@@ -9,20 +9,20 @@ draft: false
 ---
 
 ## Instruction Set Architecture
-instruction set architecture 是軟體跟硬體之間的 interface \
-![截圖 2026-09-23 10.30.55](https://hackmd.io/_uploads/ryj1cng9zg.png) \
-![截圖 2026-09-23 10.31.16](https://hackmd.io/_uploads/BJxZq3g5Ge.png) \
-ISA design principle：To find a language that makes it easy to build the hardware and the compiler while maximizing performance and minimizing cost.（hardware 簡單，這樣才會速度快，才會省點） \
-![截圖 2026-09-23 10.32.28](https://hackmd.io/_uploads/r1PS5he9fe.png) \
+instruction set architecture 是軟體跟硬體之間的 interface
+![截圖 2026-09-23 10.30.55](https://hackmd.io/_uploads/ryj1cng9zg.png)
+![截圖 2026-09-23 10.31.16](https://hackmd.io/_uploads/BJxZq3g5Ge.png)
+ISA design principle：To find a language that makes it easy to build the hardware and the compiler while maximizing performance and minimizing cost.（hardware 簡單，這樣才會速度快，才會省點）
+![截圖 2026-09-23 10.32.28](https://hackmd.io/_uploads/r1PS5he9fe.png)
 a good interface：
 - lasts through many implementations（portability, compatibility）
 - is used in many different ways（generality）
 - provides convenient functionality to higher levels
 - permits an efficient implementation at lower levels
 
-![截圖 2026-09-23 10.35.06](https://hackmd.io/_uploads/ByIks3l9fl.png) \
-instruction 的運作： \
-![截圖 2026-09-23 10.36.37](https://hackmd.io/_uploads/r1bHjnxqGe.png) \
+![截圖 2026-09-23 10.35.06](https://hackmd.io/_uploads/ByIks3l9fl.png)
+instruction 的運作：
+![截圖 2026-09-23 10.36.37](https://hackmd.io/_uploads/r1bHjnxqGe.png)
 general purpose register ISA：
 - register-memory
   ```asm
@@ -35,7 +35,7 @@ general purpose register ISA：
   load R3 A ; R3 = mem[A]
   store R3 A ; mem[A] = R3
   ```
-有兩種： \
+有兩種：
 以 perform `A * B` 為例，假設 A 放在 2:3、B 放在 5:2（`A->2:3`、`B->5:2`）
 1. RISC（reduced instruction set architecture）
    ```asm
@@ -60,9 +60,9 @@ SiFive – Silicon at the speed of software
 - founded in 2015
 - produces computer chips based on the RISC-V instruction set architecture
 
-![截圖 2026-09-23 11.08.05](https://hackmd.io/_uploads/ryZoG6lcfl.png) \
-![截圖 2026-09-23 11.08.23](https://hackmd.io/_uploads/rJ7nG6ecMx.png) \
-![截圖 2026-09-23 11.08.34](https://hackmd.io/_uploads/SJahzalcfl.png) \
+![截圖 2026-09-23 11.08.05](https://hackmd.io/_uploads/ryZoG6lcfl.png)
+![截圖 2026-09-23 11.08.23](https://hackmd.io/_uploads/rJ7nG6ecMx.png)
+![截圖 2026-09-23 11.08.34](https://hackmd.io/_uploads/SJahzalcfl.png)
 the RISC-V instruction set：
 - used as the example throughout the book
 - developed at UC Berkeley as open ISA
@@ -77,15 +77,15 @@ arithmetic operations（加減乘除）
   ```asm
   add a, b, c
   ```
-  a 是 destination、b 跟 c 是 source \
+  a 是 destination、b 跟 c 是 source
   example：`f=(g+h)-(i+j);`
   ```asm
   add t0, g, h
   add t1, i, j
   sub f, t0, t1
   ```
-- design principle 2 - smaller is faster（所以不會到 256-bit 那麼大） \
-  operand 要 store 在 register（registers are primitive used in hardware design that are also visible to programmers） \
+- design principle 2 - smaller is faster（所以不會到 256-bit 那麼大）
+  operand 要 store 在 register（registers are primitive used in hardware design that are also visible to programmers）
   RISC-V has a 32 x 64-bit register file
   - use for frequently accessed data
   - 64-bit data is called a "doubleword"
@@ -132,12 +132,12 @@ example：
   add x9, x21, x9
   sd x9, offset2(x22)
   ```
-  offset 是什麼？每個 element 是兩個 word，所以要放 index * 8，所以在這個 example 要放 12 * 8 \
-  ![截圖 2026-09-23 11.56.09](https://hackmd.io/_uploads/S1LJRaxqzg.png) \
+  offset 是什麼？每個 element 是兩個 word，所以要放 index * 8，所以在這個 example 要放 12 * 8
+  ![截圖 2026-09-23 11.56.09](https://hackmd.io/_uploads/S1LJRaxqzg.png)
   ![截圖 2026-09-23 11.57.02](https://hackmd.io/_uploads/HkjMCpx5fl.png)
 
-![截圖 2026-09-23 12.04.35](https://hackmd.io/_uploads/B1JygRx9Mx.png) \
-![截圖 2026-09-23 12.06.47](https://hackmd.io/_uploads/BJQveRxqGg.png) \
+![截圖 2026-09-23 12.04.35](https://hackmd.io/_uploads/B1JygRx9Mx.png)
+![截圖 2026-09-23 12.06.47](https://hackmd.io/_uploads/BJQveRxqGg.png)
 align 會比較快，RISC-5 沒有強制 align
 
 | register | memory |
@@ -150,9 +150,9 @@ align 會比較快，RISC-5 沒有強制 align
     - register optimization is important
 ## Immediate Operations
 - design principle 3 - make the common case fast
-  - small constants are used quite frequently（50% of operands） \
+  - small constants are used quite frequently（50% of operands）
     example：`A=A+5`、`B=B+1`、`C=C-18`
-  - solutions：put 'typical constants' in memory and load them \
+  - solutions：put 'typical constants' in memory and load them
     example：add constant 4 to register x22
     ```asm
     ld x21, AddrConstant4(x22)
@@ -169,9 +169,9 @@ Computers built on 2 key principles:
 1. instructions are represented as numbers
 2. thus, entire programs can be stored in memory to be read or written just like numbers
 
-![截圖 2026-09-23 12.34.36](https://hackmd.io/_uploads/BkFyv0gqfe.png) \
-![截圖 2026-09-23 12.35.23](https://hackmd.io/_uploads/HJwMv0x9fl.png) \
-RISC-V R-format instructions： \
+![截圖 2026-09-23 12.34.36](https://hackmd.io/_uploads/BkFyv0gqfe.png)
+![截圖 2026-09-23 12.35.23](https://hackmd.io/_uploads/HJwMv0x9fl.png)
+RISC-V R-format instructions：
 ![截圖 2026-09-23 12.35.50](https://hackmd.io/_uploads/HybNwCe5fg.png)
 - opcode：operation code
 - rd：destination register number
@@ -180,44 +180,44 @@ RISC-V R-format instructions： \
 - rs2：the second source register number
 - funct7：7-bit function code（additional opcode）
 
-![截圖 2026-09-23 12.37.04](https://hackmd.io/_uploads/Sk0_v0ecMe.png) \
-example：`add x9, x20, x21` \
+![截圖 2026-09-23 12.37.04](https://hackmd.io/_uploads/Sk0_v0ecMe.png)
+example：`add x9, x20, x21`
 ![截圖 2026-09-23 12.38.13](https://hackmd.io/_uploads/r1WTwCe5Ge.png)
 
 - design principle 4 - good design demands good compromises
     - can we use the same format for lw/sw instruction？
     - 5-bit constant is too small to index arrays or data structures => more instruction formats
 
-RISC-V I-format instructions： \
-![截圖 2026-09-23 12.42.05](https://hackmd.io/_uploads/Bydo_AxcMe.png) \
+RISC-V I-format instructions：
+![截圖 2026-09-23 12.42.05](https://hackmd.io/_uploads/Bydo_AxcMe.png)
 immediate arithmetic and load instructions
 - rs1：source or base address register number
 - immediate：constant operand, or offset added to base address
-    - 2s-complement, sign extended \
+    - 2s-complement, sign extended
       ![截圖 2026-09-23 12.45.50](https://hackmd.io/_uploads/S15FF0g9Mg.png)
 
-example：`ld x9, 64(x22)` \
+example：`ld x9, 64(x22)`
 ![截圖 2026-09-23 12.43.44](https://hackmd.io/_uploads/SJF7tAeqze.png)
 
-RISC-V S-format instructions： \
-![截圖 2026-09-23 12.47.09](https://hackmd.io/_uploads/B1uAF0ecMl.png) \
+RISC-V S-format instructions：
+![截圖 2026-09-23 12.47.09](https://hackmd.io/_uploads/B1uAF0ecMl.png)
 different immediate format for store instructions
 - rs1：base address register number
 - rs2：source operand register number
 - immediate：offset added to base address
     - split so that rs1 and rs2 fields always in the same place
 
-example：`sd x9, 64(x22)` \
+example：`sd x9, 64(x22)`
 ![截圖 2026-09-23 12.48.12](https://hackmd.io/_uploads/rya7q0l9Ml.png)
 
-三種 type 比較： \
+三種 type 比較：
 ![截圖 2026-09-23 12.49.17](https://hackmd.io/_uploads/ryw85Al5Gl.png)
 ## Logical Operations
-logical operations： \
-![截圖 2026-09-23 12.50.11](https://hackmd.io/_uploads/rk0t90l9fg.png) \
+logical operations：
+![截圖 2026-09-23 12.50.11](https://hackmd.io/_uploads/rk0t90l9fg.png)
 useful for extracting and inserting groups of bits in a word
 
-shift operations： \
+shift operations：
 ![截圖 2026-09-23 12.54.58](https://hackmd.io/_uploads/rkRjjAlqfe.png)
 - immed: how many positions to shift
 - shift left logical
@@ -229,19 +229,19 @@ shift operations： \
     - srli by i bits（divides by 2^i、unsigned only）
     - ![截圖 2026-09-23 13.03.21](https://hackmd.io/_uploads/BySip0l9Gx.png)
 
-AND operations： \
-useful to mask bits in a word（select some bits, clear others to 0） \
-`and x9, x10, x11`： \
+AND operations：
+useful to mask bits in a word（select some bits, clear others to 0）
+`and x9, x10, x11`：
 ![截圖 2026-09-23 13.10.09](https://hackmd.io/_uploads/Hk641JZ9Mg.png)
 
-OR operations： \
-useful to include bits in a word（set some bits to 1, leave others unchanged） \
-`or x9, x10, x11`： \
+OR operations：
+useful to include bits in a word（set some bits to 1, leave others unchanged）
+`or x9, x10, x11`：
 ![截圖 2026-09-23 13.10.19](https://hackmd.io/_uploads/S1dSkyWqfx.png)
 
-XOR operations： \
-differencing operation（set some bits to 1, leave others unchanged） \
-`xor x9, x10, x12`（NOT operation）： \
+XOR operations：
+differencing operation（set some bits to 1, leave others unchanged）
+`xor x9, x10, x12`（NOT operation）：
 ![截圖 2026-09-23 13.10.29](https://hackmd.io/_uploads/SJ-IkkZ9Gl.png)
 ## Instructions for Making Desicions
 decision making instructions（ex. branch, procedure call）
@@ -316,12 +316,12 @@ signed vs. unsigned
 | example <br /> `x22 = 1111 1111 1111 1111 1111 1111 1111 1111` <br /> `x23 = 0000 0000 0000 0000 0000 0000 0000 0001` | x22 &lt; x23（-1 &lt; +1） | x22 > x23（+4294967295 > +1） |
 
 example：
-- 把 C 的 `if` 轉乘 RISC-V \
+- 把 C 的 `if` 轉乘 RISC-V
   ![截圖 2026-09-25 12.22.25](https://hackmd.io/_uploads/S1JzP_7qMg.png)
-- 把 C 的 `while` 轉乘 RISC-V \
+- 把 C 的 `while` 轉乘 RISC-V
   ![截圖 2026-09-25 12.25.59](https://hackmd.io/_uploads/By5yuuX9fl.png)
-- 把 C 的 `switch` 轉乘 RISC-V \
-  ![截圖 2026-09-25 14.31.23](https://hackmd.io/_uploads/ry_BB5QqGe.png) \
+- 把 C 的 `switch` 轉乘 RISC-V
+  ![截圖 2026-09-25 14.31.23](https://hackmd.io/_uploads/ry_BB5QqGe.png)
   pseudo instruction（不是真正的 instruction，但把比較複雜的 instruction 簡化成一行，assembly 會再把他轉成 RISC-V）：
   - `la x28, JumpTable`（load address：`R[x28] = jumptable address`）
   - `jr x7`（`PC = R[x7]`）
@@ -362,21 +362,21 @@ int f2( int s1, int s2 ){
 6. return to place of call（address in x1）
 
 procedure call instructions
-- procedure call：jump and link \
+- procedure call：jump and link
   `ja1 x1, ProcedureLabel`
   - 會把 PC 設成 `ProcedureLabel` 的位址（jumps to target address）
   - 然後把原本的位址存在 `x1`（address of following instruction put in `x1`）
-  - 圖 \
+  - 圖
     ![截圖 2026-09-25 20.56.03](https://hackmd.io/_uploads/HkVOkl4qfg.png)
-- procedure return：jump and link register \
+- procedure return：jump and link register
   `jalr x0, 0(x1)`
   - like `jal`, but jumps to `0 + address in x1`（`PC = 0 + address in x1`）
   - use `x0` as `rd`（`x0 cannot be changes`）
   - can also be used for computed jumps（ex. for `case` / `switch` statements）
 
-procedure call stack（frame）： \
-![截圖 2026-09-25 20.57.31](https://hackmd.io/_uploads/B1wR1lVcGl.png) \
-（這個 stack 是由上往下堆，所以最下面是 top） \
+procedure call stack（frame）：
+![截圖 2026-09-25 20.57.31](https://hackmd.io/_uploads/B1wR1lVcGl.png)
+（這個 stack 是由上往下堆，所以最下面是 top）
 ![截圖 2026-09-25 20.57.43](https://hackmd.io/_uploads/SkOAkxE5zg.png)
 
 leaf procedure example：
@@ -442,7 +442,7 @@ leaf procedure example：
   x6 = i + j
   f = x5 - x6
   ```
-  copy `f` to return register \
+  copy `f` to return register
   restore `x5, x6, x20` from stack
 
 non-leaf procedure example（算 `1 * 2 * 3 * ... * n`）：
@@ -560,45 +560,45 @@ string copy example：
   ```
 
 ## 32 bit constants
-how to load a 32-bit constant into a register？ \
-![截圖 2026-09-27 10.38.43](https://hackmd.io/_uploads/Sy1Tb-89Me.png) \
+how to load a 32-bit constant into a register？
+![截圖 2026-09-27 10.38.43](https://hackmd.io/_uploads/Sy1Tb-89Me.png)
 `lui rd, constant`
 - copies 20-bit const to bits [31:12] of `rd`
 - extends bit 31 to bits [63:32]
 - clears bits [11:0] of `rd` to 0
-- example：`lui x19, 976 // 0x003D0`： \
+- example：`lui x19, 976 // 0x003D0`：
   ![截圖 2026-09-27 23.18.18](https://hackmd.io/_uploads/SJ8pX2IcMl.png)
 
-以上是一個 U-type instruction： \
+以上是一個 U-type instruction：
 ![截圖 2026-09-27 23.32.03](https://hackmd.io/_uploads/H10lv3Icfe.png)
 ## Encoding for Control Flow Instructions
 有兩大類
-1. branches（`bne`、`beq`） \
-   SB format \
-   ![截圖 2026-09-27 23.41.17](https://hackmd.io/_uploads/HytXYh85fg.png) \
+1. branches（`bne`、`beq`）
+   SB format
+   ![截圖 2026-09-27 23.41.17](https://hackmd.io/_uploads/HytXYh85fg.png)
    example：
    ```asm
    bne x10, x11, 2000 ; if x10 != x11, go to location 2000 = 0011111010000
    ```
-   ![截圖 2026-09-27 23.48.57](https://hackmd.io/_uploads/S14eihU5Gg.png) \
-   imm[0] 不用存 \
+   ![截圖 2026-09-27 23.48.57](https://hackmd.io/_uploads/S14eihU5Gg.png)
+   imm[0] 不用存
    真正要跳去的值不會就是 2000，因為是 PC-relative addressing
    - target address = PC + immediate[] * 2
    - Supporting the possibility of 2-byte long instruction
-2. unconditional jump（`jal`、`jalr`） \
-   UJ format \
-   ![截圖 2026-09-27 23.41.28](https://hackmd.io/_uploads/SkVEtnLqzl.png) \
-   jump and link（jal）target uses 20-bit immediate for larger range \
+2. unconditional jump（`jal`、`jalr`）
+   UJ format
+   ![截圖 2026-09-27 23.41.28](https://hackmd.io/_uploads/SkVEtnLqzl.png)
+   jump and link（jal）target uses 20-bit immediate for larger range
    example：
    ```asm
    jal x0, 2000
    ```
-   ![截圖 2026-09-28 00.11.04](https://hackmd.io/_uploads/Hk47la8qfl.png) \
-   一樣 imm[0] 不用存 \
+   ![截圖 2026-09-28 00.11.04](https://hackmd.io/_uploads/Hk47la8qfl.png)
+   一樣 imm[0] 不用存
    也用 PC-relative addressing
 
-branching far away - 如果要跳去的位置 16 bits 沒辦法表示怎麼辦？ \
-可以改寫 code： \
+branching far away - 如果要跳去的位置 16 bits 沒辦法表示怎麼辦？
+可以改寫 code：
 把
 ```asm
 beq x10, x0, L1
@@ -610,23 +610,23 @@ beq x10, x0, L1
 L2:
 ```
 
-long jump： \
+long jump：
 for long jumps, ex. to 32-bit absolute address
 - `lui`：load address[31:12] to temp register
-- `jalr`：add address[11:0] and jump to target \
-  ![截圖 2026-09-28 00.24.30](https://hackmd.io/_uploads/SkqSQpL9fl.png) \
-  `lui x8, address[31:12]` \
-  ![截圖 2026-09-28 00.27.42](https://hackmd.io/_uploads/H1YZNpL9fl.png) \
+- `jalr`：add address[11:0] and jump to target
+  ![截圖 2026-09-28 00.24.30](https://hackmd.io/_uploads/SkqSQpL9fl.png)
+  `lui x8, address[31:12]`
+  ![截圖 2026-09-28 00.27.42](https://hackmd.io/_uploads/H1YZNpL9fl.png)
   `jalr x0, address[11:0](x8)`
 
 ## RISC-V Summary
-addressing summary： \
-![截圖 2026-09-28 01.15.57](https://hackmd.io/_uploads/SytUyC8qGx.png) \
-encoding summary： \
+addressing summary：
+![截圖 2026-09-28 01.15.57](https://hackmd.io/_uploads/SytUyC8qGx.png)
+encoding summary：
 ![截圖 2026-09-28 01.17.06](https://hackmd.io/_uploads/BJJs1C85Gx.png)
 
 ## Parallelism and Instructions：Synchronization
-parallel tasks must synchronize to avoid data race, where the results of the program can change depending on how events happen to occur. \
+parallel tasks must synchronize to avoid data race, where the results of the program can change depending on how events happen to occur.
 lock / unlock: ensure only one task entering the critical section：
 - P(1)
   ```c
@@ -673,11 +673,11 @@ atomic swap：atomically intercharge a value in a register for a value in memory
           benz x2, lockit
   ```
 
-initial value of lock is 0 \
-`lw x2, 0(x1) // processor 1` \
-`lw x2, 0(x1) // processor 2` \
-`sw x4, 0(x1) // processor 1` \
-`sw x4, 0(x1) // processor 2` \
+initial value of lock is 0
+`lw x2, 0(x1) // processor 1`
+`lw x2, 0(x1) // processor 2`
+`sw x4, 0(x1) // processor 1`
+`sw x4, 0(x1) // processor 2`
 => both processors think they get the lock
 
 synchronization in RISC-V：
@@ -710,73 +710,73 @@ synchronization in RISC-V：
 ## 一些題目
 ### 9/23 分組討論題
 #### Q1
-![截圖 2026-09-28 17.42.48](https://hackmd.io/_uploads/SJHoInvcGg.png) \
-第一行： \
-`slli x31, x6, 3` => `x31 = x6 * 2 ^ 3 = g * 8` \
-`add x31, x12, x31` => `x31 = x12 + x31 = &C + g * 8 = &C[g]` \
-第二行： \
-`s111 x28, x5, 4` => `x28 = x5 * 2 ^ 4 = f * 16` \
-`slli x29, x5, 3` => `x29 = x5 * 2 ^ 3 = f * 8` \
-`add x28, x28, x29` => `x28 = x28 + x29 = f * 16 + f * 8 = f * 24` \
-`add x28, x10, x28` => `x28 = x10 + x28 = &A + f * 24 = &A[f * 3]` \
-`1d x28, 0(x28)` => `x28 = *(&A[f * 3]) = A[f * 3]` \
-第三行： \
-`slli x29, x5, 5` => `x29 = x5 * 2 ^ 5 = f * 32` \
-`add x29, x10, x29` => `x29 = x10 + x29 = &A + f * 32 = &A[f * 4]` \
-`1d x29, 40(x29)` => `x29 = *(x29 + 40) = *(A[f * 4] + 40) = *(&A[f * 4 + 5]) = A[f * 4 + 5]` \
-第四行： \
-`slli x30, x7, 4` => `x30 = x7 + 2 ^4 = h + 16` \
-`add x30, x11, x30` => `x30 = x11 + x30 = &B + h * 16 = &B[h * 2]` \
-`1d x30, 8(x30)` => `x30 = *(&B[h * 2] + 8) = *(&B[h * 2 + 1]) = B[h * 2 + 1]` \
-第五行： \
-`add x28, x28, x29` => `x28 = x28 + x29 = A[f * 3] +  A[f * 4 + 5]` \
-`add x28, x28, x30` => `x28 = x28 + x30 = A[f * 3] +  A[f * 4 + 5] + B[h * 2 + 1]` \
-`srli x28, x28, 3` => `x28 = x28 / 2 ^ 3 = (A[f * 3] + A[f * 4 + 5] + B[h * 2 + 1]) / 8` \
-第六行： \
-`sd x28, 0(x31)` => `*(&C[g]) = (A[f * 3] +  A[f * 4 + 5] + B[h * 2 + 1]) / 8 => C[g] = (A[f * 3] + A[f * 4 + 5] + B[h * 2 + 1]) / 8` \
+![截圖 2026-09-28 17.42.48](https://hackmd.io/_uploads/SJHoInvcGg.png)
+第一行：
+`slli x31, x6, 3` => `x31 = x6 * 2 ^ 3 = g * 8`
+`add x31, x12, x31` => `x31 = x12 + x31 = &C + g * 8 = &C[g]`
+第二行：
+`s111 x28, x5, 4` => `x28 = x5 * 2 ^ 4 = f * 16`
+`slli x29, x5, 3` => `x29 = x5 * 2 ^ 3 = f * 8`
+`add x28, x28, x29` => `x28 = x28 + x29 = f * 16 + f * 8 = f * 24`
+`add x28, x10, x28` => `x28 = x10 + x28 = &A + f * 24 = &A[f * 3]`
+`1d x28, 0(x28)` => `x28 = *(&A[f * 3]) = A[f * 3]`
+第三行：
+`slli x29, x5, 5` => `x29 = x5 * 2 ^ 5 = f * 32`
+`add x29, x10, x29` => `x29 = x10 + x29 = &A + f * 32 = &A[f * 4]`
+`1d x29, 40(x29)` => `x29 = *(x29 + 40) = *(A[f * 4] + 40) = *(&A[f * 4 + 5]) = A[f * 4 + 5]`
+第四行：
+`slli x30, x7, 4` => `x30 = x7 + 2 ^4 = h + 16`
+`add x30, x11, x30` => `x30 = x11 + x30 = &B + h * 16 = &B[h * 2]`
+`1d x30, 8(x30)` => `x30 = *(&B[h * 2] + 8) = *(&B[h * 2 + 1]) = B[h * 2 + 1]`
+第五行：
+`add x28, x28, x29` => `x28 = x28 + x29 = A[f * 3] +  A[f * 4 + 5]`
+`add x28, x28, x30` => `x28 = x28 + x30 = A[f * 3] +  A[f * 4 + 5] + B[h * 2 + 1]`
+`srli x28, x28, 3` => `x28 = x28 / 2 ^ 3 = (A[f * 3] + A[f * 4 + 5] + B[h * 2 + 1]) / 8`
+第六行：
+`sd x28, 0(x31)` => `*(&C[g]) = (A[f * 3] +  A[f * 4 + 5] + B[h * 2 + 1]) / 8 => C[g] = (A[f * 3] + A[f * 4 + 5] + B[h * 2 + 1]) / 8`
 optional follow up：假設要 mod 2 ^ 3，就跟 0....0111 做 add
 #### Q2
-![截圖 2026-09-28 17.43.09](https://hackmd.io/_uploads/HkpnUnv5Me.png) \
-**1.** \
-0x007B1693 = 0000 0000 0111 1011 0001 0110 1001 0011 \
-=> 000000000111 10110 001 01101 0010011 \
-=> 最右邊是 0010011 且 三個 bit 那邊是 001 的只有 `SLLI` \
-=> 0000000 00111 10110 001 01101 0010011 \
-=> `SLLI x01101, x10110, 00111` \
-=> `SLLI x13, x22, 7` \
-**2.** \
-0x409E07B3 = 0100 0000 1001 1110 0000 0111 1011 0011 \
-=> 010000001001 11100 000 01111 0110011 \
-=> 最右邊是 0110011 且 三個 bit 那邊是 000 有 `ADD` 跟 `SUB` \
-=> 0100000 01001 11100 000 01111 0110011 \
-=> 其中最左邊是 0100000 的是 `SUB` \
-=> `SUB x01111, x11100, x01001` \
+![截圖 2026-09-28 17.43.09](https://hackmd.io/_uploads/HkpnUnv5Me.png)
+**1.**
+0x007B1693 = 0000 0000 0111 1011 0001 0110 1001 0011
+=> 000000000111 10110 001 01101 0010011
+=> 最右邊是 0010011 且 三個 bit 那邊是 001 的只有 `SLLI`
+=> 0000000 00111 10110 001 01101 0010011
+=> `SLLI x01101, x10110, 00111`
+=> `SLLI x13, x22, 7`
+**2.**
+0x409E07B3 = 0100 0000 1001 1110 0000 0111 1011 0011
+=> 010000001001 11100 000 01111 0110011
+=> 最右邊是 0110011 且 三個 bit 那邊是 000 有 `ADD` 跟 `SUB`
+=> 0100000 01001 11100 000 01111 0110011
+=> 其中最左邊是 0100000 的是 `SUB`
+=> `SUB x01111, x11100, x01001`
 => `SUB x15, x28, x9`
 ### 9/23 小考
 #### Q1
-![截圖 2026-09-28 17.53.00](https://hackmd.io/_uploads/ryO-K3wqze.png) \
-第一行： \
-`slli x30, x5, 5` => `x30 = x5 * 2 ^ 5 = 44 * 32 = 1408` \
-`andi x30, x30, 0x3F8` => `x30 = 10110000000 and 01111111000 = 00110000000 = 384` \
-`add x30, x10, x30` => `x30 = &A + 384 = &A[48]` \
-`ld x28, 0(x30)` => `x28 = *(&A[48]) = A[48]` \
-第二行： \
-`slli x31, x6, 4` => `x31 = x6 * 2 ^ 4 = 26 * 16 = 416` \
-`andi x31, x31, 0x0F8` => `x30 = 110100000 and 011111000 = 010100000 = 160` \
-`add x31, x11, x31` => `x31 = &B + 160 = &A[20]` \
-`ld x29, 24(x31)` => `x29 = *(&A[20] + 24) = B[23]` \
-第三行： \
-`slli x27, x7, 4` => `x27 = x7 * 2 ^ 4 = 18 * 16 = 288` \
-`andi x27, x27, 0x0F8` => `x30 = 100100000 and 011111000 = 000100000 = 32` \
-`add x27, x12, x27` => `x27 = &C + 32 = &C[4]` \
-第四行： \
-`sub x28, x28, x29` => `x28 = x28 - x29 = A[48] - B[23]` \
-`andi x28, x28, 0x07F` => `x28 = (A[48] - B[23]) % 128` \
-第五行： \
+![截圖 2026-09-28 17.53.00](https://hackmd.io/_uploads/ryO-K3wqze.png)
+第一行：
+`slli x30, x5, 5` => `x30 = x5 * 2 ^ 5 = 44 * 32 = 1408`
+`andi x30, x30, 0x3F8` => `x30 = 10110000000 and 01111111000 = 00110000000 = 384`
+`add x30, x10, x30` => `x30 = &A + 384 = &A[48]`
+`ld x28, 0(x30)` => `x28 = *(&A[48]) = A[48]`
+第二行：
+`slli x31, x6, 4` => `x31 = x6 * 2 ^ 4 = 26 * 16 = 416`
+`andi x31, x31, 0x0F8` => `x30 = 110100000 and 011111000 = 010100000 = 160`
+`add x31, x11, x31` => `x31 = &B + 160 = &A[20]`
+`ld x29, 24(x31)` => `x29 = *(&A[20] + 24) = B[23]`
+第三行：
+`slli x27, x7, 4` => `x27 = x7 * 2 ^ 4 = 18 * 16 = 288`
+`andi x27, x27, 0x0F8` => `x30 = 100100000 and 011111000 = 000100000 = 32`
+`add x27, x12, x27` => `x27 = &C + 32 = &C[4]`
+第四行：
+`sub x28, x28, x29` => `x28 = x28 - x29 = A[48] - B[23]`
+`andi x28, x28, 0x07F` => `x28 = (A[48] - B[23]) % 128`
+第五行：
 `sd x28, 0(x27)` => `*(&C[4]) = (A[48] - B[23]) % 128` => `C[4] = (A[48] - B[23]) % 128`
 ### 9/30 分組討論題
 #### Q1
-![截圖 2026-10-25 18.05.53](https://hackmd.io/_uploads/HJAtNIsnGl.png) \
+![截圖 2026-10-25 18.05.53](https://hackmd.io/_uploads/HJAtNIsnGl.png)
 ![截圖 2026-10-25 18.06.26](https://hackmd.io/_uploads/ByRj4Ujhzg.png)
 ```asm
 main:
@@ -813,8 +813,8 @@ one:
 	jalr x0, 0(ra)
 ```
 #### Q2
-![截圖 2026-10-25 19.41.10](https://hackmd.io/_uploads/B17kivj3Gg.png) \
-**1.** \
+![截圖 2026-10-25 19.41.10](https://hackmd.io/_uploads/B17kivj3Gg.png)
+**1.**
 初版答案：
 ```asm
 sum:
@@ -871,10 +871,10 @@ base_case:
 	addi sp, sp, 16
 	jalr x0, 0(ra)
 ```
-**2.** \
-判斷一個程式是否為 tail call：遞迴回來之後，沒有任何指令使用或修改回傳值，只剩復原 stack frame 和返回 => 這題是 tail call \
-為什麼可以做 tail call optimization（TCO）：普通遞迴會一層一層呼叫，再一層一層返回，但 tail call 在返回的時候，每一層只是把同樣的回傳值往上傳，所以可以讓最後一層直接返回給第一層，省掉整段回程 \
-TCO 的效果：遞迴變成迴圈，計算順序不變，stack 空間從 O(n) 變成 O(1) \
+**2.**
+判斷一個程式是否為 tail call：遞迴回來之後，沒有任何指令使用或修改回傳值，只剩復原 stack frame 和返回 => 這題是 tail call
+為什麼可以做 tail call optimization（TCO）：普通遞迴會一層一層呼叫，再一層一層返回，但 tail call 在返回的時候，每一層只是把同樣的回傳值往上傳，所以可以讓最後一層直接返回給第一層，省掉整段回程
+TCO 的效果：遞迴變成迴圈，計算順序不變，stack 空間從 O(n) 變成 O(1)
 把這題做 TCO：
 ```asm
 sum:
@@ -901,69 +901,69 @@ fin:
 #### Q1
 ![截圖 2026-10-25 23.26.14](https://hackmd.io/_uploads/S13Geio2Gl.png)
 
-`add a0, s0, x0` => a0 = 4、s0 = 4 \
-`jal ra, func` => 跳到 func、ra = 第四行（`add s1, a0, x0`） \
-`addi sp, sp, -4` => sp = -4 \
-`sw ra, 0(sp)` => sp[-4] 存跳到第四行（`add s1, a0, x0`） \
-`slti t0, a0, 1` => a0 = 4 > 1 => t0 = 0 \
-`beq t0, x0, K1` => 跳到 K1 \
-`addi a0, a0, -1` => a0 = 3 \
-`jal ra, func` => 跳到 func、ra = 第九行（`add t0, a0, x0`） \
-`addi sp, sp, -4` => sp = -8 \
-`sw ra, 0(sp)` => sp[-8] 存跳到第九行（`add t0, a0, x0`） \
-`slti t0, a0, 1` => a0 = 3 > 1 => t0 = 0 \
-`beq t0, x0, K1` => 跳到 K1 \
-`addi a0, a0, -1` => a0 = 2 \
-`jal ra, func` => 跳到 func、ra = 第九行（`add t0, a0, x0`） \
-`addi sp, sp, -4` => sp = -12 \
-`sw ra, 0(sp)` => sp[-12] 存跳到第九行（`add t0, a0, x0`） \
-`slti t0, a0, 1` => a0 = 2 > 1 => t0 = 0 \
-`beq t0, x0, K1` => 跳到 K1 \
-`addi a0, a0, -1` => a0 = 1 \
-`jal ra, func` => 跳到 func、ra = 第九行（`add t0, a0, x0`） \
-`addi sp, sp, -4` => sp = -16 \
-`sw ra, 0(sp)` => sp[-16] 存跳到第九行（`add t0, a0, x0`） \
-`slti t0, a0, 1` => a0 = 1 = 1 => t0 = 0 \
-`beq t0, x0, K1` => 跳到 K1 \
-`addi a0, a0, -1` => a0 = 0 \
-`jal ra, func` => 跳到 func、ra = 第九行（`add t0, a0, x0`） \
-`addi sp, sp, -4` => sp = -20 \
-`sw ra, 0(sp)` => sp[-20] 存跳到第九行（`add t0, a0, x0`） \
-`slti t0, a0, 1` => a0 = 0 &lt; 1 => t0 = 1 \
-`beq t0, x0, K1` => 沒事 \
-`addi sp, sp, 4` => sp = -16 \
-`addi a0, x0, 1` => a0 = 1 \
-`jalr x0, 0(ra)` => 跳到第九行 \
-`add t0, a0, x0` => t0 = 1 \
-`add a0, t0, t0` => a0 = 2 \
-`1w ra, 0(sp)` => ra = sp[-16] = 第九行（`add t0, a0, x0`） \
-`addi sp, sp, 4` => sp = -12 \
-`jalr x0, 0(ra)` => 跳到第九行 \
-`add t0, a0, x0` => t0 = 2 \
-`add a0, t0, t0` => a0 = 4 \
-`1w ra, 0(sp)` => ra = sp[-12] = 第九行（`add t0, a0, x0`） \
-`addi sp, sp, 4` => sp = -8 \
-`jalr x0, 0(ra)` => 跳到第九行 \
-`add t0, a0, x0` => t0 = 4 \
-`add a0, t0, t0` => a0 = 8 \
-`1w ra, 0(sp)` => ra = sp[-8] = 第九行（`add t0, a0, x0`） \
-`addi sp, sp, 4` => sp = -4 \
-`jalr x0, 0(ra)` => 跳到第九行 \
-`add t0, a0, x0` => t0 = 8 \
-`add a0, t0, t0` => a0 = 16 \
-`1w ra, 0(sp)` => ra = sp[-4] = 第四行（`add s1, a0, x0`） \
-`addi sp, sp, 4` => sp = 0 \
-`jalr x0, 0(ra)` => 跳到第四行 \
-`add s1, a0, x0` => s1 = 16 \
-`jal x0, exit` => 跳到 exit \
+`add a0, s0, x0` => a0 = 4、s0 = 4
+`jal ra, func` => 跳到 func、ra = 第四行（`add s1, a0, x0`）
+`addi sp, sp, -4` => sp = -4
+`sw ra, 0(sp)` => sp[-4] 存跳到第四行（`add s1, a0, x0`）
+`slti t0, a0, 1` => a0 = 4 > 1 => t0 = 0
+`beq t0, x0, K1` => 跳到 K1
+`addi a0, a0, -1` => a0 = 3
+`jal ra, func` => 跳到 func、ra = 第九行（`add t0, a0, x0`）
+`addi sp, sp, -4` => sp = -8
+`sw ra, 0(sp)` => sp[-8] 存跳到第九行（`add t0, a0, x0`）
+`slti t0, a0, 1` => a0 = 3 > 1 => t0 = 0
+`beq t0, x0, K1` => 跳到 K1
+`addi a0, a0, -1` => a0 = 2
+`jal ra, func` => 跳到 func、ra = 第九行（`add t0, a0, x0`）
+`addi sp, sp, -4` => sp = -12
+`sw ra, 0(sp)` => sp[-12] 存跳到第九行（`add t0, a0, x0`）
+`slti t0, a0, 1` => a0 = 2 > 1 => t0 = 0
+`beq t0, x0, K1` => 跳到 K1
+`addi a0, a0, -1` => a0 = 1
+`jal ra, func` => 跳到 func、ra = 第九行（`add t0, a0, x0`）
+`addi sp, sp, -4` => sp = -16
+`sw ra, 0(sp)` => sp[-16] 存跳到第九行（`add t0, a0, x0`）
+`slti t0, a0, 1` => a0 = 1 = 1 => t0 = 0
+`beq t0, x0, K1` => 跳到 K1
+`addi a0, a0, -1` => a0 = 0
+`jal ra, func` => 跳到 func、ra = 第九行（`add t0, a0, x0`）
+`addi sp, sp, -4` => sp = -20
+`sw ra, 0(sp)` => sp[-20] 存跳到第九行（`add t0, a0, x0`）
+`slti t0, a0, 1` => a0 = 0 &lt; 1 => t0 = 1
+`beq t0, x0, K1` => 沒事
+`addi sp, sp, 4` => sp = -16
+`addi a0, x0, 1` => a0 = 1
+`jalr x0, 0(ra)` => 跳到第九行
+`add t0, a0, x0` => t0 = 1
+`add a0, t0, t0` => a0 = 2
+`1w ra, 0(sp)` => ra = sp[-16] = 第九行（`add t0, a0, x0`）
+`addi sp, sp, 4` => sp = -12
+`jalr x0, 0(ra)` => 跳到第九行
+`add t0, a0, x0` => t0 = 2
+`add a0, t0, t0` => a0 = 4
+`1w ra, 0(sp)` => ra = sp[-12] = 第九行（`add t0, a0, x0`）
+`addi sp, sp, 4` => sp = -8
+`jalr x0, 0(ra)` => 跳到第九行
+`add t0, a0, x0` => t0 = 4
+`add a0, t0, t0` => a0 = 8
+`1w ra, 0(sp)` => ra = sp[-8] = 第九行（`add t0, a0, x0`）
+`addi sp, sp, 4` => sp = -4
+`jalr x0, 0(ra)` => 跳到第九行
+`add t0, a0, x0` => t0 = 8
+`add a0, t0, t0` => a0 = 16
+`1w ra, 0(sp)` => ra = sp[-4] = 第四行（`add s1, a0, x0`）
+`addi sp, sp, 4` => sp = 0
+`jalr x0, 0(ra)` => 跳到第四行
+`add s1, a0, x0` => s1 = 16
+`jal x0, exit` => 跳到 exit
 => s1 = 16
 #### Q2
-![截圖 2026-10-26 00.35.32](https://hackmd.io/_uploads/S1-vb2o2fl.png) \
+![截圖 2026-10-26 00.35.32](https://hackmd.io/_uploads/S1-vb2o2fl.png)
 beq 是 SB format => 指令裡留給 immediate 的欄位是 imm[12:1]、imm[0] 永遠是 0 => 目標位址一定是偶數 =>  offset 實際上是一個 13 bits 的 signed number，而且最低位一定是 0
 - 最小：1000000000000 = −0x1000 => 可到 0x04080000 − 0x1000 = 0x0407F000
 - 最大：0111111111110 = +0x0FFE => 可到 0x04080000 + 0x0FFE = 0x04080FFE
 
-到不了怎麼辦： \
-0x04080000：`bne a0, x0, L2` \
-0x04080004：`jal x0, L1` \
+到不了怎麼辦：
+0x04080000：`bne a0, x0, L2`
+0x04080004：`jal x0, L1`
 0x04080008：`L2:`

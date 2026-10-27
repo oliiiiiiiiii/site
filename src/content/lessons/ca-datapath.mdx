@@ -17,14 +17,14 @@ draft: false
 - the meaning of each instruction is given by the register transfers
 - datapath must include storage element for ISA registers
 - datapath must support each register transfer
-- the RISC-V subset for today： \
-  `add rd, rs1, rs2` \
-  `sub rd, rs1, rs2` \
-  `ori rd, rs, imm12` \
-  `ld rd, imm12(rs1)` \
-  `beq rs1, rs2, imm12` \
+- the RISC-V subset for today：
+  `add rd, rs1, rs2`
+  `sub rd, rs1, rs2`
+  `ori rd, rs, imm12`
+  `ld rd, imm12(rs1)`
+  `beq rs1, rs2, imm12`
   ![截圖 2026-10-05 03.09.57](https://hackmd.io/_uploads/HJQ9EXlsMg.png)
-- execution flow（影片大約五分鐘的地方有動畫）： \
+- execution flow（影片大約五分鐘的地方有動畫）：
   ![截圖 2026-10-05 03.22.11](https://hackmd.io/_uploads/rJJ_Pmesfe.png)
 - instruction &lt;=> register transfers
     - RTL（Register Transfer Languages）gives the meaning of the instructions
@@ -81,29 +81,29 @@ draft: false
            - the CLK input is a factor ONLY during write operation
            - during read operation, behaves as a combinational logic block：address valid => Data Out valid after "access time"
 ## Step 3：assemble datapath meeting the requirements
-- register transfer requirements -> datapath assembly \
- ![截圖 2026-10-05 16.31.04](https://hackmd.io/_uploads/BJLUgy-ifg.png) \
+- register transfer requirements -> datapath assembly
+ ![截圖 2026-10-05 16.31.04](https://hackmd.io/_uploads/BJLUgy-ifg.png)
  步驟：
    1. instructions fetch
    2. read operands and execute operation
    3. memory read / write
    4. register update
-- 3a. instruction fetch unit：common operations \
+- 3a. instruction fetch unit：common operations
  ![截圖 2026-10-05 16.35.30](https://hackmd.io/_uploads/rJfvZ1WiMl.png)
    - fetch the instruction：`mem[PC]`
-   - update the program counter： \
-     sequential code `PC <- PC + 4` \
+   - update the program counter：
+     sequential code `PC <- PC + 4`
      branch and jump（later） `PC <- target addr.`
-- 3b. add & subtract \
+- 3b. add & subtract
   ![截圖 2026-10-05 16.44.21](https://hackmd.io/_uploads/S1GdX1bizg.png)
     - `R[rd] <- R[rs1] op R[rs2]`，example：`add rd, rs1, rs2`
         - Ra, Rb and Rw come from instruction's rs1, rs2 and rd files
         - ALUctr and RegWr：control logic after decoding the instruction
-- 3c. load operations \
+- 3c. load operations
   ![截圖 2026-10-05 16.47.02](https://hackmd.io/_uploads/SJ7MEkWjMg.png)
     - `R[rd] <= mem[R[rs1] + SignExt[imm12]] # ld rd, imm12(rs1)`
-- 3e. branch operations \
-  ![截圖 2026-10-05 17.00.42](https://hackmd.io/_uploads/rkrrwy-sfl.png) \
+- 3e. branch operations
+  ![截圖 2026-10-05 17.00.42](https://hackmd.io/_uploads/rkrrwy-sfl.png)
   ![截圖 2026-10-05 17.00.58](https://hackmd.io/_uploads/HytUwJZozg.png)
     - `beq rs1, rs2, imm12`
     - ```c
@@ -112,15 +112,15 @@ draft: false
       else
           PC <- PC + 4
       ```
-- single-cycle datapath：attempt to execute all instructions in one clock-cycle \
+- single-cycle datapath：attempt to execute all instructions in one clock-cycle
   ![截圖 2026-10-05 17.05.24](https://hackmd.io/_uploads/rJxDu1ZsGx.png)
-  - add instruction 的 data flow \
+  - add instruction 的 data flow
     ![截圖 2026-10-05 17.06.59](https://hackmd.io/_uploads/Bkyad1-oMl.png)
 ## Step 4：analyze implementation of each instruction to determine setting of control points that effect the register transfer（given datapath -> control）
-Rs1, Rs2, Rd and Imed12 hardwired into datapath： \
+Rs1, Rs2, Rd and Imed12 hardwired into datapath：
 ![截圖 2026-10-05 17.08.18](https://hackmd.io/_uploads/ryAWYk-ozx.png)
 
-meaning of control signals： \
+meaning of control signals：
 ![截圖 2026-10-05 17.10.45](https://hackmd.io/_uploads/SJZsF1-szl.png)
 
 | 上圖中的什麼 | 作用 |
@@ -133,43 +133,43 @@ meaning of control signals： \
 | ALUctr | "add", "sub", "or", "and" |
 | PCSrc | 0 => PC = PC + 4; 1 => PC = branch target address |
 
-examine control signals：add \
+examine control signals：add
 fetch the instruction from instruction memory：instruction &lt;- mem[PC]
-- this is the same for all instructions \
+- this is the same for all instructions
   ![截圖 2026-10-05 17.23.33](https://hackmd.io/_uploads/rkrsnJbizg.png)
 
-the single cycle datapath during add \
+the single cycle datapath during add
 ![截圖 2026-10-05 17.24.57](https://hackmd.io/_uploads/rkBxaJbjGg.png)
 
 instruction fetch unit at the end of add
 - PC &lt;- PC + 4（same for all instructions except: branch and jump）
 - ![截圖 2026-10-05 17.27.48](https://hackmd.io/_uploads/S1WiT1ZoMl.png)
 
-the single cycle datapath during load \
+the single cycle datapath during load
 ![截圖 2026-10-05 17.28.21](https://hackmd.io/_uploads/Bkb6pJZsMg.png)
 
-the single cycle datapath during store \
+the single cycle datapath during store
 ![截圖 2026-10-05 17.28.56](https://hackmd.io/_uploads/HyB1CkWoGx.png)
 
-the single cycle datapath during branch（beq） \
+the single cycle datapath during branch（beq）
 ![截圖 2026-10-05 17.30.43](https://hackmd.io/_uploads/S11LA1WjGx.png)
 
-instruction fetch unit at the end of \
+instruction fetch unit at the end of
 ![截圖 2026-10-05 17.36.15](https://hackmd.io/_uploads/S1s51ebsMe.png)
 
-exemple：the single cycle datapath during ori \
+exemple：the single cycle datapath during ori
 ![截圖 2026-10-05 17.51.39](https://hackmd.io/_uploads/SkOV7x-jfx.png)
 ## Step 5：assemble the control logic（control unit）
 ![截圖 2026-10-05 17.54.16](https://hackmd.io/_uploads/rkB07g-sGe.png)
 
-怎麼打造 comprehensive logic： \
-一個 comprehensive logic 就是一個 unit，會有 input 跟 output，下面的例子會有三個 input 跟三個 output \
-![截圖 2026-10-05 19.02.06](https://hackmd.io/_uploads/S1q2Qb-oMx.png) \
+怎麼打造 comprehensive logic：
+一個 comprehensive logic 就是一個 unit，會有 input 跟 output，下面的例子會有三個 input 跟三個 output
+![截圖 2026-10-05 19.02.06](https://hackmd.io/_uploads/S1q2Qb-oMx.png)
 把 input output 值寫出來之後就可以設計 gate
 
-![截圖 2026-10-05 19.14.32](https://hackmd.io/_uploads/ByLo8ZbsMg.png) \
-![截圖 2026-10-05 19.15.17](https://hackmd.io/_uploads/B1gA8WbiMx.png) \
-![截圖 2026-10-05 19.15.31](https://hackmd.io/_uploads/ByJyDbZoGg.png) \
+![截圖 2026-10-05 19.14.32](https://hackmd.io/_uploads/ByLo8ZbsMg.png)
+![截圖 2026-10-05 19.15.17](https://hackmd.io/_uploads/B1gA8WbiMx.png)
+![截圖 2026-10-05 19.15.31](https://hackmd.io/_uploads/ByJyDbZoGg.png)
 ![截圖 2026-10-05 19.15.43](https://hackmd.io/_uploads/HJ51DZWizl.png)
 
 ## Performance of Single-Cycle Machines
@@ -197,36 +197,36 @@ the variable clock implementation would be faster by $\frac{600}{447.5}=1.34$
 ## 一些題目
 ### 10/7 分組討論題
 #### Q3
-![截圖 2026-10-26 16.39.49](https://hackmd.io/_uploads/Skl1G5h3Gx.png) \
-![截圖 2026-10-26 16.39.59](https://hackmd.io/_uploads/rJhyG9hnMx.png) \
+![截圖 2026-10-26 16.39.49](https://hackmd.io/_uploads/Skl1G5h3Gx.png)
+![截圖 2026-10-26 16.39.59](https://hackmd.io/_uploads/rJhyG9hnMx.png)
 **1.**
 - instruction memory read：300
 - 接下來有兩條 path 同時走（花比較多時間的是 120 那條）：
-	- path 1 \
-	  register file read：100 \
-	  MUX：20 \
+	- path 1
+	  register file read：100
+	  MUX：20
 	  => 120
-	- path 2 \
-	  control：30 \
-	  ALU control：50 \
+	- path 2
+	  control：30
+	  ALU control：50
 	  => 80
 - ALU：200
 - MUX：20
 
-=> 300 + 120 + 200 + 20 = 640 \
+=> 300 + 120 + 200 + 20 = 640
 **2.**
 - instruction memory read：300
 - 接下來有兩條 path 同時走（花比較多時間的是 100 那條）：
 	- path 1：有兩條子 path（花比較多時間的是 100 那條）
-		- path 1.1 \
+		- path 1.1
 		  register file read：100
-		- path 1.2 \
-		  max(immediate generator 20, control 30)：30 \
-		  MUX：20 \
+		- path 1.2
+		  max(immediate generator 20, control 30)：30
+		  MUX：20
 		  => 50
-	- path 2 \
-	  control：30 \
-	  ALU control：50 \
+	- path 2
+	  control：30
+	  ALU control：50
 	  => 80
 - ALU：200
 - MUX：20
@@ -235,47 +235,47 @@ the variable clock implementation would be faster by $\frac{600}{447.5}=1.34$
 
 ### 10/7 小考
 #### Q3
-![截圖 2026-10-26 17.42.54](https://hackmd.io/_uploads/Sy_pgs3hGg.png) \
+![截圖 2026-10-26 17.42.54](https://hackmd.io/_uploads/Sy_pgs3hGg.png)
 **1.**
 - instruction memory read：300
 - 接下來有三條 path 同時走（花比較多時間的是 320 那條）
-	- path 1 \
+	- path 1
 	  control：30
 	- path 2 也有兩條 path 同時走（花比較多時間的是 120 那條，再加上 ALU 的 200 就是 320）：
-		- path 2.1 \
-		  register file read：100 \
-		  MUX：20 \
+		- path 2.1
+		  register file read：100
+		  MUX：20
 		  => 120
-		- path 2.2 \
-		  control：30 \
-		  ALU control：50 \
+		- path 2.2
+		  control：30
+		  ALU control：50
 		  => 80
-	- path 3： \
-	  immediate generator：20 \
-	  shift left 1：0 \
-	  Add：0 \
+	- path 3：
+	  immediate generator：20
+	  shift left 1：0
+	  Add：0
 	  => 20
 - MUX：20
 
-=> 300 + 320 + 20 = 640 \
+=> 300 + 320 + 20 = 640
 **2.**
 - instruction memory read：300
 - 接下來有兩條 path 同時走（花比較多時間的是 100 那條）：
 	- path 1：有兩條子 path（花比較多時間的是 100 那條）
-		- path 1.1 \
+		- path 1.1
 		  register file read：100
-		- path 1.2 \
-		  max(immediate generator 20, control 30)：30 \
-		  MUX：20 \
+		- path 1.2
+		  max(immediate generator 20, control 30)：30
+		  MUX：20
 		  => 50
-	- path 2 \
-	  control：30 \
-	  ALU control：50 \
+	- path 2
+	  control：30
+	  ALU control：50
 	  => 80
 - ALU：200
 - data memory read：300
 - MUX：20
 
-=> 300 + 100 + 200 + 300 + 20 = 920 \
-**3.** \
+=> 300 + 100 + 200 + 300 + 20 = 920
+**3.**
 `ld` 是最慢的 => 920
