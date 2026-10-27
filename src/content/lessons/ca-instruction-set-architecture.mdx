@@ -410,11 +410,11 @@ int f2( int s1, int s2 ){
 
 procedure call instructions
 - procedure call：jump and link
-  `ja1 x1, ProcedureLabel`
+  `jal x1, ProcedureLabel`
   - 會把 PC 設成 `ProcedureLabel` 的位址（jumps to target address）
   - 然後把原本的位址存在 `x1`（address of following instruction put in `x1`）
   - 圖
-    ![截圖 2026-09-25 20.56.03](https://hackmd.io/_uploads/HkVOkl4qfg.png)
+    ![procedure call](https://hackmd.io/_uploads/HkVOkl4qfg.png)
 - procedure return：jump and link register
   `jalr x0, 0(x1)`
   - like `jal`, but jumps to `0 + address in x1`（`PC = 0 + address in x1`）
@@ -422,9 +422,9 @@ procedure call instructions
   - can also be used for computed jumps（ex. for `case` / `switch` statements）
 
 procedure call stack（frame）：
-![截圖 2026-09-25 20.57.31](https://hackmd.io/_uploads/B1wR1lVcGl.png)
+![procedure call stack](https://hackmd.io/_uploads/B1wR1lVcGl.png)
 （這個 stack 是由上往下堆，所以最下面是 top）
-![截圖 2026-09-25 20.57.43](https://hackmd.io/_uploads/SkOAkxE5zg.png)
+![stack frame](https://hackmd.io/_uploads/SkOAkxE5zg.png)
 
 leaf procedure example：
 - C code（`ll` 是 `long long int`）：
@@ -464,7 +464,7 @@ leaf procedure example：
   // 最後 rerturn
   jalr x0, 0(x1)
   ```
-  ![截圖 2026-09-25 21.10.40](https://hackmd.io/_uploads/r11kQeVcGe.png)
+  ![high low address](https://hackmd.io/_uploads/r11kQeVcGe.png)
   - x5 – x7, x28 – x31：temporary registers（not preserved by the callee）
   - x8 – x9, x18 – x27：saved registers（if used, the callee saves and restores them）
 - 再簡化後的 RISC-V code：
@@ -523,7 +523,7 @@ non-leaf procedure example（算 `1 * 2 * 3 * ... * n`）：
         jalr x0, 0(x1) ; return
     ```
 ## Memory Layout
-![截圖 2026-09-26 11.01.24](https://hackmd.io/_uploads/HJW5S3E5Me.png)
+![memory layout](https://hackmd.io/_uploads/HJW5S3E5Me.png)
 - text：program code
 - static data：global variables
     - ex. static variables in C
@@ -532,7 +532,8 @@ non-leaf procedure example（算 `1 * 2 * 3 * ... * n`）：
     - ex. malloc in c, new in Java
 - stack：automatic storage
 
-![截圖 2026-09-26 11.11.02](https://hackmd.io/_uploads/B1w0P3N5Mg.png)
+函式呼叫時，堆疊（stack）怎麼配置空間（(a) 呼叫前、(b) 呼叫中、(c) 呼叫後）：
+![stack layout](https://hackmd.io/_uploads/B1w0P3N5Mg.png)
 - local data allocated by callee
     - ex. C automatic variables
 - procedure frame（activation record）
@@ -588,59 +589,61 @@ string copy example：
           i += 1;
   }
   ```
-- RISC-V code（x 在 x11、y 在 x10）：
+- RISC-V code（x 在 x10、y 在 x11）：
   ```asm
   strcpy:
-      addi sp, sp, -8 ; adjust stack for 1 doubleword
-      sd x19, 0(sp) ; push x19
-      add x19, x0, x0 ; i = 0
-  L1: add x5, x19, x11 ; x5 = addr of y[i]
-      lbu x6, 0(x5) ; x6 = y[i]
-      add x7, x19, x10 ; x7 = addr of x[i]
-      sb x6, 0(x7) ; x[i] = y[i]
-      beq x6, x0, L2 ; if y[i] == 0 then exit
-      addi x19, x19, 1 ; i = i + 1
-      jal x0, L1 ; unconditional jump, next iteration of loop
-  L2: ld x19, 0(sp) ; restore saved x19
-      addi sp, sp, 8 ; pop 1 doubleword from stack
-      jalr x0, 0(x1) ; and return
+      addi sp, sp, -8     ; 堆疊空出 8 bytes（1 個 doubleword）
+      sd   x19, 0(sp)     ; 把 x19 存進堆疊
+      add  x19, x0, x0    ; i = 0
+  L1: add  x5, x19, x11   ; x5 = y[i] 的位址
+      lbu  x6, 0(x5)      ; x6 = y[i]
+      add  x7, x19, x10   ; x7 = x[i] 的位址
+      sb   x6, 0(x7)      ; x[i] = y[i]
+      beq  x6, x0, L2     ; 若 y[i] == 0，跳出迴圈
+      addi x19, x19, 1    ; i = i + 1
+      jal  x0, L1         ; 無條件跳回 L1，進行下一圈
+  L2: ld   x19, 0(sp)     ; 從堆疊還原 x19
+      addi sp, sp, 8      ; 堆疊釋放 8 bytes
+      jalr x0, 0(x1)      ; 返回呼叫者
   ```
 
 ## 32 bit constants
 how to load a 32-bit constant into a register？
-![截圖 2026-09-27 10.38.43](https://hackmd.io/_uploads/Sy1Tb-89Me.png)
-`lui rd, constant`
+一般放常數會用 `addi`（I-type），但 I-type 的 immediate 只有 12 bits，不可能塞下一個完整的 32-bit 常數：
+![I-type](https://hackmd.io/_uploads/Sy1Tb-89Me.png)
+所以把 32-bit 拆成「高 20-bit 用 `lui`」+「低 12-bit 用 `addi`」
+`lui rd, constant`（load upper immediate）
 - copies 20-bit const to bits [31:12] of `rd`
 - extends bit 31 to bits [63:32]
 - clears bits [11:0] of `rd` to 0
 - example：`lui x19, 976 // 0x003D0`：
-  ![截圖 2026-09-27 23.18.18](https://hackmd.io/_uploads/SJ8pX2IcMl.png)
+  ![lui example](https://hackmd.io/_uploads/SJ8pX2IcMl.png)
 
 以上是一個 U-type instruction：
-![截圖 2026-09-27 23.32.03](https://hackmd.io/_uploads/H10lv3Icfe.png)
+![U-type instruction](https://hackmd.io/_uploads/H10lv3Icfe.png)
 ## Encoding for Control Flow Instructions
 有兩大類
-1. branches（`bne`、`beq`）
+1. branches（`bne`、`beq`） \
    SB format
-   ![截圖 2026-09-27 23.41.17](https://hackmd.io/_uploads/HytXYh85fg.png)
+   ![SB format](https://hackmd.io/_uploads/HytXYh85fg.png)
    example：
    ```asm
    bne x10, x11, 2000 ; if x10 != x11, go to location 2000 = 0011111010000
    ```
-   ![截圖 2026-09-27 23.48.57](https://hackmd.io/_uploads/S14eihU5Gg.png)
-   imm[0] 不用存
+   ![SB format example](https://hackmd.io/_uploads/S14eihU5Gg.png)
+   imm[0] 不用存 \
    真正要跳去的值不會就是 2000，因為是 PC-relative addressing
    - target address = PC + immediate[] * 2
    - Supporting the possibility of 2-byte long instruction
-2. unconditional jump（`jal`、`jalr`）
+2. unconditional jump（`jal`、`jalr`） \
    UJ format
-   ![截圖 2026-09-27 23.41.28](https://hackmd.io/_uploads/SkVEtnLqzl.png)
+   ![UJ format](https://hackmd.io/_uploads/SkVEtnLqzl.png)
    jump and link（jal）target uses 20-bit immediate for larger range
    example：
    ```asm
    jal x0, 2000
    ```
-   ![截圖 2026-09-28 00.11.04](https://hackmd.io/_uploads/Hk47la8qfl.png)
+   ![UJ format example](https://hackmd.io/_uploads/Hk47la8qfl.png)
    一樣 imm[0] 不用存
    也用 PC-relative addressing
 
@@ -659,22 +662,25 @@ L2:
 
 long jump：
 for long jumps, ex. to 32-bit absolute address
-- `lui`：load address[31:12] to temp register
-- `jalr`：add address[11:0] and jump to target
-  ![截圖 2026-09-28 00.24.30](https://hackmd.io/_uploads/SkqSQpL9fl.png)
-  `lui x8, address[31:12]`
-  ![截圖 2026-09-28 00.27.42](https://hackmd.io/_uploads/H1YZNpL9fl.png)
-  `jalr x0, address[11:0](x8)`
+- `lui`：load address[31:12] to temp register（`lui x8, address[31:12]`）
+- `jalr`：add address[11:0] and jump to target（`jalr x0, address[11:0](x8)`）
+- code
+  ```asm
+  lui  x8, 0x003D0       ; lui 把位址的高 20 bits 放進暫存器 x8
+  jalr x0, 0x500(x8)     ; jalr 本身就是「暫存器 + 12-bit offset」再跳過去，剛好把低 12 bits 補上
+  ```
+  ![address all](https://hackmd.io/_uploads/SkqSQpL9fl.png)
+  ![address 31:12](https://hackmd.io/_uploads/H1YZNpL9fl.png)
 
 ## RISC-V Summary
 addressing summary：
-![截圖 2026-09-28 01.15.57](https://hackmd.io/_uploads/SytUyC8qGx.png)
+![addressing summary](https://hackmd.io/_uploads/SytUyC8qGx.png)
 encoding summary：
-![截圖 2026-09-28 01.17.06](https://hackmd.io/_uploads/BJJs1C85Gx.png)
+![encoding summary](https://hackmd.io/_uploads/BJJs1C85Gx.png)
 
 ## Parallelism and Instructions：Synchronization
-parallel tasks must synchronize to avoid data race, where the results of the program can change depending on how events happen to occur.
-lock / unlock: ensure only one task entering the critical section：
+parallel tasks must synchronize to avoid data race, where the results of the program can change depending on how events happen to occur
+lock / unlock ensure only one task entering the critical section：
 - P(1)
   ```c
   acquire lock;
@@ -690,7 +696,7 @@ lock / unlock: ensure only one task entering the critical section：
   release lock;
   ```
 
-atomic swap：atomically intercharge a value in a register for a value in memory; nothing else can interpose itself between the read and write to the memory location
+atomic swap：以 atomic 方式交換暫存器中的值與記憶體中的值，在此過程中任何其他操作都無法介入該記憶體位置的讀寫操作之間
 - P(1)
   ```c
   x4 = 1;
@@ -698,7 +704,7 @@ atomic swap：atomically intercharge a value in a register for a value in memory
   if x4 = 0
       enter critical section;
   ```
-  ![截圖 2026-09-29 15.02.03](https://hackmd.io/_uploads/Hk_OzkKcze.png)
+  ![state 1](https://hackmd.io/_uploads/Hk_OzkKcze.png)
   ```asm
           li x4, #1
   lockit: lw x2, 0(x1)
@@ -712,7 +718,7 @@ atomic swap：atomically intercharge a value in a register for a value in memory
   if x4 = 0
       enter critical section;
   ```
-  ![截圖 2026-09-29 15.02.57](https://hackmd.io/_uploads/HJRof1KcGl.png)
+  ![state 2](https://hackmd.io/_uploads/HJRof1KcGl.png)
   ```asm
           li x4, #1
   lockit: lw x2, 0(x1)
@@ -728,9 +734,9 @@ initial value of lock is 0
 => both processors think they get the lock
 
 synchronization in RISC-V：
-- loak reserved：`lr.d rd, (rs1)`
+- load reserved：`lr.d rd, (rs1)`
     - load from address in `rs1` to `rd`
-    - place reservationon memory address
+    - place reservation on memory address
 - store conditional：`sc.d rd, (rs1), rs2`
     - store from `rs2` to address in `rs1`
     - succeed if location not changed since the `lr.d`（returns 0 in `rd`）
@@ -757,7 +763,7 @@ synchronization in RISC-V：
 ## 一些題目
 ### 9/23 分組討論題
 #### Q1
-![截圖 2026-09-28 17.42.48](https://hackmd.io/_uploads/SJHoInvcGg.png)
+![0923 class q1](https://hackmd.io/_uploads/SJHoInvcGg.png)
 第一行：
 `slli x31, x6, 3` => `x31 = x6 * 2 ^ 3 = g * 8`
 `add x31, x12, x31` => `x31 = x12 + x31 = &C + g * 8 = &C[g]`
@@ -783,7 +789,7 @@ synchronization in RISC-V：
 `sd x28, 0(x31)` => `*(&C[g]) = (A[f * 3] +  A[f * 4 + 5] + B[h * 2 + 1]) / 8 => C[g] = (A[f * 3] + A[f * 4 + 5] + B[h * 2 + 1]) / 8`
 optional follow up：假設要 mod 2 ^ 3，就跟 0....0111 做 add
 #### Q2
-![截圖 2026-09-28 17.43.09](https://hackmd.io/_uploads/HkpnUnv5Me.png)
+![0923 class q2](https://hackmd.io/_uploads/HkpnUnv5Me.png)
 **1.**
 0x007B1693 = 0000 0000 0111 1011 0001 0110 1001 0011
 => 000000000111 10110 001 01101 0010011
@@ -801,7 +807,7 @@ optional follow up：假設要 mod 2 ^ 3，就跟 0....0111 做 add
 => `SUB x15, x28, x9`
 ### 9/23 小考
 #### Q1
-![截圖 2026-09-28 17.53.00](https://hackmd.io/_uploads/ryO-K3wqze.png)
+![0923 quiz q1](https://hackmd.io/_uploads/ryO-K3wqze.png)
 第一行：
 `slli x30, x5, 5` => `x30 = x5 * 2 ^ 5 = 44 * 32 = 1408`
 `andi x30, x30, 0x3F8` => `x30 = 10110000000 and 01111111000 = 00110000000 = 384`
@@ -823,8 +829,8 @@ optional follow up：假設要 mod 2 ^ 3，就跟 0....0111 做 add
 `sd x28, 0(x27)` => `*(&C[4]) = (A[48] - B[23]) % 128` => `C[4] = (A[48] - B[23]) % 128`
 ### 9/30 分組討論題
 #### Q1
-![截圖 2026-10-25 18.05.53](https://hackmd.io/_uploads/HJAtNIsnGl.png)
-![截圖 2026-10-25 18.06.26](https://hackmd.io/_uploads/ByRj4Ujhzg.png)
+![0930 class q1.1](https://hackmd.io/_uploads/HJAtNIsnGl.png)
+![0930 class q1.2](https://hackmd.io/_uploads/ByRj4Ujhzg.png)
 ```asm
 main:
 	li a0, 4 # a0 是 n
@@ -860,7 +866,7 @@ one:
 	jalr x0, 0(ra)
 ```
 #### Q2
-![截圖 2026-10-25 19.41.10](https://hackmd.io/_uploads/B17kivj3Gg.png)
+![0930 class q2](https://hackmd.io/_uploads/B17kivj3Gg.png)
 **1.**
 初版答案：
 ```asm
@@ -934,7 +940,7 @@ base:
     jalr x0, 0(ra)
 ```
 #### Q3
-![截圖 2026-10-25 21.49.51](https://hackmd.io/_uploads/B16-YYs2fg.png)
+![0930 class q3](https://hackmd.io/_uploads/B16-YYs2fg.png)
 ```asm
 setmax:
 	lr.d t0, (a0)
@@ -946,7 +952,7 @@ fin:
 ```
 ### 9/30 小考
 #### Q1
-![截圖 2026-10-25 23.26.14](https://hackmd.io/_uploads/S13Geio2Gl.png)
+![0930 quiz q1](https://hackmd.io/_uploads/S13Geio2Gl.png)
 
 `add a0, s0, x0` => a0 = 4、s0 = 4
 `jal ra, func` => 跳到 func、ra = 第四行（`add s1, a0, x0`）
@@ -1005,7 +1011,7 @@ fin:
 `jal x0, exit` => 跳到 exit
 => s1 = 16
 #### Q2
-![截圖 2026-10-26 00.35.32](https://hackmd.io/_uploads/S1-vb2o2fl.png)
+![0930 quiz q2](https://hackmd.io/_uploads/S1-vb2o2fl.png)
 beq 是 SB format => 指令裡留給 immediate 的欄位是 imm[12:1]、imm[0] 永遠是 0 => 目標位址一定是偶數 =>  offset 實際上是一個 13 bits 的 signed number，而且最低位一定是 0
 - 最小：1000000000000 = −0x1000 => 可到 0x04080000 − 0x1000 = 0x0407F000
 - 最大：0111111111110 = +0x0FFE => 可到 0x04080000 + 0x0FFE = 0x04080FFE

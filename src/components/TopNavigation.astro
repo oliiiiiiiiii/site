@@ -13,8 +13,46 @@ import SiteIcon from './SiteIcon.astro';
   </button>
 </header>
 
+<script>
+  const nav = document.querySelector<HTMLElement>('.top-navigation');
+  if (nav) {
+    const SHOW_DELAY = 400; // ms of continuous upward scrolling before the bar comes back
+    const root = document.documentElement;
+    let lastY = window.scrollY;
+    let showTimer: number | undefined;
+    let ticking = false;
+
+    const setHidden = (hidden: boolean) => {
+      nav.classList.toggle('is-hidden', hidden);
+      const pinned = !hidden && window.scrollY > nav.offsetHeight;
+      root.style.setProperty('--nav-offset', pinned ? `${nav.offsetHeight}px` : '0px');
+    };
+    const clearShow = () => { window.clearTimeout(showTimer); showTimer = undefined; };
+
+    const update = () => {
+      ticking = false;
+      const y = window.scrollY;
+      const delta = y - lastY;
+      lastY = y;
+      if (y <= nav.offsetHeight) { clearShow(); setHidden(false); return; }
+      if (delta > 0) { clearShow(); setHidden(true); }
+      else if (delta < 0 && nav.classList.contains('is-hidden') && showTimer === undefined) {
+        showTimer = window.setTimeout(() => { showTimer = undefined; setHidden(false); }, SHOW_DELAY);
+      }
+    };
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    // keyboard focus should always reveal the bar
+    nav.addEventListener('focusin', () => { clearShow(); setHidden(false); });
+  }
+</script>
+
 <style>
-  .top-navigation { position: relative; z-index: 20; width: min(calc(100% - 3rem), var(--content-max)); min-height: 72px; margin-inline: auto; display: flex; align-items: center; justify-content: flex-end; gap: 1.25rem; border-bottom: 1px solid var(--line); }
+  .top-navigation { position: sticky; top: 0; z-index: 20; background: var(--paper); box-shadow: 0 0 0 100vmax var(--paper); clip-path: inset(0 -100vmax); transition: transform .3s ease; width: min(calc(100% - 3rem), var(--content-max)); min-height: 72px; margin-inline: auto; display: flex; align-items: center; justify-content: flex-end; gap: 1.25rem; border-bottom: 1px solid var(--line); }
+  .top-navigation.is-hidden { transform: translateY(-100%); }
+  @media (prefers-reduced-motion: reduce) { .top-navigation { transition: none; } }
   nav { display: flex; gap: 1.5rem; }
   nav a { color: var(--ink-soft); font-family: var(--font-mono); text-decoration: none; font-size: .72rem; font-weight: 700; }
   nav a:hover { color: var(--teal); }
