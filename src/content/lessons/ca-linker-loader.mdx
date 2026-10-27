@@ -9,12 +9,12 @@ draft: false
 ---
 
 ## Starting a Program
-![截圖 2026-10-04 16.15.27](https://hackmd.io/_uploads/SksmoKyizg.png)
+![starting a program](https://hackmd.io/_uploads/SksmoKyizg.png)
 - Assembler：
     - 把 assembly language 轉成 object file
     - object file 裡面的 symbol table：a table that matches names of labels to the address of the memory words that instruction occupy
     - object file：
-      ![截圖 2026-10-04 16.22.57](https://hackmd.io/_uploads/rkTyTF1sfl.png)
+      ![object file](https://hackmd.io/_uploads/rkTyTF1sfl.png)
     - 把 psudoinstruction 轉成真正的 instruction set 有 support 的 real instructions
       `li x9, 123` -> `addi x9, x0, 123`
       `mv x10, x11` -> `addi x10, x11, 0`
@@ -25,7 +25,7 @@ draft: false
       2. determine the address of data and instruction labels
       3. patch both the internal and external references
     - example（有兩個 object file）
-      ![截圖 2026-10-04 17.01.41](https://hackmd.io/_uploads/S1HWI51jGx.png)
+      ![linker example](https://hackmd.io/_uploads/S1HWI51jGx.png)
 ## Loading a Program
 ```asm
 main();
@@ -54,9 +54,40 @@ dynamic linked library：
 - lazy procedure linkage（each routine is linked only after it is called）
 - dynamic linker：不會一次把要 link、要 call 的 library 拿進來
 
-![截圖 2026-10-04 19.43.55](https://hackmd.io/_uploads/Hk9Z3hyiMl.png)
-![截圖 2026-10-04 19.45.54](https://hackmd.io/_uploads/Byetn21oze.png)
-![截圖 2026-10-04 19.48.15](https://hackmd.io/_uploads/ry3b631iGx.png)
+<div
+  style={{
+    display: 'flex',
+    gap: '1rem',
+    overflowX: 'auto',
+    scrollSnapType: 'x mandatory',
+    padding: '0.5rem 0 1rem'
+  }}
+>
+  <img
+    src="https://hackmd.io/_uploads/Hk9Z3hyiMl.png"
+    alt="lazy linkage 1"
+    style={{
+      width: 'auto',
+      height: 'auto',
+      flex: '0 0 auto',
+      zoom: 0.36,
+      scrollSnapAlign: 'start'
+    }}
+  />
+  <img
+    src="https://hackmd.io/_uploads/Byetn21oze.png"
+    alt="lazy linkage 2"
+    style={{
+      width: 'auto',
+      height: 'auto',
+      flex: '0 0 auto',
+      zoom: 0.6,
+      scrollSnapAlign: 'start'
+    }}
+  />
+</div>
+
+![java](https://hackmd.io/_uploads/ry3b631iGx.png)
 ## MIPS instructions
 - MIPS：commercial predecessor to RISC-V
 - similiar basic set of instructions
@@ -72,14 +103,45 @@ dynamic linked library：
         - then use `beq`, `bne` to complete the branch
 
 RISC-V 有五種、MIPS 只有三種
-![截圖 2026-10-04 22.41.18](https://hackmd.io/_uploads/rka9r1xjfx.png)
+![instruction encoding](https://hackmd.io/_uploads/rka9r1xjfx.png)
 
 RISC-V 跟 MIPS 其實很接近，Intel x86 就很不一樣
-![截圖 2026-10-04 23.55.35](https://hackmd.io/_uploads/rk4-Plxjfx.png)
-![截圖 2026-10-05 00.40.40](https://hackmd.io/_uploads/HJSc--gjfx.png)
+
+<div
+  style={{
+    display: 'flex',
+    gap: '1rem',
+    overflowX: 'auto',
+    scrollSnapType: 'x mandatory',
+    padding: '0.5rem 0 1rem'
+  }}
+>
+  <img
+    src="https://hackmd.io/_uploads/rk4-Plxjfx.png"
+    alt="the intel x86 ISA 1"
+    style={{
+      width: 'auto',
+      height: 'auto',
+      flex: '0 0 auto',
+      zoom: 0.42,
+      scrollSnapAlign: 'start'
+    }}
+  />
+  <img
+    src="https://hackmd.io/_uploads/HJSc--gjfx.png"
+    alt="the intel x86 ISA 2"
+    style={{
+      width: 'auto',
+      height: 'auto',
+      flex: '0 0 auto',
+      zoom: 0.6,
+      scrollSnapAlign: 'start'
+    }}
+  />
+</div>
 
 x86 registers：
-![截圖 2026-10-05 00.43.19](https://hackmd.io/_uploads/BJNVfbxjfl.png)
+![x86 registers9](https://hackmd.io/_uploads/BJNVfbxjfl.png)
 2 operands per instruction
 
 | source / dest operand | second source operand |
@@ -97,7 +159,7 @@ memory addressing modes：
 - address = R_base + 2^scale * R_index + displacement（ex. `MOV EAX, [EDX + EBX*4 + 8]`）
 
 x86 instruction encoding
-![截圖 2026-10-05 00.51.39](https://hackmd.io/_uploads/H1KQEWeize.png)
+![x86 instruction encoding](https://hackmd.io/_uploads/H1KQEWeize.png)
 
 implementing IA-32
 - complex instruction set makes implementation difficult
@@ -110,9 +172,9 @@ implementing IA-32
     - compilers avoid complex instructions
 
 ## Effect of Compiler Optimization
-![截圖 2026-10-05 02.24.44](https://hackmd.io/_uploads/SJul9GxsMx.png)
+![effect of compiler optimization](https://hackmd.io/_uploads/SJul9GxsMx.png)
 ## Effect of Language and Algorithm
-![截圖 2026-10-05 02.25.13](https://hackmd.io/_uploads/B18f9Mgize.png)
+![effect of language and algorithm](https://hackmd.io/_uploads/B18f9Mgize.png)
 ## Fallacies
 - powerful instruction => higher performance
     - fewer instructions required
@@ -124,7 +186,7 @@ implementing IA-32
 - Backward compatibility => instruction set
 doesn't change
     - but they do accrete more instructions
-      ![截圖 2026-10-05 02.40.13](https://hackmd.io/_uploads/H1u5TGxiGe.png)
+      ![x86 instruction set](https://hackmd.io/_uploads/H1u5TGxiGe.png)
 ## 一些題目
 ### 10/7 分組討論題
 #### Q1

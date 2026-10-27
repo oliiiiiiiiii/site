@@ -9,7 +9,7 @@ draft: false
 ---
 
 ## Overview
-![截圖 2026-10-05 02.45.37](https://hackmd.io/_uploads/HkCRCMgiMg.png)
+![overview](https://hackmd.io/_uploads/HkCRCMgiMg.png)
 ## How to Design a Processor - Step by Step
 ## Step 1：分析 instruction set
 => data path requirements
@@ -23,13 +23,12 @@ draft: false
   `ori rd, rs, imm12`
   `ld rd, imm12(rs1)`
   `beq rs1, rs2, imm12`
-  ![截圖 2026-10-05 03.09.57](https://hackmd.io/_uploads/HJQ9EXlsMg.png)
-- execution flow（影片大約五分鐘的地方有動畫）：
-  ![截圖 2026-10-05 03.22.11](https://hackmd.io/_uploads/rJJ_Pmesfe.png)
+  ![RISC-V subset](https://hackmd.io/_uploads/HJQ9EXlsMg.png)
+- execution flow（影片大約五分鐘的地方有動畫）：Instruction Fetch -> Instruction Decode -> Operand Fetch -> Execute -> Result Store
 - instruction &lt;=> register transfers
     - RTL（Register Transfer Languages）gives the meaning of the instructions
     - all start by fetching the instruction
-    - ![截圖 2026-10-05 03.26.16](https://hackmd.io/_uploads/SJUw_meszx.png)
+    - ![fetching the instruction](https://hackmd.io/_uploads/SJUw_meszx.png)
 - requirements of the instruction set
     - memory（instruction & data）
     - registers（read `RS1`、read `RS2`、write `RD`）
@@ -38,15 +37,15 @@ draft: false
     - add and sub register or extended immediate
     - add 4 or extended immediate to PC
 ## Step 2：挑 datapath 要用的 components、建立 clocking methodology
-- clocking methodology：combinational logic transforms ddata during clock cycles
-   - ![截圖 2026-10-05 16.18.52](https://hackmd.io/_uploads/S1ouaCgiMe.png)
+- clocking methodology：combinational logic transforms data during clock cycles
+   - ![clocking methodology](https://hackmd.io/_uploads/S1ouaCgiMe.png)
    - between clock edges
    - input from state elements, output to state element
    - longest delay determines clock period
 - combinational elements
    - the outputs only depend on the current inputs
    - example：ALU
-   - ![截圖 2026-10-05 15.24.43](https://hackmd.io/_uploads/H1YTgRljzx.png)
+   - ![combinational elements](https://hackmd.io/_uploads/H1YTgRljzx.png)
 - storage elements（state element）
    - the outputs depend on both their inputs and the contents of the internal state
    - at least two inputs and one output
@@ -56,9 +55,9 @@ draft: false
    - storage element - register（basic building block）：stores data in a circuit
        - uses a clock signal to determine when to update the stored value（edge-triggered：update when `Clk` changes from 0 to 1）
        - write enable：asserted -> update the register contents
-       - ![截圖 2026-10-05 15.53.05](https://hackmd.io/_uploads/rJAwPCgsGx.png)
+       - ![register](https://hackmd.io/_uploads/rJAwPCgsGx.png)
    - storage element - register file
-       - ![截圖 2026-10-05 16.08.54](https://hackmd.io/_uploads/S1wIoAloGx.png)
+       - ![register file](https://hackmd.io/_uploads/S1wIoAloGx.png)
        - register file consists of 32 registers：
            - 2 64-bit output busses：busA and busB
            - 1 64-bit input but：busW
@@ -70,7 +69,7 @@ draft: false
            - the CLK input is a factor ONLY during write operation
            - during read operation, behaves as a combinational logic block：RA or RB valid => busA or busB valid after "access time"
    - storage element - memory
-       - ![截圖 2026-10-05 16.13.09](https://hackmd.io/_uploads/ryAEhCxszl.png)
+       - ![memory](https://hackmd.io/_uploads/ryAEhCxszl.png)
        - memory
            - 1 input bus：data in
            - 1 output but：data out
@@ -82,29 +81,29 @@ draft: false
            - during read operation, behaves as a combinational logic block：address valid => Data Out valid after "access time"
 ## Step 3：assemble datapath meeting the requirements
 - register transfer requirements -> datapath assembly
- ![截圖 2026-10-05 16.31.04](https://hackmd.io/_uploads/BJLUgy-ifg.png)
+ ![datapath assembly](https://hackmd.io/_uploads/BJLUgy-ifg.png)
  步驟：
    1. instructions fetch
    2. read operands and execute operation
    3. memory read / write
    4. register update
 - 3a. instruction fetch unit：common operations
- ![截圖 2026-10-05 16.35.30](https://hackmd.io/_uploads/rJfvZ1WiMl.png)
+ ![instruction fetch unit](https://hackmd.io/_uploads/rJfvZ1WiMl.png)
    - fetch the instruction：`mem[PC]`
    - update the program counter：
      sequential code `PC <- PC + 4`
      branch and jump（later） `PC <- target addr.`
 - 3b. add & subtract
-  ![截圖 2026-10-05 16.44.21](https://hackmd.io/_uploads/S1GdX1bizg.png)
+  ![add & subtract](https://hackmd.io/_uploads/S1GdX1bizg.png)
     - `R[rd] <- R[rs1] op R[rs2]`，example：`add rd, rs1, rs2`
         - Ra, Rb and Rw come from instruction's rs1, rs2 and rd files
         - ALUctr and RegWr：control logic after decoding the instruction
 - 3c. load operations
-  ![截圖 2026-10-05 16.47.02](https://hackmd.io/_uploads/SJ7MEkWjMg.png)
+  ![load operations](https://hackmd.io/_uploads/SJ7MEkWjMg.png)
     - `R[rd] <= mem[R[rs1] + SignExt[imm12]] # ld rd, imm12(rs1)`
 - 3e. branch operations
-  ![截圖 2026-10-05 17.00.42](https://hackmd.io/_uploads/rkrrwy-sfl.png)
-  ![截圖 2026-10-05 17.00.58](https://hackmd.io/_uploads/HytUwJZozg.png)
+  ![branch operations - instruction](https://hackmd.io/_uploads/rkrrwy-sfl.png)
+  ![branch operations](https://hackmd.io/_uploads/HytUwJZozg.png)
     - `beq rs1, rs2, imm12`
     - ```c
       if( rs = rt )
@@ -113,15 +112,15 @@ draft: false
           PC <- PC + 4
       ```
 - single-cycle datapath：attempt to execute all instructions in one clock-cycle
-  ![截圖 2026-10-05 17.05.24](https://hackmd.io/_uploads/rJxDu1ZsGx.png)
+  ![single-cycle datapath](https://hackmd.io/_uploads/rJxDu1ZsGx.png)
   - add instruction 的 data flow
-    ![截圖 2026-10-05 17.06.59](https://hackmd.io/_uploads/Bkyad1-oMl.png)
+    ![add instruction](https://hackmd.io/_uploads/Bkyad1-oMl.png)
 ## Step 4：analyze implementation of each instruction to determine setting of control points that effect the register transfer（given datapath -> control）
 Rs1, Rs2, Rd and Imed12 hardwired into datapath：
-![截圖 2026-10-05 17.08.18](https://hackmd.io/_uploads/ryAWYk-ozx.png)
+![Rs1, Rs2, Rd and Imed12](https://hackmd.io/_uploads/ryAWYk-ozx.png)
 
 meaning of control signals：
-![截圖 2026-10-05 17.10.45](https://hackmd.io/_uploads/SJZsF1-szl.png)
+![meaning of control signals](https://hackmd.io/_uploads/SJZsF1-szl.png)
 
 | 上圖中的什麼 | 作用 |
 | - | - |
@@ -129,48 +128,98 @@ meaning of control signals：
 | MemRd | read memory |
 | MemtoReg | 0 => ALU output; 1 => Mem |
 | RegWr | write dest register |
-| ALUsrc | 0 => regB; 1 => immed |
+| ALUsrc | 0 => regB、1 => immed |
 | ALUctr | "add", "sub", "or", "and" |
-| PCSrc | 0 => PC = PC + 4; 1 => PC = branch target address |
+| PCSrc | 0 => PC = PC + 4、1 => PC = branch target address |
 
 examine control signals：add
 fetch the instruction from instruction memory：instruction &lt;- mem[PC]
 - this is the same for all instructions
-  ![截圖 2026-10-05 17.23.33](https://hackmd.io/_uploads/rkrsnJbizg.png)
+  ![fetch the instruction](https://hackmd.io/_uploads/rkrsnJbizg.png)
 
 the single cycle datapath during add
-![截圖 2026-10-05 17.24.57](https://hackmd.io/_uploads/rkBxaJbjGg.png)
+![single cycle datapath during add](https://hackmd.io/_uploads/rkBxaJbjGg.png)
 
 instruction fetch unit at the end of add
-- PC &lt;- PC + 4（same for all instructions except: branch and jump）
-- ![截圖 2026-10-05 17.27.48](https://hackmd.io/_uploads/S1WiT1ZoMl.png)
+- PC &lt;- PC + 4（same for all instructions except branch and jump）
+- ![end of instructions](https://hackmd.io/_uploads/S1WiT1ZoMl.png)
 
 the single cycle datapath during load
-![截圖 2026-10-05 17.28.21](https://hackmd.io/_uploads/Bkb6pJZsMg.png)
+![single cycle datapath during load](https://hackmd.io/_uploads/Bkb6pJZsMg.png)
 
 the single cycle datapath during store
-![截圖 2026-10-05 17.28.56](https://hackmd.io/_uploads/HyB1CkWoGx.png)
+![single cycle datapath during store](https://hackmd.io/_uploads/HyB1CkWoGx.png)
 
 the single cycle datapath during branch（beq）
-![截圖 2026-10-05 17.30.43](https://hackmd.io/_uploads/S11LA1WjGx.png)
+![single cycle datapath during branch](https://hackmd.io/_uploads/S11LA1WjGx.png)
 
 instruction fetch unit at the end of
-![截圖 2026-10-05 17.36.15](https://hackmd.io/_uploads/S1s51ebsMe.png)
+![instruction fetch unit at the end](https://hackmd.io/_uploads/S1s51ebsMe.png)
 
 exemple：the single cycle datapath during ori
-![截圖 2026-10-05 17.51.39](https://hackmd.io/_uploads/SkOV7x-jfx.png)
+![single cycle datapath during ori](https://hackmd.io/_uploads/SkOV7x-jfx.png)
 ## Step 5：assemble the control logic（control unit）
-![截圖 2026-10-05 17.54.16](https://hackmd.io/_uploads/rkB07g-sGe.png)
+![control unit](https://hackmd.io/_uploads/rkB07g-sGe.png)
 
 怎麼打造 comprehensive logic：
 一個 comprehensive logic 就是一個 unit，會有 input 跟 output，下面的例子會有三個 input 跟三個 output
-![截圖 2026-10-05 19.02.06](https://hackmd.io/_uploads/S1q2Qb-oMx.png)
+![input and output](https://hackmd.io/_uploads/S1q2Qb-oMx.png)
 把 input output 值寫出來之後就可以設計 gate
 
-![截圖 2026-10-05 19.14.32](https://hackmd.io/_uploads/ByLo8ZbsMg.png)
-![截圖 2026-10-05 19.15.17](https://hackmd.io/_uploads/B1gA8WbiMx.png)
-![截圖 2026-10-05 19.15.31](https://hackmd.io/_uploads/ByJyDbZoGg.png)
-![截圖 2026-10-05 19.15.43](https://hackmd.io/_uploads/HJ51DZWizl.png)
+<div
+  style={{
+    display: 'flex',
+    gap: '1rem',
+    overflowX: 'auto',
+    scrollSnapType: 'x mandatory',
+    padding: '0.5rem 0 1rem'
+  }}
+>
+  <img
+    src="https://hackmd.io/_uploads/ByLo8ZbsMg.png"
+    alt="gate 1"
+    style={{
+      width: 'auto',
+      height: 'auto',
+      flex: '0 0 auto',
+      zoom: 0.3,
+      scrollSnapAlign: 'start'
+    }}
+  />
+  <img
+    src="https://hackmd.io/_uploads/B1gA8WbiMx.png"
+    alt="gate 2"
+    style={{
+      width: 'auto',
+      height: 'auto',
+      flex: '0 0 auto',
+      zoom: 0.3,
+      scrollSnapAlign: 'start'
+    }}
+  />
+  <img
+    src="https://hackmd.io/_uploads/ByJyDbZoGg.png"
+    alt="gate 3"
+    style={{
+      width: 'auto',
+      height: 'auto',
+      flex: '0 0 auto',
+      zoom: 0.28,
+      scrollSnapAlign: 'start'
+    }}
+  />
+  <img
+    src="https://hackmd.io/_uploads/HJ51DZWizl.png"
+    alt="gate 4"
+    style={{
+      width: 'auto',
+      height: 'auto',
+      flex: '0 0 auto',
+      zoom: 0.26,
+      scrollSnapAlign: 'start'
+    }}
+  />
+</div>
 
 ## Performance of Single-Cycle Machines
 assumption
@@ -183,7 +232,7 @@ assumption
     - every instructions operates in 1 clock cycle of a fixed length
     - every instruction executes in 1 clock cycle using a variable-length clock
 
-![截圖 2026-10-05 19.48.17](https://hackmd.io/_uploads/HJCKA-Wjze.png)
+![units used](https://hackmd.io/_uploads/HJCKA-Wjze.png)
 
 recall：CPU execution time = instruction count * CPI * clock cycle time，since CPI must be 1, can simplify to：CPU execution time = instruction count * clock cycle time
 
