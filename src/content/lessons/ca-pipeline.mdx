@@ -9,10 +9,10 @@ draft: false
 ---
 
 ## Single Cycle Implementation
-![截圖 2026-10-12 12.49.04](https://hackmd.io/_uploads/ryhpLycoGx.png)
+![single cycle implementation](https://hackmd.io/_uploads/ryhpLycoGx.png)
 不管這個 instruction 要做什麼事情都是花一個 cycle => aka CPI = 1 processor
 缺點 - cycle time 會取決於最長的 instruction：
-![截圖 2026-10-12 12.52.56](https://hackmd.io/_uploads/BkXnPk5ozx.png)
+![cycle time](https://hackmd.io/_uploads/BkXnPk5ozx.png)
 - long Cycle Time
 - all instructions take as much time as the slowest
 - real memory is not so nice as our idealized memory（cannot always get the job done in one（short）cycle）
@@ -26,9 +26,9 @@ draft: false
 4. 收 30 min
 
 如果有四件洗衣的工作，sequentially 做就要花 8 小時
-![截圖 2026-10-12 13.23.28](https://hackmd.io/_uploads/HJ600y9iMx.png)
+![sequentially wash](https://hackmd.io/_uploads/HJ600y9iMx.png)
 但如果有 pipelining：
-![截圖 2026-10-12 13.23.59](https://hackmd.io/_uploads/Hkjlyl9jfg.png)
+![pipeline wash](https://hackmd.io/_uploads/Hkjlyl9jfg.png)
 只要花 3.5 小時
 
 - pipelining doesn’t help latency of single task, it
@@ -44,7 +44,7 @@ different resources
     - cycle time：time it takes to execute the longest step
     - try to make all the steps have similar length
     - 5 steps in MIPS & RISC-V
-      ![截圖 2026-10-12 13.39.09](https://hackmd.io/_uploads/S1oKzg5ofl.png)
+      ![pipeline steps](https://hackmd.io/_uploads/S1oKzg5ofl.png)
         1. instruction fetch
         2. instruction decode and register fetch
         3. execution, memory dddress computation, or branch completion
@@ -52,19 +52,18 @@ different resources
         5. write-back
 
 improve performance by increasing instruction throughput
-![截圖 2026-10-12 13.40.35](https://hackmd.io/_uploads/S11yXx5ozg.png)
+![pipeline](https://hackmd.io/_uploads/S11yXx5ozg.png)
 time to execute 4 load instructions：
 - single cycle：0.8 * 4 = 3.2 ns
 - pipeline：4 * 1 + 4（time to drain the pipeline）= 8 cycle = 1.6 ns
 
-![截圖 2026-10-12 13.44.24](https://hackmd.io/_uploads/Byraml5ifg.png)
+![pipeline cycle](https://hackmd.io/_uploads/Byraml5ifg.png)
 - ideal CPI = 1
 - time to execute n instruction：1 * n + time to drain the pipeline
-  ![截圖 2026-10-12 14.25.30](https://hackmd.io/_uploads/SkYwae5iGl.png)
 - ideal speedup from pipelining == # of pipeline stages，也就是假設有 5 個 stage 就 speed up 5 倍（if the stages are perfectly balanced, and a large number of instructions）：$\text{time between instructions}_{\text{pipelined}}=\frac{\text{time between instructions}_{\text{nonpipelined}}}{\text{\# of pipe stages}}$
 
 graphically representing pipelines
-![截圖 2026-10-12 14.42.58](https://hackmd.io/_uploads/rkpOW-ciMx.png)
+![graphically representing pipelines](https://hackmd.io/_uploads/rkpOW-ciMx.png)
 can help with answering questions like：
 - how many cycles does it take to execute this code？
 - what is the ALU doing during cycle 4？
@@ -84,61 +83,61 @@ can pipelining get us into trouble？ yes, pipeline hazards
 1. structural hazards：
    attempt to use the same resource two different ways at the same time（e.g., combined washer/dryer would be a structural hazard or folder busy doing something else）
    single memory is a structural hazard：同時有兩個 instruction 都要 access memory，而 memory 的設計是一次只能處理一個 request 就會遇到 structural hazard
-   ![截圖 2026-10-12 15.12.31](https://hackmd.io/_uploads/rk2POW9sfe.png)
+   ![structural hazard](https://hackmd.io/_uploads/rk2POW9sfe.png)
 2. data hazards：
    attempt to use item before it is ready（e.g., one sock of pair in dryer and one in washer; can’t fold until get sock from washer through dryer）=> instruction depends on result of prior instruction still in the pipeline
    dependencies backwards in time are hazards
    下圖中 sub 應該要讀 add 已經改完的 r1，但讀成原本還沒改的
-   ![截圖 2026-10-12 15.24.17](https://hackmd.io/_uploads/HkR7iZcjMe.png)
+   ![data hazard](https://hackmd.io/_uploads/HkR7iZcjMe.png)
 3. control hazards：
    attempt to make a decision before condition is evaluated（e.g., washing football uniforms and need to get proper detergent level; need to see after dryer before next load in）=> branch instructions
-   ![截圖 2026-10-12 15.26.28](https://hackmd.io/_uploads/HJ12sZ9jzg.png)
+   ![control hazard](https://hackmd.io/_uploads/HJ12sZ9jzg.png)
 
 can always resolve hazards by waiting
 - pipeline control must detect the hazard
 - take action（or delay action）to resolve hazards
-1. solve structural hazard
+1. solve structural  \
     1. stall（插入一個拿來等待的無效的 instruction）
-       ![截圖 2026-10-12 15.38.02](https://hackmd.io/_uploads/ByYwRWcjMx.png)
+       ![stall](https://hackmd.io/_uploads/ByYwRWcjMx.png)
     2. split instruction and data memory（讓 instruction 跟 data 放在不同的 memory）
-       ![截圖 2026-10-12 15.44.47](https://hackmd.io/_uploads/HJ0lezqiGg.png)
-2. solve data hazard
-   "forward" result from one stage to another
+       ![split](https://hackmd.io/_uploads/HJ0lezqiGg.png)
+2. solve data hazard \
+   "forward" result from one stage to another \
    雖然 sub 要 r1 要從 reg 讀，但其實那就是 add 執行完 ALU 的結果，所以直接把結果傳送過去就好
-   ![截圖 2026-10-12 15.45.32](https://hackmd.io/_uploads/BydQgM9ife.png)
-   （"or" OK if register writes occur in the first half of the clock cycle, and register reads in the last half of the clock cycle）
+   ![forward](https://hackmd.io/_uploads/BydQgM9ife.png)
+   （"or" OK if register writes occur in the first half of the clock cycle, and register reads in the last half of the clock cycle） \
    load-use data hazard：cannot solve with forwarding
-   ![截圖 2026-10-12 15.50.50](https://hackmd.io/_uploads/SJrPbfciGl.png)
+   ![load-use data hazard](https://hackmd.io/_uploads/SJrPbfciGl.png)
    must delay/stall instruction dependent on loads
-   ![截圖 2026-10-12 15.51.20](https://hackmd.io/_uploads/SkmFZM5sGg.png)
+   ![must delay/stall](https://hackmd.io/_uploads/SkmFZM5sGg.png)
    可以做 instruction scheduling 來 reorder code to avoid pipeline stalls
    ```c
    A = B + E;
    C = B + F;
    ```
    可以這樣重排：
-   ![截圖 2026-10-12 15.59.14](https://hackmd.io/_uploads/BJUOmfcsGl.png)
-3. solve control hazard
+   ![reorder](https://hackmd.io/_uploads/BJUOmfcsGl.png)
+3. solve control hazard \
    it arises from the need to make a decision based on the results of one instruction while others are executing
-   1. sol 1 - stall
-      after fetching a branch instruction, pipeline is to stall immediately, waiting until the outcome of the branch is known
-	  會 slow down the pipeline
-	  ![截圖 2026-10-12 16.11.04](https://hackmd.io/_uploads/HyUmIz9jzg.png)
-	  會造成一個 branch instruction 會需要 3 個 cycle => slow
-   2. sol 2 - resolve branch earlier
-      what if a branch is resolved in the second stage（ID）？
-	  assume that we can put in enough extra hardware so that we can test registers, calculate the branch address, and update the PC during the second stage
-	  ![截圖 2026-10-12 16.14.47](https://hackmd.io/_uploads/BJ4bwz5ofg.png)
-	  會造成一個 branch instruction 會需要 2 個 cycle => 比 sol 1 好但還是慢
-	  as the branch are 13% of the instructions executed in SPECint2000, the CPI is slowdown of 1.13 versus the ideal case
-   3. sol 3 - predict
-      assumes a given outcome for the branch and proceeds from the assumption rather than waiting to ascertain the actual outcome
-	  should rollback if the assumption is wrong
-	  ex. always predict nontaken
-	  ![截圖 2026-10-12 16.18.03](https://hackmd.io/_uploads/SkITPGcsfg.png)
-	  ![截圖 2026-10-12 16.25.34](https://hackmd.io/_uploads/SJ6KtG9jMe.png)
-	  會造成一個 branch instruction 會需要 1 - 2 個 cycle（預測對就是 1 個、預測錯就是 2 個）
-	  more dynamic scheme：記錄一個 branch 的 history 來預測比較有可能是 taken 還是 nontaken
+   1. sol 1 - stall \
+      after fetching a branch instruction, pipeline is to stall immediately, waiting until the outcome of the branch is known \
+	   會 slow down the pipeline
+	   ![stall](https://hackmd.io/_uploads/HyUmIz9jzg.png)
+	   會造成一個 branch instruction 會需要 3 個 cycle => slow
+   2. sol 2 - resolve branch earlier \
+      what if a branch is resolved in the second stage（ID）？ \
+	   assume that we can put in enough extra hardware so that we can test registers, calculate the branch address, and update the PC during the second stage
+	   ![resolve branch earlier](https://hackmd.io/_uploads/BJ4bwz5ofg.png)
+	   會造成一個 branch instruction 會需要 2 個 cycle => 比 sol 1 好但還是慢 \
+	   as the branch are 13% of the instructions executed in SPECint2000, the CPI is slowdown of 1.13 versus the ideal case
+   3. sol 3 - predict \
+      assumes a given outcome for the branch and proceeds from the assumption rather than waiting to ascertain the actual outcome \
+	   should rollback if the assumption is wrong \
+	   ex. always predict nontaken
+	   ![predict 1](https://hackmd.io/_uploads/SkITPGcsfg.png)
+	   ![predict 2](https://hackmd.io/_uploads/SJ6KtG9jMe.png)
+	   會造成一個 branch instruction 會需要 1 - 2 個 cycle（預測對就是 1 個、預測錯就是 2 個） \
+	   more dynamic scheme：記錄一個 branch 的 history 來預測比較有可能是 taken 還是 nontaken
 
 ## A Pipelined Datapath：Basic Idea
 ![截圖 2026-10-12 16.34.19](https://hackmd.io/_uploads/H1v9ozqoMl.png)
